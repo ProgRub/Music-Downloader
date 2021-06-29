@@ -2,7 +2,7 @@
 
 namespace Business.DTOs
 {
-    public class MusicFileDTO
+    public class SongFileDTO
     {
         public string Filename { get; set; }
         public string AlbumArtist { get; set; }

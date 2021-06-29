@@ -9,4 +9,10 @@
     <Folder Include="Validators\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="DB">
+      <HintPath>..\..\..\Music-Librarian\Music-Librarian\DB\bin\Debug\net5.0\DB.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

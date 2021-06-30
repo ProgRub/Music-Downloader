@@ -15,6 +15,12 @@ namespace Forms
         public HomeScreen()
         {
             InitializeComponent();
+            DefaultConfigurations();
+        }
+
+        private void ButtonDownloadMusic_Click(object sender, EventArgs e)
+        {
+            MoveToScreen(new DownloadMusicScreen(),this);
         }
     }
 }

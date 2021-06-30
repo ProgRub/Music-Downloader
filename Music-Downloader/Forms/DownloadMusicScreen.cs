@@ -84,6 +84,7 @@ namespace Forms
             if (button.Text != "Move Files") return;
             _numberOfFiles = 0;
             LabelNumberOfFiles.Text = $"{_numberOfFiles} Files Moved";
+            BusinessFacade.Instance.StopTimer();
             BusinessFacade.Instance.MoveFiles();
             button.Text = "Get Lyrics And Year";
             button.Location = new Point(button.Location.X - 20, button.Location.Y);

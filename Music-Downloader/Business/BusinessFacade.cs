@@ -24,7 +24,7 @@ namespace Business
 
         public void StartDeemix() => DownloadMusicService.Instance.StartDeemix();
 
-        internal void StopTimer() => DownloadMusicService.Instance.StopTimer();
+        public void StopTimer() => DownloadMusicService.Instance.StopTimer();
         public void MoveFiles()
         {
             DownloadMusicService.Instance.NotifyMusicFileMoved += (sender, args) => NotifyMusicFileMoved?.Invoke(sender, args);

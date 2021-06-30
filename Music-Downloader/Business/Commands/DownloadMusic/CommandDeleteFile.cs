@@ -1,20 +1,28 @@
-﻿namespace Business.Commands.DownloadMusic
+﻿using Business.Services;
+
+namespace Business.Commands.DownloadMusic
 {
     public class CommandDeleteFile:ICommand
     {
+        private string _filename;
+        public CommandDeleteFile(string filename)
+        {
+            _filename = filename;
+        }
         public void Execute()
         {
-            throw new System.NotImplementedException();
+            DownloadMusicService.Instance.DeletedFiles.Add(_filename);
+            DownloadMusicService.Instance.FilesToMove.Remove(_filename);
         }
 
         public void Undo()
         {
-            throw new System.NotImplementedException();
+            DownloadMusicService.Instance.FilesToMove.Add(_filename);
+            DownloadMusicService.Instance.DeletedFiles.Remove(_filename);
         }
 
         public void Redo()
-        {
-            throw new System.NotImplementedException();
+        {Execute();
         }
     }
 }

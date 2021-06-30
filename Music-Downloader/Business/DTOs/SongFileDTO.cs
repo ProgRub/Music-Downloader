@@ -16,5 +16,10 @@ namespace Business.DTOs
         public int TotalDiscCount { get; set; }
         public int Year { get; set; }
         public string Lyrics { get; set; }
+
+        internal static SongFileDTO GetSongFileDTOFromFilePath(string filePath)
+        {
+
+        }
     }
 }

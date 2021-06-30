@@ -50,9 +50,6 @@ namespace Forms
             this.ListBoxBeforeFiles.Font = new System.Drawing.Font("Myanmar Text", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ListBoxBeforeFiles.FormattingEnabled = true;
             this.ListBoxBeforeFiles.ItemHeight = 27;
-            this.ListBoxBeforeFiles.Items.AddRange(new object[] {
-            "Test1",
-            "Test2"});
             this.ListBoxBeforeFiles.Location = new System.Drawing.Point(3, 61);
             this.ListBoxBeforeFiles.Name = "ListBoxBeforeFiles";
             this.ListBoxBeforeFiles.Size = new System.Drawing.Size(710, 625);

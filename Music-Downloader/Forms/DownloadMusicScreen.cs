@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Business;
 using Business.Commands;
 using Business.Commands.DownloadMusic;
 
@@ -23,6 +26,11 @@ namespace Forms
         {
             CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
             CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
+            BusinessFacade.Instance.NotifyNewDownloadedMusicFile += (_, args) => ListBoxBeforeFiles.Invoke(
+                new MethodInvoker(
+                    delegate { ListBoxBeforeFiles.Items.Add(args.Filename); }));
+            BusinessFacade.Instance.StartDeemix();
+            BusinessFacade.Instance.GetDownloadedMusicFiles();
             DefaultConfigurations();
             SetFormAcceptButton(ButtonMoveFilesGetLyrics);
         }
@@ -31,7 +39,7 @@ namespace Forms
         {
             if (e.KeyCode != Keys.Delete || ListBoxBeforeFiles.SelectedItem == null) return;
             var macroCommand = new MacroCommand();
-            //macroCommand.Add(new CommandDeleteFile());
+            macroCommand.Add(new CommandDeleteFile(ListBoxBeforeFiles.SelectedItem.ToString()));
             macroCommand.Add(new CommandDeleteSelectedListBoxItem(ListBoxBeforeFiles));
             CommandsManager.Instance.Execute(macroCommand);
         }
@@ -56,10 +64,10 @@ namespace Forms
 
         private void ButtonRenameFile_Click(object sender, EventArgs e)
         {
-            if(ListBoxBeforeFiles.SelectedItem == null) return;
+            if (ListBoxBeforeFiles.SelectedItem == null) return;
             var macroCommand = new MacroCommand();
-            //macroCommand.Add(new CommandRenameFile());
-            macroCommand.Add(new CommandRenameSelectedListBoxItem(TextBoxRenameFile.Text,ListBoxBeforeFiles));
+            macroCommand.Add(new CommandRenameFile(ListBoxBeforeFiles.SelectedItem.ToString(),TextBoxRenameFile.Text));
+            macroCommand.Add(new CommandRenameSelectedListBoxItem(TextBoxRenameFile.Text, ListBoxBeforeFiles));
             CommandsManager.Instance.Execute(macroCommand);
             ListBoxBeforeFiles.SelectedItem = null;
         }

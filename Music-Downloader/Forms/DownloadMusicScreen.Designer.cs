@@ -37,6 +37,7 @@ namespace Forms
             this.ButtonMoveFilesGetLyrics = new System.Windows.Forms.Button();
             this.ButtonUndo = new System.Windows.Forms.Button();
             this.ButtonRedo = new System.Windows.Forms.Button();
+            this.LabelNumberOfFiles = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ButtonBack
@@ -128,10 +129,20 @@ namespace Forms
             this.ButtonRedo.UseVisualStyleBackColor = true;
             this.ButtonRedo.Click += new System.EventHandler(this.ButtonRedo_Click);
             // 
+            // LabelNumberOfFiles
+            // 
+            this.LabelNumberOfFiles.AutoSize = true;
+            this.LabelNumberOfFiles.Location = new System.Drawing.Point(666, 16);
+            this.LabelNumberOfFiles.Name = "LabelNumberOfFiles";
+            this.LabelNumberOfFiles.Size = new System.Drawing.Size(104, 27);
+            this.LabelNumberOfFiles.TabIndex = 14;
+            this.LabelNumberOfFiles.Text = "0 Files Found";
+            // 
             // DownloadMusicScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 27F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LabelNumberOfFiles);
             this.Controls.Add(this.ButtonRedo);
             this.Controls.Add(this.ButtonUndo);
             this.Controls.Add(this.ButtonMoveFilesGetLyrics);
@@ -152,6 +163,7 @@ namespace Forms
             this.Controls.SetChildIndex(this.ButtonMoveFilesGetLyrics, 0);
             this.Controls.SetChildIndex(this.ButtonUndo, 0);
             this.Controls.SetChildIndex(this.ButtonRedo, 0);
+            this.Controls.SetChildIndex(this.LabelNumberOfFiles, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,5 +179,6 @@ namespace Forms
         private System.Windows.Forms.Button ButtonMoveFilesGetLyrics;
         private System.Windows.Forms.Button ButtonUndo;
         private System.Windows.Forms.Button ButtonRedo;
+        private System.Windows.Forms.Label LabelNumberOfFiles;
     }
 }

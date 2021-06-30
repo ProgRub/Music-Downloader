@@ -22,7 +22,7 @@ namespace Business
             DownloadMusicService.Instance.GetDownloadedMusicFiles();
         }
 
-        public void StartDeemix(){}// => DownloadMusicService.Instance.StartDeemix();
+        public void StartDeemix() => DownloadMusicService.Instance.StartDeemix();
 
         internal void StopTimer() => DownloadMusicService.Instance.StopTimer();
         public void MoveFiles()

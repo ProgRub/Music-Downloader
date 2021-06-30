@@ -12,23 +12,57 @@ using System.Windows.Forms;
 using Business;
 using Business.Commands;
 using Business.Commands.DownloadMusic;
+using Business.CustomEventArgs;
 
 namespace Forms
 {
     public partial class DownloadMusicScreen : BaseControl
     {
+        private int _numberOfFiles;
+
         public DownloadMusicScreen()
         {
             InitializeComponent();
+            _numberOfFiles = 0;
         }
 
         private void DownloadMusicScreen_Enter(object sender, EventArgs e)
         {
             CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
             CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
-            BusinessFacade.Instance.NotifyNewDownloadedMusicFile += (_, args) => ListBoxBeforeFiles.Invoke(
-                new MethodInvoker(
-                    delegate { ListBoxBeforeFiles.Items.Add(args.Filename); }));
+            BusinessFacade.Instance.NotifyNewDownloadedMusicFile += (_, args) =>
+            {
+                ListBoxBeforeFiles.Invoke(
+                    new MethodInvoker(delegate { ListBoxBeforeFiles.Items.Add(args.Filename); }));
+                LabelNumberOfFiles.Invoke(
+                    new MethodInvoker(delegate { LabelNumberOfFiles.Text = $"{++_numberOfFiles} Files Found"; }));
+            };
+            BusinessFacade.Instance.NotifyMusicFileMoved += (_, args) =>
+            {
+                LabelNumberOfFiles.Invoke(
+                    new MethodInvoker(delegate { LabelNumberOfFiles.Text = $"{++_numberOfFiles} Files Moved"; }));
+                var newLine = args.Filename;
+                switch (args.Condition)
+                {
+                    case FileMovedCondition.NoProblem:
+                        break;
+                    case FileMovedCondition.ReplacedSingle:
+                        newLine += " SINGLE REPLACED";
+                        break;
+                    case FileMovedCondition.AlreadyExists:
+                        newLine += " already exists, DELETED";
+                        break;
+                    case FileMovedCondition.HadToBeRenamed:
+                        newLine += " had to be RENAMED";
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                newLine += Environment.NewLine;
+                TextBoxAfterFiles.Invoke(
+                    new MethodInvoker(delegate { TextBoxAfterFiles.AppendText(newLine); }));
+            };
             BusinessFacade.Instance.StartDeemix();
             BusinessFacade.Instance.GetDownloadedMusicFiles();
             DefaultConfigurations();
@@ -48,6 +82,9 @@ namespace Forms
         {
             var button = (Button) sender;
             if (button.Text != "Move Files") return;
+            _numberOfFiles = 0;
+            LabelNumberOfFiles.Text = $"{_numberOfFiles} Files Moved";
+            BusinessFacade.Instance.MoveFiles();
             button.Text = "Get Lyrics And Year";
             button.Location = new Point(button.Location.X - 20, button.Location.Y);
         }
@@ -66,7 +103,7 @@ namespace Forms
         {
             if (ListBoxBeforeFiles.SelectedItem == null) return;
             var macroCommand = new MacroCommand();
-            macroCommand.Add(new CommandRenameFile(ListBoxBeforeFiles.SelectedItem.ToString(),TextBoxRenameFile.Text));
+            macroCommand.Add(new CommandRenameFile(ListBoxBeforeFiles.SelectedItem.ToString(), TextBoxRenameFile.Text));
             macroCommand.Add(new CommandRenameSelectedListBoxItem(TextBoxRenameFile.Text, ListBoxBeforeFiles));
             CommandsManager.Instance.Execute(macroCommand);
             ListBoxBeforeFiles.SelectedItem = null;
@@ -78,7 +115,6 @@ namespace Forms
             {
                 TextBoxRenameFile.Text = ListBoxBeforeFiles.SelectedItem.ToString();
                 TextBoxRenameFile.Enabled = true;
-                TextBoxRenameFile.Focus();
                 TextBoxRenameFile.SelectionStart = TextBoxRenameFile.Text.Length;
                 SetFormAcceptButton(ButtonRenameFile);
             }

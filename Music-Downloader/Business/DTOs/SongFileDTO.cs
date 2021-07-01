@@ -50,7 +50,7 @@ namespace Business.DTOs
                 case RenameFileOptions.AddArtist:
                 {
                     toAdd = " (";
-                        var artistSplit = AlbumArtist.Split(new char[0], StringSplitOptions.RemoveEmptyEntries).ToList();
+                    var artistSplit = AlbumArtist.Split(new char[0], StringSplitOptions.RemoveEmptyEntries).ToList();
                     if ("The" == artistSplit[0])
                     {
                         artistSplit.Remove("The");
@@ -64,9 +64,10 @@ namespace Business.DTOs
                     {
                         toAdd = artistSplit.Aggregate(toAdd, (current, item) => current + item.ToUpper()[0]);
                     }
+
                     toAdd += ").mp3";
                     Filename = Filename.Substring(0, Filename.LastIndexOf('.')) + toAdd;
-                        break;
+                    break;
                 }
                 case RenameFileOptions.AddAlbum:
                     toAdd = " (";
@@ -76,15 +77,30 @@ namespace Business.DTOs
                     break;
                 case RenameFileOptions.AddNumber:
                     var fileNumber = 2;
-                    while (File.Exists(Path.Combine(DirectoriesService.Instance.MusicToDirectory,Filename)))
+                    while (File.Exists(Path.Combine(DirectoriesService.Instance.MusicToDirectory, Filename)))
                     {
                         toAdd = " (" + fileNumber++ + ").mp3";
                         Filename = Filename.Substring(0, Filename.LastIndexOf('.')) + toAdd;
                     }
+
                     break;
             }
         }
+
+        public void SaveToFile()
+        {
+            using var songFile =
+                TagLib.File.Create(Path.Combine(DirectoriesService.Instance.MusicToDirectory, Filename));
+            songFile.Tag.Lyrics = Lyrics;
+            songFile.Tag.Year = (uint) Year;
+            songFile.Save();
+        }
     }
 
-    public enum RenameFileOptions{AddAlbum,AddArtist,AddNumber}
+    public enum RenameFileOptions
+    {
+        AddAlbum,
+        AddArtist,
+        AddNumber
+    }
 }

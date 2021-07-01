@@ -1,4 +1,5 @@
 ﻿using System;
+using Business.Enums;
 
 namespace Business.CustomEventArgs
 {
@@ -6,13 +7,5 @@ namespace Business.CustomEventArgs
     {
         public string Filename { get; set; }
         public FileMovedCondition Condition { get; set; }
-    }
-
-    public enum FileMovedCondition
-    {
-        NoProblem,
-        ReplacedSingle,
-        AlreadyExists,
-        HadToBeRenamed
     }
 }

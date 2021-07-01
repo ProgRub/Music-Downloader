@@ -24,7 +24,9 @@ namespace Forms
             SetBackColorsAndNotBold();
         }
 
-        private Color ColorAdd(Color color1, Color color2)
+        protected void MaximizeWindow() => ((Window) Parent).WindowState = FormWindowState.Maximized;
+
+        private static Color ColorAdd(Color color1, Color color2)
         {
             var r = (byte) (color1.R + color2.R);
             var g = (byte) (color1.G + color2.G);
@@ -45,6 +47,13 @@ namespace Forms
                 textBox.BackColor = ColorAdd(((Window) Parent).BackColor, _ligthenBoxesColor);
                 textBox.Font = new Font(textBox.Font, FontStyle.Regular);
                 if (!textBox.Multiline) textBox.Size=new Size(textBox.Size.Width,textBox.Size.Height-1);
+            }
+
+            foreach (var textBox in Controls.OfType<RichTextBox>())
+            {
+                textBox.BackColor = ColorAdd(((Window)Parent).BackColor, _ligthenBoxesColor);
+                textBox.Font = new Font(textBox.Font, FontStyle.Regular);
+                if (!textBox.Multiline) textBox.Size = new Size(textBox.Size.Width, textBox.Size.Height - 1);
             }
         }
 

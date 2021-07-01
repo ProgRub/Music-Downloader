@@ -53,7 +53,7 @@ namespace Forms
             this.ListBoxBeforeFiles.ItemHeight = 27;
             this.ListBoxBeforeFiles.Location = new System.Drawing.Point(3, 61);
             this.ListBoxBeforeFiles.Name = "ListBoxBeforeFiles";
-            this.ListBoxBeforeFiles.Size = new System.Drawing.Size(710, 625);
+            this.ListBoxBeforeFiles.Size = new System.Drawing.Size(813, 625);
             this.ListBoxBeforeFiles.TabIndex = 6;
             this.ListBoxBeforeFiles.SelectedIndexChanged += new System.EventHandler(this.ListBoxBeforeFiles_SelectedIndexChanged);
             this.ListBoxBeforeFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBoxBeforeFiles_KeyDown);
@@ -61,17 +61,17 @@ namespace Forms
             // TextBoxAfterFiles
             // 
             this.TextBoxAfterFiles.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.TextBoxAfterFiles.Location = new System.Drawing.Point(718, 61);
+            this.TextBoxAfterFiles.Location = new System.Drawing.Point(822, 61);
             this.TextBoxAfterFiles.Multiline = true;
             this.TextBoxAfterFiles.Name = "TextBoxAfterFiles";
             this.TextBoxAfterFiles.ReadOnly = true;
-            this.TextBoxAfterFiles.Size = new System.Drawing.Size(710, 625);
+            this.TextBoxAfterFiles.Size = new System.Drawing.Size(813, 625);
             this.TextBoxAfterFiles.TabIndex = 7;
             // 
             // LabelFilename
             // 
             this.LabelFilename.AutoSize = true;
-            this.LabelFilename.Location = new System.Drawing.Point(416, 733);
+            this.LabelFilename.Location = new System.Drawing.Point(520, 734);
             this.LabelFilename.Name = "LabelFilename";
             this.LabelFilename.Size = new System.Drawing.Size(75, 27);
             this.LabelFilename.TabIndex = 8;
@@ -80,7 +80,7 @@ namespace Forms
             // TextBoxRenameFile
             // 
             this.TextBoxRenameFile.Enabled = false;
-            this.TextBoxRenameFile.Location = new System.Drawing.Point(496, 730);
+            this.TextBoxRenameFile.Location = new System.Drawing.Point(600, 731);
             this.TextBoxRenameFile.Name = "TextBoxRenameFile";
             this.TextBoxRenameFile.Size = new System.Drawing.Size(433, 35);
             this.TextBoxRenameFile.TabIndex = 9;
@@ -88,7 +88,7 @@ namespace Forms
             // ButtonRenameFile
             // 
             this.ButtonRenameFile.AutoSize = true;
-            this.ButtonRenameFile.Location = new System.Drawing.Point(934, 730);
+            this.ButtonRenameFile.Location = new System.Drawing.Point(1038, 731);
             this.ButtonRenameFile.Name = "ButtonRenameFile";
             this.ButtonRenameFile.Size = new System.Drawing.Size(79, 37);
             this.ButtonRenameFile.TabIndex = 10;
@@ -99,7 +99,7 @@ namespace Forms
             // ButtonMoveFilesGetLyrics
             // 
             this.ButtonMoveFilesGetLyrics.AutoSize = true;
-            this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(666, 785);
+            this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(770, 786);
             this.ButtonMoveFilesGetLyrics.Name = "ButtonMoveFilesGetLyrics";
             this.ButtonMoveFilesGetLyrics.Size = new System.Drawing.Size(96, 37);
             this.ButtonMoveFilesGetLyrics.TabIndex = 11;
@@ -111,7 +111,7 @@ namespace Forms
             // 
             this.ButtonUndo.Enabled = false;
             this.ButtonUndo.Image = global::Forms.Properties.Resources.Undo;
-            this.ButtonUndo.Location = new System.Drawing.Point(671, 691);
+            this.ButtonUndo.Location = new System.Drawing.Point(775, 692);
             this.ButtonUndo.Name = "ButtonUndo";
             this.ButtonUndo.Size = new System.Drawing.Size(41, 21);
             this.ButtonUndo.TabIndex = 12;
@@ -122,7 +122,7 @@ namespace Forms
             // 
             this.ButtonRedo.Enabled = false;
             this.ButtonRedo.Image = global::Forms.Properties.Resources.Redo;
-            this.ButtonRedo.Location = new System.Drawing.Point(718, 691);
+            this.ButtonRedo.Location = new System.Drawing.Point(822, 692);
             this.ButtonRedo.Name = "ButtonRedo";
             this.ButtonRedo.Size = new System.Drawing.Size(41, 21);
             this.ButtonRedo.TabIndex = 13;
@@ -132,7 +132,7 @@ namespace Forms
             // LabelNumberOfFiles
             // 
             this.LabelNumberOfFiles.AutoSize = true;
-            this.LabelNumberOfFiles.Location = new System.Drawing.Point(666, 16);
+            this.LabelNumberOfFiles.Location = new System.Drawing.Point(770, 22);
             this.LabelNumberOfFiles.Name = "LabelNumberOfFiles";
             this.LabelNumberOfFiles.Size = new System.Drawing.Size(104, 27);
             this.LabelNumberOfFiles.TabIndex = 14;
@@ -152,7 +152,7 @@ namespace Forms
             this.Controls.Add(this.TextBoxAfterFiles);
             this.Controls.Add(this.ListBoxBeforeFiles);
             this.Name = "DownloadMusicScreen";
-            this.Size = new System.Drawing.Size(1431, 825);
+            this.Size = new System.Drawing.Size(1638, 826);
             this.Enter += new System.EventHandler(this.DownloadMusicScreen_Enter);
             this.Controls.SetChildIndex(this.ButtonBack, 0);
             this.Controls.SetChildIndex(this.ListBoxBeforeFiles, 0);

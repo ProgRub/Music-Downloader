@@ -2,33 +2,67 @@
 using System.Diagnostics;
 using System.IO;
 using Business.CustomEventArgs;
+using Business.DTOs;
+using Business.MusicServices;
 using Business.Services;
 
 namespace Business
 {
     public class BusinessFacade
     {
-        private BusinessFacade()
-        {
-        }
 
         public event EventHandler<NewFileEventArgs> NotifyNewDownloadedMusicFile;
         public event EventHandler<FileMovedArgs> NotifyMusicFileMoved;
+        public event EventHandler<SongFileProgressEventArgs> NotifySongFileProgress;
+        public event EventHandler<ThreadsConfigurationEventArgs> NotifyInitialThreadsConfiguration;
+        private IMusicService _musicService;
         public static BusinessFacade Instance { get; } = new();
 
-        public void GetDownloadedMusicFiles()
+        private BusinessFacade()
         {
-            DownloadMusicService.Instance.NotifyNewDownloadedMusicFile += (sender, args) =>NotifyNewDownloadedMusicFile?.Invoke(sender, args);
-            DownloadMusicService.Instance.GetDownloadedMusicFiles();
+            SetMusicService("iTunes");
+            DownloadMusicService.Instance.NotifyNewDownloadedMusicFile +=
+                (sender, args) => NotifyNewDownloadedMusicFile?.Invoke(sender, args);
+            DownloadMusicService.Instance.NotifyMusicFileMoved +=
+                (sender, args) => NotifyMusicFileMoved?.Invoke(sender, args);
+            GetLyricsAndYearService.Instance.NotifySongFileProgress +=
+                (sender, args) => NotifySongFileProgress?.Invoke(sender, args);
+            GetLyricsAndYearService.Instance.NotifyInitialThreadsConfiguration +=
+                (sender, args) => NotifyInitialThreadsConfiguration?.Invoke(sender, args);
         }
+
+        public void GetDownloadedMusicFiles()=>DownloadMusicService.Instance.GetDownloadedMusicFiles();
 
         public void StartDeemix() => DownloadMusicService.Instance.StartDeemix();
 
-        internal void StopTimer() => DownloadMusicService.Instance.StopTimer();
-        public void MoveFiles()
+        public void MoveFiles()=>DownloadMusicService.Instance.MoveFiles();
+
+        public void KillDeemix()
         {
-            DownloadMusicService.Instance.NotifyMusicFileMoved += (sender, args) => NotifyMusicFileMoved?.Invoke(sender, args);
-            DownloadMusicService.Instance.MoveFiles();
-        } 
+            try
+            {
+                Process.GetProcessesByName("python")[0].Kill();
+            }
+            catch (IndexOutOfRangeException)
+            {
+            }
+        }
+
+        public void StartGettingYearAndLyrics()
+        {
+            GetLyricsAndYearService.Instance.StartThreads();
+        }
+
+        public void SetMusicService(string type)
+        {
+            switch (type)
+            {
+                case "iTunes":
+                    _musicService = iTunesService.Instance;
+                    break;
+            }
+        }
+        public void OpenService() => _musicService.OpenService();
+        public void AddSongToService(SongFileDTO song) => _musicService.AddSong(song);
     }
 }

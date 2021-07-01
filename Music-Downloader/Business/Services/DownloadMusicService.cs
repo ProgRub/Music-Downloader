@@ -6,7 +6,9 @@ using System.Linq;
 using System.Timers;
 using Business.CustomEventArgs;
 using Business.DTOs;
+using Business.Enums;
 using DB;
+using DB.Entities;
 using DB.Repositories;
 using DB.Repositories.Implementations;
 using DB.Repositories.Interfaces;
@@ -17,9 +19,18 @@ namespace Business.Services
 {
     public class DownloadMusicService
     {
-        public event EventHandler<NewFileEventArgs> NotifyNewDownloadedMusicFile;
+        internal event EventHandler<NewFileEventArgs> NotifyNewDownloadedMusicFile;
 
-        public event EventHandler<FileMovedArgs> NotifyMusicFileMoved;
+        internal event EventHandler<FileMovedArgs> NotifyMusicFileMoved;
+
+        public static DownloadMusicService Instance { get; } = new();
+        private readonly string _deemixDirectory, _deemixFilename;
+        private readonly string _musicFromDirectory;
+        public ISet<string> FilesToMove { get; private set; }
+        public ISet<string> DeletedFiles { get; private set; }
+
+        public object FilesToMoveLock = new();
+        private Timer _timer;
 
         private DownloadMusicService()
         {
@@ -31,24 +42,16 @@ namespace Business.Services
             _musicFromDirectory = DirectoriesService.Instance.MusicFromDirectory;
         }
 
-        public static DownloadMusicService Instance { get; } = new();
-        private readonly string _deemixDirectory, _deemixFilename;
-        private readonly string _musicFromDirectory;
-        public ISet<string> FilesToMove { get; } = new HashSet<string>();
-        public ISet<string> DeletedFiles { get; } = new HashSet<string>();
-
-        public object FilesToMoveLock = new();
-        private Timer _timer;
-
         internal void GetDownloadedMusicFiles()
         {
+            FilesToMove = new HashSet<string>();
+            DeletedFiles = new HashSet<string>();
             _timer = new Timer();
             _timer.Elapsed += CheckForNewMusicFiles;
             _timer.Interval = 150;
             _timer.Start();
         }
 
-        internal void StopTimer() => _timer.Stop();
 
         private void CheckForNewMusicFiles(object source, ElapsedEventArgs e)
         {
@@ -67,14 +70,14 @@ namespace Business.Services
             }
         }
 
-        private string GetMostRecentPythonExecutable()
+        private static string GetMostRecentPythonExecutable()
         {
             return Path.Combine(
                 Directory.EnumerateDirectories("C:\\").Where(e => e.Contains("Python")).OrderByDescending(e => e)
                     .First(), "python.exe");
         }
 
-        private bool IsDeemixRunning()
+        private static bool IsDeemixRunning()
         {
             return Process.GetProcessesByName("python").Length != 0;
         }
@@ -95,6 +98,7 @@ namespace Business.Services
 
         internal void MoveFiles()
         {
+            _timer.Stop();
             var musicToDirectory = DirectoriesService.Instance.MusicToDirectory;
             if (!Directory.Exists(musicToDirectory))
             {
@@ -119,29 +123,30 @@ namespace Business.Services
                     {
                         if (oldSong.IsSingle)
                         {
-                            MoveFile(originFilePath, destinationFilePath, FileMovedCondition.ReplacedSingle);
+                            MoveFile(originFilePath, destinationFilePath, FileMovedCondition.ReplacedSingle, newSong);
                         }
                         else
                         {
                             newSong.RenameSongFile(RenameFileOptions.AddAlbum);
                             destinationFilePath = Path.Combine(musicToDirectory, newSong.Filename);
-                            MoveFile(originFilePath, destinationFilePath, FileMovedCondition.HadToBeRenamed);
+                            MoveFile(originFilePath, destinationFilePath, FileMovedCondition.HadToBeRenamed, newSong);
                         }
                     }
                     else if (oldSong.AlbumArtist == newSong.AlbumArtist && oldSong.Album == newSong.Album)
                     {
-                        MoveFile(originFilePath, destinationFilePath, FileMovedCondition.AlreadyExists);
+                        MoveFile(originFilePath, destinationFilePath, FileMovedCondition.AlreadyExists, newSong);
                     }
                     else
                     {
                         newSong.RenameSongFile(RenameFileOptions.AddArtist);
                         destinationFilePath = Path.Combine(musicToDirectory, newSong.Filename);
-                        MoveFile(originFilePath, destinationFilePath, FileMovedCondition.HadToBeRenamed);
+                        MoveFile(originFilePath, destinationFilePath, FileMovedCondition.HadToBeRenamed, newSong);
                     }
                 }
                 else
                 {
-                    MoveFile(originFilePath, destinationFilePath, FileMovedCondition.NoProblem);
+                    MoveFile(originFilePath, destinationFilePath, FileMovedCondition.NoProblem,
+                        SongFileDTO.GetSongFileDTOFromFilePath(originFilePath));
                 }
             }
 
@@ -158,14 +163,20 @@ namespace Business.Services
             }
         }
 
-        private void MoveFile(string originFilePath, string destinationFilePath, FileMovedCondition condition)
+        private void MoveFile(string originFilePath, string destinationFilePath, FileMovedCondition condition,
+            SongFileDTO song)
         {
             if (condition != FileMovedCondition.AlreadyExists)
             {
                 File.Move(originFilePath,
                     destinationFilePath);
             }
+            else
+            {
+                DeletedFiles.Add(Path.GetFileName(originFilePath));
+            }
 
+            GetLyricsAndYearService.Instance.SongsToGetDetails.Add(song);
             NotifyMusicFileMoved?.Invoke(this,
                 new FileMovedArgs() {Filename = Path.GetFileName(destinationFilePath), Condition = condition});
         }

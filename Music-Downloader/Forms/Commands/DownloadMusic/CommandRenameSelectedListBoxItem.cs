@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
+using Business.Commands;
 
-namespace Business.Commands.DownloadMusic
+namespace Forms.Commands.DownloadMusic
 {
     public class CommandRenameSelectedListBoxItem : ICommand
     {

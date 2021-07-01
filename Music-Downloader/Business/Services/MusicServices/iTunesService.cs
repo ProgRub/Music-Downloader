@@ -1,0 +1,36 @@
+﻿using System.IO;
+using Business.DTOs;
+using Business.Services;
+using DB.Entities;
+using iTunesLib;
+
+namespace Business.MusicServices
+{
+    public class iTunesService : IMusicService
+    {
+        private iTunesService()
+        {
+        }
+
+        private iTunesApp _iTunes;
+        private IITLibraryPlaylist _iTunesLibrary;
+
+        public static IMusicService Instance { get; } = new iTunesService();
+
+        public void AddSong(SongFileDTO song)
+        {
+            if (_iTunes == null)
+            {
+                OpenService();
+            }
+
+            _iTunesLibrary.AddFile(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
+        }
+
+        public void OpenService()
+        {
+            _iTunes = new iTunesApp();
+            _iTunesLibrary = _iTunes.LibraryPlaylist;
+        }
+    }
+}

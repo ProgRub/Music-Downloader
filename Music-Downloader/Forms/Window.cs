@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Business;
 
 namespace Forms
 {
@@ -18,5 +19,9 @@ namespace Forms
             InitializeComponent();
         }
 
+        private void Window_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            BusinessFacade.Instance.KillDeemix();
+        }
     }
 }

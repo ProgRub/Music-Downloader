@@ -151,7 +151,7 @@ namespace Business.SongDetailsScrapers
 
 				if (errorHappened)
 				{
-					ExceptionsService.Instance.AddSkipYearException(originalSong);
+					ExceptionsService.Instance.AddSkipLyricsException(originalSong);
 				}
 
 				CurrentSong.Year = GetYearOfSingle();

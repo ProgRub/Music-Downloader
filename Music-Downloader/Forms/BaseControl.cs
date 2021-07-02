@@ -39,21 +39,21 @@ namespace Forms
             foreach (var listBox in Controls.OfType<ListBox>())
             {
                 listBox.BackColor = ColorAdd(((Window)Parent).BackColor, _ligthenBoxesColor);
-                listBox.Font = new Font(listBox.Font, FontStyle.Regular);
+                listBox.Font = new Font(Font, FontStyle.Regular);
             }
 
             foreach (var textBox in Controls.OfType<TextBox>())
             {
                 textBox.BackColor = ColorAdd(((Window) Parent).BackColor, _ligthenBoxesColor);
-                textBox.Font = new Font(textBox.Font, FontStyle.Regular);
+                textBox.Font = new Font(Font, FontStyle.Regular);
                 if (!textBox.Multiline) textBox.Size=new Size(textBox.Size.Width,textBox.Size.Height-1);
             }
 
-            foreach (var textBox in Controls.OfType<RichTextBox>())
+            foreach (var richTextBox in Controls.OfType<RichTextBox>())
             {
-                textBox.BackColor = ColorAdd(((Window)Parent).BackColor, _ligthenBoxesColor);
-                textBox.Font = new Font(textBox.Font, FontStyle.Regular);
-                if (!textBox.Multiline) textBox.Size = new Size(textBox.Size.Width, textBox.Size.Height - 1);
+                richTextBox.BackColor = ColorAdd(((Window)Parent).BackColor, _ligthenBoxesColor);
+                richTextBox.Font = new Font(Font, FontStyle.Regular);
+                if (!richTextBox.Multiline) richTextBox.Size = new Size(richTextBox.Size.Width, richTextBox.Size.Height - 1);
             }
         }
 

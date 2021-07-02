@@ -10,5 +10,6 @@ namespace Business.CustomEventArgs
         public int ThreadId { get; set; }
         public SongFileDTO Song { get; set; }
         public SongFileProgress Progress { get; set; }
+        public string Url{get;set;}
     }
 }

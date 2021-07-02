@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Business.CustomEventArgs;
 using Business.DTOs;
+using Business.Enums;
 using Business.MusicServices;
 using Business.Services;
+using Business.SongDetailsScrapers;
+using DB.Entities;
 
 namespace Business
 {
@@ -64,5 +68,25 @@ namespace Business
         }
         public void OpenService() => _musicService.OpenService();
         public void AddSongToService(SongFileDTO song) => _musicService.AddSong(song);
+
+        public void TrySongAgain(int threadId, SongFileDTO correctedSong)
+        {
+	        SongDetailsTemplateMethod.DetailsGetters.First(e => e.ThreadId == threadId).CurrentSong = correctedSong;
+	        SongDetailsTemplateMethod.SemaphoreErrorHandled.Release();
+        }
+
+        public void SkipGettingSongYear(int threadId, SongFileDTO errorSong)
+        {
+	        SongDetailsTemplateMethod.DetailsGetters.First(e => e.ThreadId == threadId).SkipYear = true;
+	        SongDetailsTemplateMethod.SemaphoreErrorHandled.Release();
+        }
+
+        public void SkipGettingSongLyrics(int threadId, SongFileDTO errorSong)
+        {
+	        SongDetailsTemplateMethod.DetailsGetters.First(e => e.ThreadId == threadId).SkipLyrics = true;
+	        SongDetailsTemplateMethod.SemaphoreErrorHandled.Release();
+        }
+
+        public void SaveExceptions() => ExceptionsService.Instance.SaveChanges();
     }
 }

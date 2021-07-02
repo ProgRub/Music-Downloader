@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Business.DTOs;
 using HtmlAgilityPack;
 
@@ -7,43 +9,60 @@ namespace Business.SongDetailsScrapers
 {
     public class GeniusDetailsScraper : SongDetailsTemplateMethod
     {
-        public GeniusDetailsScraper(ISet<SongFileDTO> songs, int threadIndex) : base(songs, threadIndex)
+        public GeniusDetailsScraper(ISet<SongFileDTO> songs, int threadId) : base(songs, threadId)
         {
         }
 
-        internal override int GetYearOfSingle(SongFileDTO song)
+        internal override int GetYearOfSingle()
         {
-            var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(false, song));
-            Debug.WriteLine(htmlDoc);
-            Debug.WriteLine(htmlDoc.Text);
+            var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(false));
             throw new System.NotImplementedException();
         }
 
-        internal override int GetYearOfAlbumTrack(SongFileDTO song)
+        internal override int GetYearOfAlbumTrack()
         {
-            var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(true, song));
-            Debug.WriteLine(htmlDoc);
-            Debug.WriteLine(htmlDoc.Text);
-            throw new System.NotImplementedException();
+            Debug.WriteLine("HERE");
+            var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(true));
+            var divs = htmlDoc.DocumentNode.Descendants("div").ToList();
+            var textSplit = divs
+                .First(e => e.GetAttributeValue("class", "nothing") == "header_with_cover_art-inner column_layout")
+                .Descendants().First(e =>
+                    e.GetAttributeValue("class", "nothing") == "header_with_cover_art-primary_info_container")
+                .InnerText.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+            return int.Parse(textSplit.Last());
         }
 
-        internal override string GetLyrics(SongFileDTO song)
+        internal override string GetLyrics()
         {
-            var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(false, song));
-            Debug.WriteLine(htmlDoc.Text);
-            throw new System.NotImplementedException();
+            HtmlDocument htmlDoc;
+            do
+            {
+                htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(false));
+            } while (htmlDoc.DocumentNode.Descendants("main").Count()==0);
+            var lyrics = "";
+            foreach (var htmlNode in htmlDoc.DocumentNode.Descendants("main").First().Descendants("div").Where(e=>e.GetAttributeValue("class","").Contains("Lyrics__Container-sc-1ynbvzw-7 jjqBBp")))
+            {
+                //foreach (var descendant in htmlNode.Descendants())
+                //{
+                    
+                //}
+                htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine);
+                lyrics += GetDecodedInnerText(htmlNode);
+            }
+
+            return lyrics;
         }
 
-        internal override string GetUrlFromSong(bool forAlbumYear, SongFileDTO song)
+        internal override string GetUrlFromSong(bool forAlbumYear)
         {
             if (forAlbumYear)
             {
-                return "https://www.genius.com/albums/" + MakeUrlReplacementsOnString(song.AlbumArtist, false) + "/" +
-                       MakeUrlReplacementsOnString(song.Album, false);
+                return "http://www.genius.com/albums/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false) + "/" +
+                       MakeUrlReplacementsOnString(CurrentSong.Album, false);
             }
 
-            return "https://genius.com/" + MakeUrlReplacementsOnString(song.AlbumArtist, false) + "-" +
-                   MakeUrlReplacementsOnString(song.Title, true) + "-lyrics";
+            return "http://genius.com/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false) + "-" +
+                   MakeUrlReplacementsOnString(CurrentSong.Title, true) + "-lyrics";
         }
     }
 }

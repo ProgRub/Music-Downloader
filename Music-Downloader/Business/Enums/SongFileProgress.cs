@@ -6,7 +6,7 @@
         GettingYearException,
         GettingLyrics,
         GettingLyricsException,
-        AddingToiTunes,
+        AddingToService,
         FileDone
     }
 }

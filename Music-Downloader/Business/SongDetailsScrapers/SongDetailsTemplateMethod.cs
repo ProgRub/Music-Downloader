@@ -25,10 +25,14 @@ namespace Business.SongDetailsScrapers
 			new Dictionary<string, List<SemaphoreSlim>>();
 
 		private static readonly object _checkAlbumsMutex = new();
+		private static readonly object _accessExceptionsMutex = new();
 		internal SongFileDTO CurrentSong { get; set; }
 
 		private static readonly IEnumerable<KeyValuePair<string, string>> _urlReplacements =
 			UrlReplacementService.Instance.GetAllUrlReplacements();
+
+		private static readonly IEnumerable<YearLyricsChangeDetailsException> _allExceptions =
+			ExceptionsService.Instance.GetAllExceptions();
 
 		internal static SemaphoreSlim SemaphoreErrorRaised { get; } = new(1, 1);
 		internal static SemaphoreSlim SemaphoreErrorHandled { get; } = new(0, 1);
@@ -39,6 +43,8 @@ namespace Business.SongDetailsScrapers
 		internal static int ThreadIdWithError { get; private set; }
 		internal bool SkipYear { get; set; }
 		internal bool SkipLyrics { get; set; }
+
+		protected HtmlDocument _htmlDocumentOfSingle;
 
 
 		internal SongDetailsTemplateMethod(ISet<SongFileDTO> songs, int threadId)
@@ -57,18 +63,26 @@ namespace Business.SongDetailsScrapers
 			{
 				CurrentSong = song;
 				RaiseEvent(SongFileProgress.GettingYear);
-				if (!(!CurrentSong.IsSingle && ExceptionsService.Instance.GetAllSkipYearExceptions().Any(e =>
-					e.OriginalAlbum == CurrentSong.Album && e.OriginalTitle == CurrentSong.Title &&
-					e.OriginalArtist == CurrentSong.AlbumArtist) || CurrentSong.IsSingle && ExceptionsService.Instance
-					.GetAllSkipLyricsExceptions().Any(e =>
-						e.OriginalAlbum == CurrentSong.Album && e.OriginalTitle == CurrentSong.Title &&
-						e.OriginalArtist == CurrentSong.AlbumArtist)))
+				bool haveToGetSongYear, haveToGetSongLyrics;
+				lock (_accessExceptionsMutex)
+				{
+					haveToGetSongYear = !(!CurrentSong.IsSingle && _allExceptions.Any(e =>
+						                      e.Type == ExceptionType.SkipAlbumYear &&
+						                      e.OriginalAlbum == CurrentSong.Album &&
+						                      e.OriginalArtist == CurrentSong.AlbumArtist) ||
+					                      CurrentSong.IsSingle && _allExceptions.Any(e =>
+						                      e.Type == ExceptionType.SkipLyrics &&
+						                      e.OriginalTitle == CurrentSong.Title &&
+						                      e.OriginalArtist == CurrentSong.AlbumArtist));
+					haveToGetSongLyrics = !_allExceptions.Any(e => e.Type == ExceptionType.SkipLyrics &&
+					                                               e.OriginalTitle == CurrentSong.Title &&
+					                                               e.OriginalArtist == CurrentSong.AlbumArtist);
+				}
+
+				if (haveToGetSongYear)
 					SetSongYear();
 				RaiseEvent(SongFileProgress.GettingLyrics);
-				if (!ExceptionsService.Instance
-					.GetAllSkipLyricsExceptions().Any(e =>
-						e.OriginalAlbum == CurrentSong.Album && e.OriginalTitle == CurrentSong.Title &&
-						e.OriginalArtist == CurrentSong.AlbumArtist))
+				if (haveToGetSongLyrics)
 					SetSongLyrics();
 				CurrentSong.SaveToFile();
 				RaiseEvent(SongFileProgress.AddingToService);
@@ -79,12 +93,24 @@ namespace Business.SongDetailsScrapers
 
 		private void SetSongLyrics()
 		{
+			if (CurrentSong.IsSingle)
+			{
+				CurrentSong.Lyrics = GetLyrics(_htmlDocumentOfSingle);
+				return;
+			}
+
 			var errorHappened = false;
-			var originalSong = CurrentSong;
-			var changeDetailsException = ExceptionsService.Instance.GetAllChangeDetailsForLyricsExceptions()
-				.FirstOrDefault(e =>
+			var originalSong = CurrentSong.Copy();
+
+			YearLyricsChangeDetailsException? changeDetailsException;
+			lock (_accessExceptionsMutex)
+			{
+				changeDetailsException = _allExceptions.FirstOrDefault(e =>
+					e.Type == ExceptionType.ChangeDetailsForLyrics &&
 					e.OriginalTitle == originalSong.Title &&
 					e.OriginalArtist == originalSong.AlbumArtist);
+			}
+
 			if (changeDetailsException != null)
 			{
 				CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
@@ -119,13 +145,18 @@ namespace Business.SongDetailsScrapers
 		private void SetSongYear()
 		{
 			var errorHappened = false;
-			var originalSong = CurrentSong;
+			var originalSong = CurrentSong.Copy();
 			if (CurrentSong.IsSingle)
 			{
-				var changeDetailsException = ExceptionsService.Instance.GetAllChangeDetailsForLyricsExceptions()
-					.FirstOrDefault(e =>
+				YearLyricsChangeDetailsException? changeDetailsException;
+				lock (_accessExceptionsMutex)
+				{
+					changeDetailsException = _allExceptions.FirstOrDefault(e =>
+						e.Type == ExceptionType.ChangeDetailsForLyrics &&
 						e.OriginalTitle == originalSong.Title &&
 						e.OriginalArtist == originalSong.AlbumArtist);
+				}
+
 				if (changeDetailsException != null)
 				{
 					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
@@ -142,7 +173,7 @@ namespace Business.SongDetailsScrapers
 					if (SkipYear)
 					{
 						SkipYear = false;
-						ExceptionsService.Instance.AddSkipYearException(originalSong);
+						ExceptionsService.Instance.AddSkipLyricsException(originalSong);
 						return;
 					}
 
@@ -151,7 +182,7 @@ namespace Business.SongDetailsScrapers
 
 				if (errorHappened)
 				{
-					ExceptionsService.Instance.AddSkipLyricsException(originalSong);
+					ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 				}
 
 				CurrentSong.Year = GetYearOfSingle();
@@ -180,44 +211,49 @@ namespace Business.SongDetailsScrapers
 					}
 				}
 
-				var changeDetailsException = ExceptionsService.Instance.GetAllChangeDetailsForYearExceptions()
-					.FirstOrDefault(e =>
-						e.OriginalAlbum == originalSong.Album &&
-						e.OriginalArtist == originalSong.AlbumArtist);
-				if (changeDetailsException != null)
-				{
-					CurrentSong.Album = changeDetailsException.NewAlbum;
-					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
-				}
-
-				while (!DoesWebpageExist(GetUrlFromSong(true)))
-				{
-					ThreadIdWithError = ThreadId;
-					SemaphoreErrorRaised.Wait();
-					RaiseEvent(SongFileProgress.GettingYearException);
-					SemaphoreErrorHandled.Wait();
-					SemaphoreErrorRaised.Release();
-					if (SkipYear)
-					{
-						SkipYear = false;
-						//Add skip year Exception
-						return;
-					}
-
-					errorHappened = true;
-				}
-
-				if (errorHappened)
-				{
-					//Add Year correction exception
-				}
-
 				if (waitAtSemaphore)
 				{
 					_albumsBeingChecked[originalSong.Album][semaphoreIndex].Wait();
 				}
 				else
 				{
+					YearLyricsChangeDetailsException? changeDetailsException;
+					lock (_accessExceptionsMutex)
+					{
+						changeDetailsException = _allExceptions.FirstOrDefault(e =>
+							e.Type == ExceptionType.ChangeDetailsForAlbumYear &&
+							e.OriginalAlbum == originalSong.Album &&
+							e.OriginalArtist == originalSong.AlbumArtist);
+					}
+
+					if (changeDetailsException != null)
+					{
+						CurrentSong.Album = changeDetailsException.NewAlbum;
+						CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
+					}
+
+					while (!DoesWebpageExist(GetUrlFromSong(true)))
+					{
+						ThreadIdWithError = ThreadId;
+						SemaphoreErrorRaised.Wait();
+						RaiseEvent(SongFileProgress.GettingYearException);
+						SemaphoreErrorHandled.Wait();
+						SemaphoreErrorRaised.Release();
+						if (SkipYear)
+						{
+							SkipYear = false;
+							ExceptionsService.Instance.AddSkipAlbumYearException(originalSong);
+							return;
+						}
+
+						errorHappened = true;
+					}
+
+					if (errorHappened)
+					{
+						ExceptionsService.Instance.AddCorrectionForAlbumYearException(originalSong, CurrentSong);
+					}
+
 					CurrentSong.Year = GetYearOfAlbumTrack();
 					_alreadyVisitedAlbumPages.Add(CurrentSong.AlbumArtist + CurrentSong.Album, CurrentSong.Year);
 					foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
@@ -232,7 +268,7 @@ namespace Business.SongDetailsScrapers
 
 		private void RaiseEvent(SongFileProgress progress)
 		{
-			string url = progress == SongFileProgress.GettingYearException
+			var url = progress == SongFileProgress.GettingYearException
 				? GetUrlFromSong(!CurrentSong.IsSingle)
 				: GetUrlFromSong(false);
 			NotifySongFileProgress?.Invoke(this,
@@ -310,6 +346,7 @@ namespace Business.SongDetailsScrapers
 		internal abstract int GetYearOfSingle();
 		internal abstract int GetYearOfAlbumTrack();
 		internal abstract string GetLyrics();
+		internal abstract string GetLyrics(HtmlDocument htmlDocument);
 		internal abstract string GetUrlFromSong(bool forAlbumYear);
 	}
 }

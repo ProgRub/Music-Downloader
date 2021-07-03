@@ -64,8 +64,9 @@ namespace Forms
 				SetupThreadsStatus(args.NumberOfThreads, args.NumberOfFilesPerThread);
 			DefaultConfigurations();
 			MaximizeWindow();
+			SetFormAcceptButton(ButtonTryAgain);
 			BusinessFacade.Instance.OpenService();
-			Task.Delay(250).ContinueWith(t => BusinessFacade.Instance.StartGettingYearAndLyrics());
+			Task.Delay(250).ContinueWith(_ => BusinessFacade.Instance.StartGettingYearAndLyrics());
 		}
 
 		private void Clock_Tick(object sender, EventArgs e)

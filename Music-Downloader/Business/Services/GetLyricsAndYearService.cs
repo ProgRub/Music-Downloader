@@ -15,11 +15,7 @@ namespace Business.Services
 		private static int NumberOfThreads = (int) Math.Pow(2, (int) Math.Sqrt(Environment.ProcessorCount));
 		internal event EventHandler<SongFileProgressEventArgs> NotifySongFileProgress;
 		internal event EventHandler<ThreadsConfigurationEventArgs> NotifyInitialThreadsConfiguration;
-
-		private IDictionary<string, List<SemaphoreSlim>> _albumsBeingCheckedSemaphores =
-			new Dictionary<string, List<SemaphoreSlim>>();
-
-		private Semaphore _semaphoreErrorRaised, _semaphoreErrorHandled;
+		
 
 		private GetLyricsAndYearService()
 		{

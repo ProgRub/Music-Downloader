@@ -304,21 +304,13 @@ namespace Forms
 		private void ChangeColorOfLastUsedLineByThread(SongFileProgressEventArgs eventArgs)
 		{
 			var line = _lastUsedLineByThread[eventArgs.ThreadId];
-			Color color;
-			switch (eventArgs.Progress)
+			Color color = eventArgs.Progress switch
 			{
-				case SongFileProgress.GettingLyrics:
-					color = Color.DarkGreen;
-					break;
-				case SongFileProgress.AddingToService:
-					color = Color.Aquamarine;
-					break;
-				case SongFileProgress.FileDone:
-					color = Color.LimeGreen;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(eventArgs.Progress), eventArgs.Progress, null);
-			}
+				SongFileProgress.GettingLyrics => Color.DarkGreen,
+				SongFileProgress.AddingToService => Color.Aquamarine,
+				SongFileProgress.FileDone => Color.LimeGreen,
+				_ => throw new ArgumentOutOfRangeException(nameof(eventArgs.Progress), eventArgs.Progress, null)
+			};
 
 			RichTextBoxArtist.Invoke(new MethodInvoker(delegate
 			{

@@ -12,11 +12,11 @@ using Business;
 
 namespace Forms
 {
-    public partial class Window : Form
-    {
-        public Window()
-        {
-            InitializeComponent();
-        }
-    }
+	public partial class Window : Form
+	{
+		public Window()
+		{
+			InitializeComponent();
+		}
+	}
 }

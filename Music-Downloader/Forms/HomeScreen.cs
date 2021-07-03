@@ -12,18 +12,19 @@ using Business;
 
 namespace Forms
 {
-    public partial class HomeScreen : BaseControl
-    {
-	    private string _musicFromDirectory, _musicToDirectory;
-        public HomeScreen()
-        {
-            InitializeComponent();
-        }
+	public partial class HomeScreen : BaseControl
+	{
+		private string _musicFromDirectory, _musicToDirectory;
 
-        private void ButtonDownloadMusic_Click(object sender, EventArgs e)
-        {
-            MoveToScreen(new DownloadMusicScreen(),this);
-        }
+		public HomeScreen()
+		{
+			InitializeComponent();
+		}
+
+		private void ButtonDownloadMusic_Click(object sender, EventArgs e)
+		{
+			MoveToScreen(new DownloadMusicScreen(), this);
+		}
 
 		private void ButtonChooseMusicFromDirectory_Click(object sender, EventArgs e)
 		{

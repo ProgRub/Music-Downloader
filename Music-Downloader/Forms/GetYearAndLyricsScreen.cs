@@ -62,7 +62,6 @@ namespace Forms
 
 			BusinessFacade.Instance.NotifyInitialThreadsConfiguration += (_, args) =>
 				SetupThreadsStatus(args.NumberOfThreads, args.NumberOfFilesPerThread);
-			//DefaultConfigurations();
 			MaximizeWindow();
 			SetFormAcceptButton(ButtonTryAgain);
 			BusinessFacade.Instance.OpenService();

@@ -27,6 +27,16 @@ namespace Business.MusicServices
             _iTunesLibrary.AddFile(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
         }
 
+        public void DeleteSong(SongFileDTO song)
+        {
+	        throw new System.NotImplementedException();
+        }
+
+        public int GetPlayCountOfSong(SongFileDTO song)
+        {
+	        throw new System.NotImplementedException();
+        }
+
         public void OpenService()
         {
             _iTunes = new iTunesApp();

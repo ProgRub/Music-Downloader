@@ -41,7 +41,7 @@ namespace Forms
             this.homeScreen1.Location = new System.Drawing.Point(-2, 2);
             this.homeScreen1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.homeScreen1.Name = "homeScreen1";
-            this.homeScreen1.Size = new System.Drawing.Size(315, 113);
+            this.homeScreen1.Size = new System.Drawing.Size(317, 114);
             this.homeScreen1.TabIndex = 0;
             // 
             // Window
@@ -55,6 +55,7 @@ namespace Forms
             this.Controls.Add(this.homeScreen1);
             this.Name = "Window";
             this.Text = "Window";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Window_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -13,6 +13,8 @@ using Business;
 using Business.Commands;
 using Business.Commands.DownloadMusic;
 using Business.CustomEventArgs;
+using Business.Enums;
+using Forms.Commands.DownloadMusic;
 
 namespace Forms
 {
@@ -28,6 +30,7 @@ namespace Forms
 
         private void DownloadMusicScreen_Enter(object sender, EventArgs e)
         {
+            DefaultConfigurations();
             CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
             CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
             BusinessFacade.Instance.NotifyNewDownloadedMusicFile += (_, args) =>
@@ -65,7 +68,6 @@ namespace Forms
             };
             BusinessFacade.Instance.StartDeemix();
             BusinessFacade.Instance.GetDownloadedMusicFiles();
-            DefaultConfigurations();
             SetFormAcceptButton(ButtonMoveFilesGetLyrics);
         }
 
@@ -81,13 +83,18 @@ namespace Forms
         private void ButtonMoveFilesGetLyrics_Click(object sender, EventArgs e)
         {
             var button = (Button) sender;
-            if (button.Text != "Move Files") return;
+            if (button.Text != "Move Files")
+            {
+                MoveToScreen(new GetYearAndLyricsScreen(),this);
+                return;
+            }
+            BusinessFacade.Instance.KillDeemix();
             _numberOfFiles = 0;
             LabelNumberOfFiles.Text = $"{_numberOfFiles} Files Moved";
             BusinessFacade.Instance.StopTimer();
             BusinessFacade.Instance.MoveFiles();
             button.Text = "Get Lyrics And Year";
-            button.Location = new Point(button.Location.X - 20, button.Location.Y);
+            button.Location = new Point(button.Location.X - 25, button.Location.Y);
         }
 
         private void ButtonUndo_Click(object sender, EventArgs e)

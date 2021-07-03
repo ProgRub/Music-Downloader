@@ -38,12 +38,12 @@ namespace Forms
             this.ButtonBack.BackColor = System.Drawing.Color.Transparent;
             this.ButtonBack.FlatAppearance.BorderSize = 0;
             this.ButtonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonBack.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ButtonBack.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ButtonBack.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ButtonBack.Location = new System.Drawing.Point(0, 16);
-            this.ButtonBack.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.ButtonBack.Location = new System.Drawing.Point(0, 9);
+            this.ButtonBack.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ButtonBack.Name = "ButtonBack";
-            this.ButtonBack.Size = new System.Drawing.Size(59, 39);
+            this.ButtonBack.Size = new System.Drawing.Size(66, 39);
             this.ButtonBack.TabIndex = 5;
             this.ButtonBack.Text = "Back";
             this.ButtonBack.UseVisualStyleBackColor = false;
@@ -51,15 +51,15 @@ namespace Forms
             // 
             // BaseControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 27F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.ButtonBack);
-            this.Font = new System.Drawing.Font("Myanmar Text", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-            this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "BaseControl";
-            this.Size = new System.Drawing.Size(739, 754);
+            this.Size = new System.Drawing.Size(739, 447);
             this.ResumeLayout(false);
             this.PerformLayout();
 

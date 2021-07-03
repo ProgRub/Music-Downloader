@@ -9,80 +9,13 @@ namespace Forms
     public partial class BaseControl : UserControl
     {
         public BaseControl PreviousScreen { private get; set; }
-        private readonly Color _ligthenBoxesColor = Color.FromArgb(0, 0, 50);
         public BaseControl()
         {
             InitializeComponent();
             AutoSize = true;
-            DefaultConfigurations();
-        }
-
-        protected void DefaultConfigurations()
-        {
-            SetForeColor();
-            ConfigureButtons();
-            SetBackColorsAndNotBold();
         }
 
         protected void MaximizeWindow() => ((Window) Parent).WindowState = FormWindowState.Maximized;
-
-        private static Color ColorAdd(Color color1, Color color2)
-        {
-            var r = (byte) (color1.R + color2.R);
-            var g = (byte) (color1.G + color2.G);
-            var b = (byte) (color1.B  +color2.B);
-            return Color.FromArgb(r, g, b);
-        }
-
-        private void SetBackColorsAndNotBold()
-        {
-            foreach (var listBox in Controls.OfType<ListBox>())
-            {
-                listBox.BackColor = ColorAdd(((Window)Parent).BackColor, _ligthenBoxesColor);
-                listBox.Font = new Font(Font, FontStyle.Regular);
-            }
-
-            foreach (var textBox in Controls.OfType<TextBox>())
-            {
-                textBox.BackColor = ColorAdd(((Window) Parent).BackColor, _ligthenBoxesColor);
-                textBox.Font = new Font(Font, FontStyle.Regular);
-                if (!textBox.Multiline) textBox.Size=new Size(textBox.Size.Width,textBox.Size.Height-1);
-            }
-
-            foreach (var richTextBox in Controls.OfType<RichTextBox>())
-            {
-                richTextBox.BackColor = ColorAdd(((Window)Parent).BackColor, _ligthenBoxesColor);
-                richTextBox.Font = new Font(Font, FontStyle.Regular);
-                if (!richTextBox.Multiline) richTextBox.Size = new Size(richTextBox.Size.Width, richTextBox.Size.Height - 1);
-            }
-        }
-
-        private void SetForeColor()
-        {
-            try
-            {
-                foreach (Control control in Controls)
-                {
-                    control.ForeColor = ForeColor;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
-        private void ConfigureButtons()
-        {
-            foreach (var button in Controls.OfType<Button>())
-            {
-                button.FlatStyle = FlatStyle.Flat;
-                button.BackColor=Color.Transparent;
-                button.FlatAppearance.MouseDownBackColor = button.BackColor;
-                button.FlatAppearance.MouseOverBackColor = button.BackColor;
-                button.FlatAppearance.BorderSize = 0;
-            }
-        }
 
         protected void MoveToScreen(BaseControl newControl, BaseControl previousControl)
         {

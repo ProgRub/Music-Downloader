@@ -18,10 +18,5 @@ namespace Forms
         {
             InitializeComponent();
         }
-
-        private void Window_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            BusinessFacade.Instance.KillDeemix();
-        }
     }
 }

@@ -7,7 +7,7 @@ namespace Business.Services
 {
     public class DirectoriesService
     {
-        private IDirectoriesRepository _directoriesRepository;
+        private readonly IDirectoriesRepository _directoriesRepository;
         private DirectoriesService(IDirectoriesRepository directoriesRepository)
         {
             _directoriesRepository = directoriesRepository;
@@ -22,5 +22,15 @@ namespace Business.Services
         internal string UniFromDirectory { get; set; }
         internal string UniToBaseDirectory { get; set; }
         public static DirectoriesService Instance { get; } = new(new DirectoriesRepository(Database.GetContext()));
+
+        public void SaveDirectories()
+        {
+	        var directories = _directoriesRepository.GetById(1);
+	        directories.MusicFrom = MusicFromDirectory;
+	        directories.MusicTo = MusicToDirectory;
+	        directories.UniToBaseDirectory = UniToBaseDirectory;
+	        directories.UniFrom = UniFromDirectory;
+	        _directoriesRepository.SaveChanges();
+        }
     }
 }

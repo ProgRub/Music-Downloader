@@ -62,7 +62,7 @@ namespace Forms
 
 			BusinessFacade.Instance.NotifyInitialThreadsConfiguration += (_, args) =>
 				SetupThreadsStatus(args.NumberOfThreads, args.NumberOfFilesPerThread);
-			DefaultConfigurations();
+			//DefaultConfigurations();
 			MaximizeWindow();
 			SetFormAcceptButton(ButtonTryAgain);
 			BusinessFacade.Instance.OpenService();
@@ -88,31 +88,22 @@ namespace Forms
 					{
 						RichTextBoxArtist.AppendText((line > 0 ? Environment.NewLine : "") +
 						                             eventArgs.Song.AlbumArtist);
-						RichTextBoxArtist.Select(RichTextBoxArtist.GetFirstCharIndexFromLine(line),
-							RichTextBoxArtist.Lines[line].Length);
-						RichTextBoxArtist.SelectionColor = Color.Yellow;
 						RichTextBoxArtist.ScrollToCaret();
 					}));
 					RichTextBoxAlbum.Invoke(new MethodInvoker(delegate
 					{
 						RichTextBoxAlbum.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Album);
-						RichTextBoxAlbum.Select(RichTextBoxAlbum.GetFirstCharIndexFromLine(line),
-							RichTextBoxAlbum.Lines[line].Length);
-						RichTextBoxAlbum.SelectionColor = Color.Yellow;
 						RichTextBoxAlbum.ScrollToCaret();
 					}));
 					RichTextBoxTitle.Invoke(new MethodInvoker(delegate
 					{
 						RichTextBoxTitle.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Title);
-						RichTextBoxTitle.Select(RichTextBoxTitle.GetFirstCharIndexFromLine(line),
-							RichTextBoxTitle.Lines[line].Length);
-						RichTextBoxTitle.SelectionColor = Color.Yellow;
 						RichTextBoxTitle.ScrollToCaret();
 					}));
 					break;
 				case SongFileProgress.GettingYearException:
 					SystemSounds.Exclamation.Play();
-					LabelGeniusUrl.Invoke(new MethodInvoker(delegate { LabelGeniusUrl.Text = eventArgs.Url; }));
+					LabelUrl.Invoke(new MethodInvoker(delegate { LabelUrl.Text = eventArgs.Url; }));
 					ActivateCorrectionControls(eventArgs);
 					_threadIdWithError = eventArgs.ThreadId;
 					break;
@@ -137,7 +128,7 @@ namespace Forms
 					break;
 				case SongFileProgress.GettingLyricsException:
 					SystemSounds.Exclamation.Play();
-					LabelGeniusUrl.Invoke(new MethodInvoker(delegate { LabelGeniusUrl.Text = eventArgs.Url; }));
+					LabelUrl.Invoke(new MethodInvoker(delegate { LabelUrl.Text = eventArgs.Url; }));
 					ActivateCorrectionControls(eventArgs);
 					_threadIdWithError = eventArgs.ThreadId;
 					break;
@@ -250,7 +241,7 @@ namespace Forms
 				LabelTimeElapsed.Text =
 					$"All Done! Time Elapsed: {_timeElapsed.Elapsed.Hours:00}:{_timeElapsed.Elapsed.Minutes:00}:{_timeElapsed.Elapsed.Seconds:00}";
 			}));
-			LabelGeniusUrl.Invoke(new MethodInvoker(delegate { LabelGeniusUrl.Visible = false; }));
+			LabelUrl.Invoke(new MethodInvoker(delegate { LabelUrl.Visible = false; }));
 			LabelCorrectAlbum.Invoke(new MethodInvoker(delegate { LabelCorrectAlbum.Visible = false; }));
 			LabelCorrectArtist.Invoke(new MethodInvoker(delegate { LabelCorrectArtist.Visible = false; }));
 			LabelCorrectTitle.Invoke(new MethodInvoker(delegate { LabelCorrectTitle.Visible = false; }));

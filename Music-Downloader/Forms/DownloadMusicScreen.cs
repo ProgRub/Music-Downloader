@@ -30,7 +30,7 @@ namespace Forms
 
         private void DownloadMusicScreen_Enter(object sender, EventArgs e)
         {
-            DefaultConfigurations();
+            //DefaultConfigurations();
             CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
             CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
             BusinessFacade.Instance.NotifyNewDownloadedMusicFile += (_, args) =>
@@ -91,7 +91,6 @@ namespace Forms
             BusinessFacade.Instance.KillDeemix();
             _numberOfFiles = 0;
             LabelNumberOfFiles.Text = $"{_numberOfFiles} Files Moved";
-            BusinessFacade.Instance.StopTimer();
             BusinessFacade.Instance.MoveFiles();
             button.Text = "Get Lyrics And Year";
             button.Location = new Point(button.Location.X - 25, button.Location.Y);

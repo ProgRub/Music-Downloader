@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Business;
 
 namespace Forms
 {
@@ -14,10 +15,14 @@ namespace Forms
         [STAThread]
         static void Main()
         {
+            BusinessFacade.Instance.LoadDatabase();
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Window());
+            BusinessFacade.Instance.KillDeemix();
+            BusinessFacade.Instance.SaveExceptions();
+            BusinessFacade.Instance.SaveDirectories();
         }
     }
 }

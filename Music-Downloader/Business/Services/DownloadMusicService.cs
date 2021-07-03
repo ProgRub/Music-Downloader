@@ -177,6 +177,7 @@ namespace Business.Services
 					FileSystem.DeleteFile(destinationFilePath, UIOption.OnlyErrorDialogs,
 						RecycleOption.SendToRecycleBin);
 				}
+
 				File.Move(originFilePath,
 					destinationFilePath);
 			}

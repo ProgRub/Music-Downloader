@@ -48,26 +48,32 @@ namespace Forms
 			// 
 			// ListBoxBeforeFiles
 			// 
-			this.ListBoxBeforeFiles.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.ListBoxBeforeFiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.ListBoxBeforeFiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.ListBoxBeforeFiles.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.ListBoxBeforeFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
 			this.ListBoxBeforeFiles.FormattingEnabled = true;
 			this.ListBoxBeforeFiles.ItemHeight = 16;
 			this.ListBoxBeforeFiles.Location = new System.Drawing.Point(3, 53);
 			this.ListBoxBeforeFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ListBoxBeforeFiles.Name = "ListBoxBeforeFiles";
-			this.ListBoxBeforeFiles.Size = new System.Drawing.Size(813, 660);
+			this.ListBoxBeforeFiles.Size = new System.Drawing.Size(813, 658);
 			this.ListBoxBeforeFiles.TabIndex = 6;
 			this.ListBoxBeforeFiles.SelectedIndexChanged += new System.EventHandler(this.ListBoxBeforeFiles_SelectedIndexChanged);
 			this.ListBoxBeforeFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBoxBeforeFiles_KeyDown);
 			// 
 			// TextBoxAfterFiles
 			// 
-			this.TextBoxAfterFiles.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.TextBoxAfterFiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.TextBoxAfterFiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.TextBoxAfterFiles.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.TextBoxAfterFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
 			this.TextBoxAfterFiles.Location = new System.Drawing.Point(822, 53);
 			this.TextBoxAfterFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxAfterFiles.Multiline = true;
 			this.TextBoxAfterFiles.Name = "TextBoxAfterFiles";
 			this.TextBoxAfterFiles.ReadOnly = true;
-			this.TextBoxAfterFiles.Size = new System.Drawing.Size(813, 660);
+			this.TextBoxAfterFiles.Size = new System.Drawing.Size(813, 658);
 			this.TextBoxAfterFiles.TabIndex = 7;
 			// 
 			// LabelFilename
@@ -81,6 +87,7 @@ namespace Forms
 			// 
 			// TextBoxRenameFile
 			// 
+			this.TextBoxRenameFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
 			this.TextBoxRenameFile.Enabled = false;
 			this.TextBoxRenameFile.Location = new System.Drawing.Point(592, 760);
 			this.TextBoxRenameFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -91,6 +98,10 @@ namespace Forms
 			// ButtonRenameFile
 			// 
 			this.ButtonRenameFile.AutoSize = true;
+			this.ButtonRenameFile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonRenameFile.FlatAppearance.BorderSize = 0;
+			this.ButtonRenameFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonRenameFile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonRenameFile.Location = new System.Drawing.Point(1030, 760);
 			this.ButtonRenameFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonRenameFile.Name = "ButtonRenameFile";
@@ -103,7 +114,11 @@ namespace Forms
 			// ButtonMoveFilesGetLyrics
 			// 
 			this.ButtonMoveFilesGetLyrics.AutoSize = true;
-			this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(762, 793);
+			this.ButtonMoveFilesGetLyrics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonMoveFilesGetLyrics.FlatAppearance.BorderSize = 0;
+			this.ButtonMoveFilesGetLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonMoveFilesGetLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(775, 798);
 			this.ButtonMoveFilesGetLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonMoveFilesGetLyrics.Name = "ButtonMoveFilesGetLyrics";
 			this.ButtonMoveFilesGetLyrics.Size = new System.Drawing.Size(98, 27);
@@ -117,10 +132,10 @@ namespace Forms
 			this.ButtonUndo.AutoSize = true;
 			this.ButtonUndo.Enabled = false;
 			this.ButtonUndo.Image = global::Forms.Properties.Resources.Undo;
-			this.ButtonUndo.Location = new System.Drawing.Point(775, 717);
+			this.ButtonUndo.Location = new System.Drawing.Point(779, 717);
 			this.ButtonUndo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonUndo.Name = "ButtonUndo";
-			this.ButtonUndo.Size = new System.Drawing.Size(41, 27);
+			this.ButtonUndo.Size = new System.Drawing.Size(37, 29);
 			this.ButtonUndo.TabIndex = 12;
 			this.ButtonUndo.UseVisualStyleBackColor = true;
 			this.ButtonUndo.Click += new System.EventHandler(this.ButtonUndo_Click);
@@ -133,7 +148,7 @@ namespace Forms
 			this.ButtonRedo.Location = new System.Drawing.Point(822, 717);
 			this.ButtonRedo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonRedo.Name = "ButtonRedo";
-			this.ButtonRedo.Size = new System.Drawing.Size(41, 27);
+			this.ButtonRedo.Size = new System.Drawing.Size(37, 29);
 			this.ButtonRedo.TabIndex = 13;
 			this.ButtonRedo.UseVisualStyleBackColor = true;
 			this.ButtonRedo.Click += new System.EventHandler(this.ButtonRedo_Click);

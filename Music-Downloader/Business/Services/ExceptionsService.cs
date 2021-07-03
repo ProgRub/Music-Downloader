@@ -10,7 +10,7 @@ namespace Business.Services
 {
 	public class ExceptionsService
 	{
-		private IYearLyricsChangeDetailsExceptionRepository _changeDetailsExceptionRepository;
+		private readonly IYearLyricsChangeDetailsExceptionRepository _changeDetailsExceptionRepository;
 
 		private ExceptionsService()
 		{

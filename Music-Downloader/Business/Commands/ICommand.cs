@@ -1,9 +1,9 @@
 ﻿namespace Business.Commands
 {
-    public interface ICommand
-    {
-        void Execute();
-        void Undo();
-        void Redo();
-    }
+	public interface ICommand
+	{
+		void Execute();
+		void Undo();
+		void Redo();
+	}
 }

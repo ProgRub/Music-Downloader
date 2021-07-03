@@ -12,16 +12,11 @@ using Business;
 
 namespace Forms
 {
-    public partial class Window : Form
-    {
-        public Window()
-        {
-            InitializeComponent();
-        }
-
-        private void Window_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            BusinessFacade.Instance.KillDeemix();
-        }
-    }
+	public partial class Window : Form
+	{
+		public Window()
+		{
+			InitializeComponent();
+		}
+	}
 }

@@ -38,7 +38,6 @@ namespace Business
 		public void GetDownloadedMusicFiles() => DownloadMusicService.Instance.GetDownloadedMusicFiles();
 
 		public async Task StartDeemix() => await DownloadMusicService.Instance.StartDeemix();
-		//public void StartDeemix() => DownloadMusicService.Instance.StartDeemix();
 
 		public void MoveFiles() => DownloadMusicService.Instance.MoveFiles();
 
@@ -63,12 +62,11 @@ namespace Business
 
 		public void SetMusicService(string type)
 		{
-			switch (type)
+			_musicService = type switch
 			{
-				case "iTunes":
-					_musicService = iTunesService.Instance;
-					break;
-			}
+				"iTunes" => iTunesService.Instance,
+				_ => _musicService
+			};
 		}
 
 		public void OpenService() => _musicService.OpenService();
@@ -93,5 +91,19 @@ namespace Business
 		}
 
 		public void SaveExceptions() => ExceptionsService.Instance.SaveChanges();
+
+		public string GetMusicFromDirectory() => DirectoriesService.Instance.MusicFromDirectory;
+
+		public string GetMusicToDirectory() => DirectoriesService.Instance.MusicToDirectory;
+
+		public void SetMusicFromDirectory(string directory) =>
+			DirectoriesService.Instance.MusicFromDirectory = directory;
+
+		public void SetMusicToDirectory(string directory) =>
+			DirectoriesService.Instance.MusicToDirectory = directory;
+
+		public void LoadDatabase() => ExceptionsService.Instance.GetAllSkipLyricsExceptions();
+
+		public void SaveDirectories() => DirectoriesService.Instance.SaveDirectories();
 	}
 }

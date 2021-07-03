@@ -42,7 +42,7 @@ namespace Forms
 			this.TextBoxCorrectArtist = new System.Windows.Forms.TextBox();
 			this.TextBoxCorrectAlbum = new System.Windows.Forms.TextBox();
 			this.TextBoxCorrectTitle = new System.Windows.Forms.TextBox();
-			this.LabelGeniusUrl = new System.Windows.Forms.Label();
+			this.LabelUrl = new System.Windows.Forms.Label();
 			this.LabelCorrectArtist = new System.Windows.Forms.Label();
 			this.LabelCorrectAlbum = new System.Windows.Forms.Label();
 			this.LabelCorrectTitle = new System.Windows.Forms.Label();
@@ -73,6 +73,10 @@ namespace Forms
 			// 
 			// RichTextBoxArtist
 			// 
+			this.RichTextBoxArtist.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.RichTextBoxArtist.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.RichTextBoxArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.RichTextBoxArtist.ForeColor = System.Drawing.Color.Yellow;
 			this.RichTextBoxArtist.Location = new System.Drawing.Point(17, 49);
 			this.RichTextBoxArtist.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.RichTextBoxArtist.Name = "RichTextBoxArtist";
@@ -83,6 +87,10 @@ namespace Forms
 			// 
 			// RichTextBoxAlbum
 			// 
+			this.RichTextBoxAlbum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.RichTextBoxAlbum.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.RichTextBoxAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.RichTextBoxAlbum.ForeColor = System.Drawing.Color.Yellow;
 			this.RichTextBoxAlbum.Location = new System.Drawing.Point(339, 49);
 			this.RichTextBoxAlbum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.RichTextBoxAlbum.Name = "RichTextBoxAlbum";
@@ -93,6 +101,10 @@ namespace Forms
 			// 
 			// RichTextBoxTitle
 			// 
+			this.RichTextBoxTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.RichTextBoxTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.RichTextBoxTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.RichTextBoxTitle.ForeColor = System.Drawing.Color.Yellow;
 			this.RichTextBoxTitle.Location = new System.Drawing.Point(978, 49);
 			this.RichTextBoxTitle.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.RichTextBoxTitle.Name = "RichTextBoxTitle";
@@ -148,6 +160,9 @@ namespace Forms
 			// 
 			// TextBoxThreadsStatus
 			// 
+			this.TextBoxThreadsStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.TextBoxThreadsStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.TextBoxThreadsStatus.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxThreadsStatus.Location = new System.Drawing.Point(16, 695);
 			this.TextBoxThreadsStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxThreadsStatus.Multiline = true;
@@ -157,7 +172,10 @@ namespace Forms
 			// 
 			// TextBoxCorrectArtist
 			// 
+			this.TextBoxCorrectArtist.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.TextBoxCorrectArtist.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxCorrectArtist.Enabled = false;
+			this.TextBoxCorrectArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectArtist.Location = new System.Drawing.Point(627, 696);
 			this.TextBoxCorrectArtist.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectArtist.Name = "TextBoxCorrectArtist";
@@ -166,7 +184,10 @@ namespace Forms
 			// 
 			// TextBoxCorrectAlbum
 			// 
+			this.TextBoxCorrectAlbum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.TextBoxCorrectAlbum.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxCorrectAlbum.Enabled = false;
+			this.TextBoxCorrectAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectAlbum.Location = new System.Drawing.Point(627, 724);
 			this.TextBoxCorrectAlbum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectAlbum.Name = "TextBoxCorrectAlbum";
@@ -175,21 +196,24 @@ namespace Forms
 			// 
 			// TextBoxCorrectTitle
 			// 
+			this.TextBoxCorrectTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.TextBoxCorrectTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxCorrectTitle.Enabled = false;
+			this.TextBoxCorrectTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectTitle.Location = new System.Drawing.Point(627, 752);
 			this.TextBoxCorrectTitle.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectTitle.Name = "TextBoxCorrectTitle";
 			this.TextBoxCorrectTitle.Size = new System.Drawing.Size(526, 24);
 			this.TextBoxCorrectTitle.TabIndex = 18;
 			// 
-			// LabelGeniusUrl
+			// LabelUrl
 			// 
-			this.LabelGeniusUrl.AutoSize = true;
-			this.LabelGeniusUrl.Location = new System.Drawing.Point(627, 677);
-			this.LabelGeniusUrl.Name = "LabelGeniusUrl";
-			this.LabelGeniusUrl.Size = new System.Drawing.Size(96, 17);
-			this.LabelGeniusUrl.TabIndex = 20;
-			this.LabelGeniusUrl.Text = "Genius URL";
+			this.LabelUrl.AutoSize = true;
+			this.LabelUrl.Location = new System.Drawing.Point(627, 677);
+			this.LabelUrl.Name = "LabelUrl";
+			this.LabelUrl.Size = new System.Drawing.Size(39, 17);
+			this.LabelUrl.TabIndex = 20;
+			this.LabelUrl.Text = "URL";
 			// 
 			// LabelCorrectArtist
 			// 
@@ -221,21 +245,30 @@ namespace Forms
 			// ButtonTryAgain
 			// 
 			this.ButtonTryAgain.AutoSize = true;
+			this.ButtonTryAgain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonTryAgain.BackColor = System.Drawing.Color.Transparent;
 			this.ButtonTryAgain.Enabled = false;
+			this.ButtonTryAgain.FlatAppearance.BorderSize = 0;
+			this.ButtonTryAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonTryAgain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonTryAgain.Location = new System.Drawing.Point(848, 780);
 			this.ButtonTryAgain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonTryAgain.Name = "ButtonTryAgain";
-			this.ButtonTryAgain.Size = new System.Drawing.Size(101, 27);
+			this.ButtonTryAgain.Size = new System.Drawing.Size(93, 27);
 			this.ButtonTryAgain.TabIndex = 25;
 			this.ButtonTryAgain.Text = "Try Again";
-			this.ButtonTryAgain.UseVisualStyleBackColor = true;
+			this.ButtonTryAgain.UseVisualStyleBackColor = false;
 			this.ButtonTryAgain.Click += new System.EventHandler(this.ButtonTryAgain_Click);
 			// 
 			// ButtonSkipYear
 			// 
 			this.ButtonSkipYear.AutoSize = true;
+			this.ButtonSkipYear.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonSkipYear.Enabled = false;
-			this.ButtonSkipYear.Location = new System.Drawing.Point(858, 811);
+			this.ButtonSkipYear.FlatAppearance.BorderSize = 0;
+			this.ButtonSkipYear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonSkipYear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.ButtonSkipYear.Location = new System.Drawing.Point(848, 811);
 			this.ButtonSkipYear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSkipYear.Name = "ButtonSkipYear";
 			this.ButtonSkipYear.Size = new System.Drawing.Size(91, 27);
@@ -247,7 +280,11 @@ namespace Forms
 			// ButtonSkipLyrics
 			// 
 			this.ButtonSkipLyrics.AutoSize = true;
+			this.ButtonSkipLyrics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonSkipLyrics.Enabled = false;
+			this.ButtonSkipLyrics.FlatAppearance.BorderSize = 0;
+			this.ButtonSkipLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonSkipLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonSkipLyrics.Location = new System.Drawing.Point(848, 842);
 			this.ButtonSkipLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSkipLyrics.Name = "ButtonSkipLyrics";
@@ -267,7 +304,7 @@ namespace Forms
 			this.Controls.Add(this.LabelCorrectTitle);
 			this.Controls.Add(this.LabelCorrectAlbum);
 			this.Controls.Add(this.LabelCorrectArtist);
-			this.Controls.Add(this.LabelGeniusUrl);
+			this.Controls.Add(this.LabelUrl);
 			this.Controls.Add(this.TextBoxCorrectTitle);
 			this.Controls.Add(this.TextBoxCorrectAlbum);
 			this.Controls.Add(this.TextBoxCorrectArtist);
@@ -299,7 +336,7 @@ namespace Forms
 			this.Controls.SetChildIndex(this.TextBoxCorrectArtist, 0);
 			this.Controls.SetChildIndex(this.TextBoxCorrectAlbum, 0);
 			this.Controls.SetChildIndex(this.TextBoxCorrectTitle, 0);
-			this.Controls.SetChildIndex(this.LabelGeniusUrl, 0);
+			this.Controls.SetChildIndex(this.LabelUrl, 0);
 			this.Controls.SetChildIndex(this.LabelCorrectArtist, 0);
 			this.Controls.SetChildIndex(this.LabelCorrectAlbum, 0);
 			this.Controls.SetChildIndex(this.LabelCorrectTitle, 0);
@@ -327,7 +364,7 @@ namespace Forms
         private System.Windows.Forms.TextBox TextBoxCorrectArtist;
         private System.Windows.Forms.TextBox TextBoxCorrectAlbum;
         private System.Windows.Forms.TextBox TextBoxCorrectTitle;
-        private System.Windows.Forms.Label LabelGeniusUrl;
+        private System.Windows.Forms.Label LabelUrl;
         private System.Windows.Forms.Label LabelCorrectArtist;
         private System.Windows.Forms.Label LabelCorrectAlbum;
         private System.Windows.Forms.Label LabelCorrectTitle;

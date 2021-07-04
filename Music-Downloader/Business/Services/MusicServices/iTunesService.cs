@@ -1,10 +1,8 @@
 ﻿using System.IO;
 using Business.DTOs;
-using Business.Services;
-using DB.Entities;
 using iTunesLib;
 
-namespace Business.MusicServices
+namespace Business.Services.MusicServices
 {
     public class iTunesService : IMusicService
     {

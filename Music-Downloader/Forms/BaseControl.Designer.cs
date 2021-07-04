@@ -37,10 +37,12 @@ namespace Forms
 			this.ButtonBack.AutoSize = true;
 			this.ButtonBack.BackColor = System.Drawing.Color.Transparent;
 			this.ButtonBack.FlatAppearance.BorderSize = 0;
+			this.ButtonBack.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonBack.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.ButtonBack.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-			this.ButtonBack.Location = new System.Drawing.Point(0, 9);
+			this.ButtonBack.ForeColor = System.Drawing.Color.Maroon;
+			this.ButtonBack.Location = new System.Drawing.Point(0, 3);
 			this.ButtonBack.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.ButtonBack.Name = "ButtonBack";
 			this.ButtonBack.Size = new System.Drawing.Size(66, 39);

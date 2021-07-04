@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Business;
+using Business.Commands;
 
 namespace Forms
 {
@@ -52,8 +53,14 @@ namespace Forms
 			}
 		}
 
+		private void ButtonManageExceptions_Click(object sender, EventArgs e)
+		{
+			MoveToScreen(new ManageExceptionsScreen(),this);
+		}
+
 		private void HomeScreen_Enter(object sender, EventArgs e)
 		{
+			CommandsManager.Instance.ResetCommandsList();
 			_musicFromDirectory = BusinessFacade.Instance.GetMusicFromDirectory();
 			_musicToDirectory = BusinessFacade.Instance.GetMusicToDirectory();
 			TextBoxMusicFromDirectory.Text = _musicFromDirectory;

@@ -67,14 +67,14 @@ namespace Business.SongDetailsScrapers
 				lock (_accessExceptionsMutex)
 				{
 					haveToGetSongYear = !(!CurrentSong.IsSingle && _allExceptions.Any(e =>
-						                      e.Type == ExceptionType.SkipAlbumYear &&
+						                      e.Type == ChangeDetailsExceptionType.SkipAlbumYear &&
 						                      e.OriginalAlbum == CurrentSong.Album &&
 						                      e.OriginalArtist == CurrentSong.AlbumArtist) ||
 					                      CurrentSong.IsSingle && _allExceptions.Any(e =>
-						                      e.Type == ExceptionType.SkipLyrics &&
+						                      e.Type == ChangeDetailsExceptionType.SkipLyrics &&
 						                      e.OriginalTitle == CurrentSong.Title &&
 						                      e.OriginalArtist == CurrentSong.AlbumArtist));
-					haveToGetSongLyrics = !_allExceptions.Any(e => e.Type == ExceptionType.SkipLyrics &&
+					haveToGetSongLyrics = !_allExceptions.Any(e => e.Type == ChangeDetailsExceptionType.SkipLyrics &&
 					                                               e.OriginalTitle == CurrentSong.Title &&
 					                                               e.OriginalArtist == CurrentSong.AlbumArtist);
 				}
@@ -106,7 +106,7 @@ namespace Business.SongDetailsScrapers
 			lock (_accessExceptionsMutex)
 			{
 				changeDetailsException = _allExceptions.FirstOrDefault(e =>
-					e.Type == ExceptionType.ChangeDetailsForLyrics &&
+					e.Type == ChangeDetailsExceptionType.ChangeDetailsForLyrics &&
 					e.OriginalTitle == originalSong.Title &&
 					e.OriginalArtist == originalSong.AlbumArtist);
 			}
@@ -152,7 +152,7 @@ namespace Business.SongDetailsScrapers
 				lock (_accessExceptionsMutex)
 				{
 					changeDetailsException = _allExceptions.FirstOrDefault(e =>
-						e.Type == ExceptionType.ChangeDetailsForLyrics &&
+						e.Type == ChangeDetailsExceptionType.ChangeDetailsForLyrics &&
 						e.OriginalTitle == originalSong.Title &&
 						e.OriginalArtist == originalSong.AlbumArtist);
 				}
@@ -221,7 +221,7 @@ namespace Business.SongDetailsScrapers
 					lock (_accessExceptionsMutex)
 					{
 						changeDetailsException = _allExceptions.FirstOrDefault(e =>
-							e.Type == ExceptionType.ChangeDetailsForAlbumYear &&
+							e.Type == ChangeDetailsExceptionType.ChangeDetailsForAlbumYear &&
 							e.OriginalAlbum == originalSong.Album &&
 							e.OriginalArtist == originalSong.AlbumArtist);
 					}

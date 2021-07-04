@@ -1,6 +1,6 @@
 ﻿using Business.DTOs;
 
-namespace Business.MusicServices
+namespace Business.Services.MusicServices
 {
 	public interface IMusicService
 	{

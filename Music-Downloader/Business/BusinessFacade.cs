@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 using Business.CustomEventArgs;
 using Business.DTOs;
 using Business.Enums;
-using Business.MusicServices;
 using Business.Services;
+using Business.Services.MusicServices;
 using Business.SongDetailsScrapers;
 using DB.Entities;
 
@@ -36,7 +37,7 @@ namespace Business
 		}
 
 		public void GetDownloadedMusicFiles() => DownloadMusicService.Instance.GetDownloadedMusicFiles();
-
+		
 		public async Task StartDeemix() => await DownloadMusicService.Instance.StartDeemix();
 
 		public void MoveFiles() => DownloadMusicService.Instance.MoveFiles();
@@ -105,5 +106,8 @@ namespace Business
 		public void LoadDatabase() => ExceptionsService.Instance.GetAllSkipLyricsExceptions();
 
 		public void SaveDirectories() => DirectoriesService.Instance.SaveDirectories();
+
+		public IEnumerable<ExceptionDTO> GetAllExceptions() => ExceptionsService.Instance.GetAllExceptions()
+			.Select(ExceptionDTO.ConvertYearLyricsChangeDetailsExceptionToDto);
 	}
 }

@@ -37,6 +37,8 @@ namespace Forms
 			this.ButtonChooseMusicFromDirectory = new System.Windows.Forms.Button();
 			this.ButtonChooseMusicToDirectory = new System.Windows.Forms.Button();
 			this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+			this.ButtonManageExceptions = new System.Windows.Forms.Button();
+			this.ButtonManageUrlReplacements = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// ButtonBack
@@ -148,10 +150,47 @@ namespace Forms
 			// 
 			this.FolderBrowserDialog.UseDescriptionForTitle = true;
 			// 
+			// ButtonManageExceptions
+			// 
+			this.ButtonManageExceptions.AutoSize = true;
+			this.ButtonManageExceptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonManageExceptions.FlatAppearance.BorderSize = 0;
+			this.ButtonManageExceptions.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonManageExceptions.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonManageExceptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonManageExceptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.ButtonManageExceptions.Location = new System.Drawing.Point(374, 123);
+			this.ButtonManageExceptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.ButtonManageExceptions.Name = "ButtonManageExceptions";
+			this.ButtonManageExceptions.Size = new System.Drawing.Size(167, 27);
+			this.ButtonManageExceptions.TabIndex = 13;
+			this.ButtonManageExceptions.Text = "Manage Exceptions";
+			this.ButtonManageExceptions.UseVisualStyleBackColor = true;
+			this.ButtonManageExceptions.Click += new System.EventHandler(this.ButtonManageExceptions_Click);
+			// 
+			// ButtonManageUrlReplacements
+			// 
+			this.ButtonManageUrlReplacements.AutoSize = true;
+			this.ButtonManageUrlReplacements.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonManageUrlReplacements.FlatAppearance.BorderSize = 0;
+			this.ButtonManageUrlReplacements.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonManageUrlReplacements.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonManageUrlReplacements.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonManageUrlReplacements.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.ButtonManageUrlReplacements.Location = new System.Drawing.Point(374, 154);
+			this.ButtonManageUrlReplacements.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.ButtonManageUrlReplacements.Name = "ButtonManageUrlReplacements";
+			this.ButtonManageUrlReplacements.Size = new System.Drawing.Size(226, 27);
+			this.ButtonManageUrlReplacements.TabIndex = 14;
+			this.ButtonManageUrlReplacements.Text = "Manage URL Replacements";
+			this.ButtonManageUrlReplacements.UseVisualStyleBackColor = true;
+			// 
 			// HomeScreen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.ButtonManageUrlReplacements);
+			this.Controls.Add(this.ButtonManageExceptions);
 			this.Controls.Add(this.ButtonChooseMusicToDirectory);
 			this.Controls.Add(this.ButtonChooseMusicFromDirectory);
 			this.Controls.Add(this.TextBoxMusicToDirectory);
@@ -171,6 +210,8 @@ namespace Forms
 			this.Controls.SetChildIndex(this.TextBoxMusicToDirectory, 0);
 			this.Controls.SetChildIndex(this.ButtonChooseMusicFromDirectory, 0);
 			this.Controls.SetChildIndex(this.ButtonChooseMusicToDirectory, 0);
+			this.Controls.SetChildIndex(this.ButtonManageExceptions, 0);
+			this.Controls.SetChildIndex(this.ButtonManageUrlReplacements, 0);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -186,5 +227,7 @@ namespace Forms
 		private System.Windows.Forms.Button ButtonChooseMusicFromDirectory;
 		private System.Windows.Forms.Button ButtonChooseMusicToDirectory;
 		private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
+		private System.Windows.Forms.Button ButtonManageExceptions;
+		private System.Windows.Forms.Button ButtonManageUrlReplacements;
 	}
 }

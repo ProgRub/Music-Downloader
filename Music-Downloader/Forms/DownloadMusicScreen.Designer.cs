@@ -131,6 +131,10 @@ namespace Forms
 			// 
 			this.ButtonUndo.AutoSize = true;
 			this.ButtonUndo.Enabled = false;
+			this.ButtonUndo.FlatAppearance.BorderSize = 0;
+			this.ButtonUndo.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonUndo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonUndo.Image = global::Forms.Properties.Resources.Undo;
 			this.ButtonUndo.Location = new System.Drawing.Point(779, 717);
 			this.ButtonUndo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -144,6 +148,10 @@ namespace Forms
 			// 
 			this.ButtonRedo.AutoSize = true;
 			this.ButtonRedo.Enabled = false;
+			this.ButtonRedo.FlatAppearance.BorderSize = 0;
+			this.ButtonRedo.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonRedo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonRedo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonRedo.Image = global::Forms.Properties.Resources.Redo;
 			this.ButtonRedo.Location = new System.Drawing.Point(822, 717);
 			this.ButtonRedo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);

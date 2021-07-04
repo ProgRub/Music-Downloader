@@ -1,4 +1,4 @@
-﻿namespace Business.DTOs
+﻿namespace Business.Enums
 {
 	public enum RenameFileOptions
 	{

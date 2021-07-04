@@ -17,9 +17,15 @@ namespace Forms.Commands.DownloadMusic
 			_newText = newText;
 		}
 
-		public void Execute() => _listBox.Items[_itemIndex] = _newText;
+		public void Execute()  {
+			_listBox.Items[_itemIndex] = _newText;
+			_listBox.SelectedIndex = _itemIndex;
+		}
 
-		public void Undo() => _listBox.Items[_itemIndex] = _oldText;
+		public void Undo() {
+			_listBox.Items[_itemIndex] = _oldText;
+			_listBox.SelectedIndex = _itemIndex;
+		}
 
 		public void Redo() => Execute();
 	}

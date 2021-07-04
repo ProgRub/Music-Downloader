@@ -67,11 +67,11 @@ namespace Forms
 		}
 
 
-		protected void ClearAllTextboxesPlaceholderText()
+		protected void ClearAllTextboxes()
 		{
 			foreach (var textBox in Controls.OfType<TextBox>())
 			{
-				textBox.PlaceholderText = "";
+				textBox.Text = "";
 			}
 		}
 

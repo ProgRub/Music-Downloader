@@ -24,6 +24,7 @@ namespace Forms.Commands.DownloadMusic
 		public void Undo()
 		{
 			_listBox.Items.Insert(_itemIndex, _item);
+			_listBox.SelectedIndex = _itemIndex;
 		}
 
 		public void Redo()

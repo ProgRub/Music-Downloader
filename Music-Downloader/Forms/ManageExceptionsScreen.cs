@@ -311,7 +311,7 @@ namespace Forms
 			{
 				var newException = new ExceptionDTO
 				{
-					Id = _exceptions.Last().Id + 1,
+					Id =_exceptions.Count>0? _exceptions.Last().Id + 1:1,
 					OriginalArtist = TextBoxOriginalArtist.Text, OriginalAlbum = TextBoxOriginalAlbum.Text,
 					OriginalTitle = TextBoxOriginalTitle.Text,
 					NewArtist = TextBoxNewArtist.Text, NewAlbum = TextBoxNewAlbum.Text, NewTitle = TextBoxNewTitle.Text,

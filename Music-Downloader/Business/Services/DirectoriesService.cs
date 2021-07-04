@@ -25,7 +25,7 @@ namespace Business.Services
 		internal string UniToBaseDirectory { get; set; }
 		public static DirectoriesService Instance { get; } = new(new DirectoriesRepository(Database.GetContext()));
 
-		public void SaveDirectories()
+		public void SaveChanges()
 		{
 			var directories = _directoriesRepository.GetById(1);
 			directories.MusicFrom = MusicFromDirectory;

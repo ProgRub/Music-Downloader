@@ -37,7 +37,7 @@ namespace Business
 		}
 
 		public void GetDownloadedMusicFiles() => DownloadMusicService.Instance.GetDownloadedMusicFiles();
-		
+
 		public async Task StartDeemix() => await DownloadMusicService.Instance.StartDeemix();
 
 		public void MoveFiles() => DownloadMusicService.Instance.MoveFiles();
@@ -91,7 +91,12 @@ namespace Business
 			SongDetailsTemplateMethod.SemaphoreErrorHandled.Release();
 		}
 
-		public void SaveExceptions() => ExceptionsService.Instance.SaveChanges();
+		public void SaveChanges()
+		{
+			ExceptionsService.Instance.SaveChanges();
+			DirectoriesService.Instance.SaveChanges();
+			UrlReplacementService.Instance.SaveChanges();
+		}
 
 		public string GetMusicFromDirectory() => DirectoriesService.Instance.MusicFromDirectory;
 
@@ -104,8 +109,6 @@ namespace Business
 			DirectoriesService.Instance.MusicToDirectory = directory;
 
 		public void LoadDatabase() => ExceptionsService.Instance.GetAllSkipLyricsExceptions();
-
-		public void SaveDirectories() => DirectoriesService.Instance.SaveDirectories();
 
 		public IEnumerable<ExceptionDTO> GetAllExceptions() => ExceptionsService.Instance.GetAllExceptions()
 			.Select(ExceptionDTO.ConvertYearLyricsChangeDetailsExceptionToDto);

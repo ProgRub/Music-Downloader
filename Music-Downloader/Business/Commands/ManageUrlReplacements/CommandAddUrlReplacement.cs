@@ -8,49 +8,22 @@ namespace Business.Commands.ManageUrlReplacements
 {
 	public class CommandAddUrlReplacement : ICommand
 	{
-		private YearLyricsChangeDetailsException _exception;
-		private IList<ExceptionDTO> _exceptions;
-		private ExceptionDTO _exceptionDtoToAddToList;
+		private string _whatToReplace, _replacement;
 
-		public CommandAddUrlReplacement(ExceptionDTO exception, ref IList<ExceptionDTO> exceptions)
+		public CommandAddUrlReplacement(string whatToReplace,string replacement)
 		{
-			_exceptionDtoToAddToList = exception;
-			_exception = new YearLyricsChangeDetailsException()
-			{
-				OriginalArtist = exception.OriginalArtist, OriginalAlbum = exception.OriginalAlbum,
-				OriginalTitle = exception.OriginalTitle, NewArtist = exception.NewArtist, NewAlbum = exception.NewAlbum,
-				NewTitle = exception.NewTitle, Type = (ChangeDetailsExceptionType) exception.Type
-			};
-			_exceptions = exceptions;
+			_whatToReplace = whatToReplace;
+			_replacement = replacement;
 		}
 
 		public void Execute()
 		{
-			switch (_exception.Type)
-			{
-				case ChangeDetailsExceptionType.ChangeDetailsForAlbumYear:
-					ExceptionsService.Instance.AddCorrectionForAlbumYearException(_exception,false);
-					break;
-				case ChangeDetailsExceptionType.ChangeDetailsForLyrics:
-					ExceptionsService.Instance.AddCorrectionForLyricsException(_exception,false);
-					break;
-				case ChangeDetailsExceptionType.SkipAlbumYear:
-					ExceptionsService.Instance.AddSkipAlbumYearException(_exception,false);
-					break;
-				case ChangeDetailsExceptionType.SkipLyrics:
-					ExceptionsService.Instance.AddSkipLyricsException(_exception,false);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-
-			_exceptions.Add(_exceptionDtoToAddToList);
+			UrlReplacementService.Instance.AddUrlReplacement(_whatToReplace,_replacement);
 		}
 
 		public void Undo()
 		{
-			ExceptionsService.Instance.RemoveException(_exception);
-			_exceptions.Remove(_exceptionDtoToAddToList);
+			UrlReplacementService.Instance.RemoveUrlReplacement(_whatToReplace);
 		}
 
 		public void Redo() => Execute();

@@ -37,7 +37,7 @@ namespace Forms
 			this.ButtonRedo = new System.Windows.Forms.Button();
 			this.ButtonUndo = new System.Windows.Forms.Button();
 			this.ButtonDeleteSelected = new System.Windows.Forms.Button();
-			this.ButtonAddChange = new System.Windows.Forms.Button();
+			this.ButtonAddNewUrlReplacement = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// ButtonBack
@@ -158,29 +158,29 @@ namespace Forms
 			this.ButtonDeleteSelected.Visible = false;
 			this.ButtonDeleteSelected.Click += new System.EventHandler(this.ButtonDeleteSelected_Click);
 			// 
-			// ButtonAddChange
+			// ButtonAddNewUrlReplacement
 			// 
-			this.ButtonAddChange.AutoSize = true;
-			this.ButtonAddChange.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ButtonAddChange.FlatAppearance.BorderSize = 0;
-			this.ButtonAddChange.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-			this.ButtonAddChange.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-			this.ButtonAddChange.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.ButtonAddChange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonAddChange.Location = new System.Drawing.Point(332, 136);
-			this.ButtonAddChange.Name = "ButtonAddChange";
-			this.ButtonAddChange.Size = new System.Drawing.Size(118, 27);
-			this.ButtonAddChange.TabIndex = 30;
-			this.ButtonAddChange.Text = "Add/Change";
-			this.ButtonAddChange.UseVisualStyleBackColor = true;
-			this.ButtonAddChange.Click += new System.EventHandler(this.ButtonAddChange_Click);
+			this.ButtonAddNewUrlReplacement.AutoSize = true;
+			this.ButtonAddNewUrlReplacement.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonAddNewUrlReplacement.FlatAppearance.BorderSize = 0;
+			this.ButtonAddNewUrlReplacement.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonAddNewUrlReplacement.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonAddNewUrlReplacement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonAddNewUrlReplacement.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.ButtonAddNewUrlReplacement.Location = new System.Drawing.Point(280, 136);
+			this.ButtonAddNewUrlReplacement.Name = "ButtonAddNewUrlReplacement";
+			this.ButtonAddNewUrlReplacement.Size = new System.Drawing.Size(228, 27);
+			this.ButtonAddNewUrlReplacement.TabIndex = 30;
+			this.ButtonAddNewUrlReplacement.Text = "Add New URL Replacement";
+			this.ButtonAddNewUrlReplacement.UseVisualStyleBackColor = true;
+			this.ButtonAddNewUrlReplacement.Click += new System.EventHandler(this.ButtonAddChange_Click);
 			// 
 			// ManageUrlReplacementsScreen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.ButtonDeleteSelected);
-			this.Controls.Add(this.ButtonAddChange);
+			this.Controls.Add(this.ButtonAddNewUrlReplacement);
 			this.Controls.Add(this.ButtonRedo);
 			this.Controls.Add(this.ButtonUndo);
 			this.Controls.Add(this.TextBoxReplacement);
@@ -199,7 +199,7 @@ namespace Forms
 			this.Controls.SetChildIndex(this.ButtonUndo, 0);
 			this.Controls.SetChildIndex(this.ButtonRedo, 0);
 			this.Controls.SetChildIndex(this.ButtonBack, 0);
-			this.Controls.SetChildIndex(this.ButtonAddChange, 0);
+			this.Controls.SetChildIndex(this.ButtonAddNewUrlReplacement, 0);
 			this.Controls.SetChildIndex(this.ButtonDeleteSelected, 0);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -216,6 +216,6 @@ namespace Forms
 		private System.Windows.Forms.Button ButtonRedo;
 		private System.Windows.Forms.Button ButtonUndo;
 		private System.Windows.Forms.Button ButtonDeleteSelected;
-		private System.Windows.Forms.Button ButtonAddChange;
+		private System.Windows.Forms.Button ButtonAddNewUrlReplacement;
 	}
 }

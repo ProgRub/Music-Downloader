@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Business;
 using Business.Commands;
+using Business.Commands.ManageUrlReplacements;
 using Business.DTOs;
 using Forms.Commands.DownloadMusic;
 using Forms.Commands.ManageUrlReplacements;
@@ -41,16 +42,6 @@ namespace Forms
 			GetSelectedUrlReplacement();
 			ButtonDeleteSelected.Enabled = ListBoxUrlReplacements.SelectedItems.Count > 0;
 			ButtonDeleteSelected.Visible = ButtonDeleteSelected.Enabled;
-			if (ListBoxUrlReplacements.SelectedItems.Count == 0) return;
-
-			FillTextBoxesWithValuesOfSelectedUrlReplacement();
-		}
-
-		private void FillTextBoxesWithValuesOfSelectedUrlReplacement()
-		{
-			if (_selectedUrlReplacementKey == null) return;
-			TextBoxWhatToReplace.Text = $"\"{_selectedUrlReplacementKey}\"";
-			TextBoxReplacement.Text = $"\"{_urlReplacements[_selectedUrlReplacementKey]}\"";
 		}
 
 		private void GetSelectedUrlReplacement()
@@ -67,7 +58,7 @@ namespace Forms
 					.ToString());
 		}
 
-		private string GetUrlReplacementFromString(string urlReplacementString)
+		private static string GetUrlReplacementFromString(string urlReplacementString)
 		{
 			var keyWithQuotes = urlReplacementString.Split(" --> ", StringSplitOptions.RemoveEmptyEntries).First();
 			return keyWithQuotes.Substring(1, keyWithQuotes.LastIndexOf('"') - 1);
@@ -86,55 +77,50 @@ namespace Forms
 		private void ButtonAddChange_Click(object sender, EventArgs e)
 		{
 			var macro = new MacroCommand();
-			if (_selectedUrlReplacementKey != null)
+			var errorMessage = "";
+			var whatToReplace = "";
+			var replacement = "";
+			var errorHappened = false;
+			try
 			{
-				CommandsManager.Instance.Execute(macro);
+				whatToReplace =
+					TextBoxWhatToReplace.Text.Substring(1, TextBoxWhatToReplace.Text.LastIndexOf('"') - 1);
 			}
-			else
+			catch (ArgumentOutOfRangeException)
 			{
-				var errorMessage = "";
-				var whatToReplace = "";
-				var replacement = "";
-				var errorHappened = false;
-				try
-				{
-					whatToReplace =
-						TextBoxWhatToReplace.Text.Substring(1, TextBoxWhatToReplace.Text.LastIndexOf('"') - 1);
-				}
-				catch (ArgumentOutOfRangeException)
-				{
-					errorMessage +=
-						$@"You need to specify what should be replaced IN BETWEEN QUOTES (""){Environment.NewLine}";
-					errorHappened = true;
-				}
-
-				try
-				{
-					replacement =
-						TextBoxReplacement.Text.Substring(1, TextBoxReplacement.Text.LastIndexOf('"') - 1);
-				}
-				catch (ArgumentOutOfRangeException)
-				{
-					errorMessage += @"You need to specify the replacement IN BETWEEN QUOTES ("")";
-					errorHappened = true;
-				}
-
-				if (!errorHappened)
-				{
-					macro.Add(new CommandAddUrlReplacementToListbox(new KeyValuePair<string, string>(whatToReplace,replacement),
-						ListBoxUrlReplacements,ref _urlReplacements));
-					CommandsManager.Instance.Execute(macro);
-				}
-				else
-				{
-					ShowInformationMessageBox(errorMessage, "Error");
-				}
+				errorMessage +=
+					$@"You need to specify what should be replaced IN BETWEEN QUOTES (""){Environment.NewLine}";
+				errorHappened = true;
 			}
+
+			try
+			{
+				replacement =
+					TextBoxReplacement.Text.Substring(1, TextBoxReplacement.Text.LastIndexOf('"') - 1);
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				errorMessage += @"You need to specify the replacement IN BETWEEN QUOTES ("")";
+				errorHappened = true;
+			}
+
+			if (errorHappened)
+			{
+				ShowInformationMessageBox(errorMessage, "Error");
+				return;
+			}
+
+			macro.Add(new CommandAddUrlReplacement(whatToReplace, replacement));
+			macro.Add(new CommandAddUrlReplacementToListbox(
+				new KeyValuePair<string, string>(whatToReplace, replacement),
+				ListBoxUrlReplacements, ref _urlReplacements));
+			CommandsManager.Instance.Execute(macro);
 		}
 
 		private void ButtonDeleteSelected_Click(object sender, EventArgs e)
 		{
 			var macro = new MacroCommand();
+			macro.Add(new CommandDeleteUrlReplacement(_selectedUrlReplacementKey));
 			macro.Add(new CommandDeleteSelectedListBoxItem(ListBoxUrlReplacements));
 			CommandsManager.Instance.Execute(macro);
 		}

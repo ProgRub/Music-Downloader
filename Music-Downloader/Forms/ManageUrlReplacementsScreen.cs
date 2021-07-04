@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Business;
+using Business.Commands;
+using Business.DTOs;
+using Forms.Commands.DownloadMusic;
+using Forms.Commands.ManageUrlReplacements;
+
+namespace Forms
+{
+	public partial class ManageUrlReplacementsScreen : BaseControl
+	{
+		private IDictionary<string, string> _urlReplacements = new Dictionary<string, string>();
+		private string _selectedUrlReplacementKey;
+
+		public ManageUrlReplacementsScreen()
+		{
+			InitializeComponent();
+		}
+
+		private void ManageUrlReplacementsScreen_Enter(object sender, EventArgs e)
+		{
+			CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
+			CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
+			_urlReplacements = BusinessFacade.Instance.GetUrlReplacements();
+			foreach (var (key, value) in _urlReplacements)
+			{
+				ListBoxUrlReplacements.Items.Add($"\"{key}\" --> \"{value}\"");
+			}
+		}
+
+		private void ListBoxUrlReplacements_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			GetSelectedUrlReplacement();
+			ButtonDeleteSelected.Enabled = ListBoxUrlReplacements.SelectedItems.Count > 0;
+			ButtonDeleteSelected.Visible = ButtonDeleteSelected.Enabled;
+			if (ListBoxUrlReplacements.SelectedItems.Count == 0) return;
+
+			FillTextBoxesWithValuesOfSelectedUrlReplacement();
+		}
+
+		private void FillTextBoxesWithValuesOfSelectedUrlReplacement()
+		{
+			if (_selectedUrlReplacementKey == null) return;
+			TextBoxWhatToReplace.Text = $"\"{_selectedUrlReplacementKey}\"";
+			TextBoxReplacement.Text = $"\"{_urlReplacements[_selectedUrlReplacementKey]}\"";
+		}
+
+		private void GetSelectedUrlReplacement()
+		{
+			if (ListBoxUrlReplacements.SelectedItems.Count == 0)
+			{
+				_selectedUrlReplacementKey = null;
+				ClearAllTextboxes();
+				return;
+			}
+
+			_selectedUrlReplacementKey =
+				GetUrlReplacementFromString(ListBoxUrlReplacements.Items[ListBoxUrlReplacements.SelectedIndex]
+					.ToString());
+		}
+
+		private string GetUrlReplacementFromString(string urlReplacementString)
+		{
+			var keyWithQuotes = urlReplacementString.Split(" --> ", StringSplitOptions.RemoveEmptyEntries).First();
+			return keyWithQuotes.Substring(1, keyWithQuotes.LastIndexOf('"') - 1);
+		}
+
+		private void ButtonUndo_Click(object sender, EventArgs e)
+		{
+			CommandsManager.Instance.Undo();
+		}
+
+		private void ButtonRedo_Click(object sender, EventArgs e)
+		{
+			CommandsManager.Instance.Redo();
+		}
+
+		private void ButtonAddChange_Click(object sender, EventArgs e)
+		{
+			var macro = new MacroCommand();
+			if (_selectedUrlReplacementKey != null)
+			{
+				CommandsManager.Instance.Execute(macro);
+			}
+			else
+			{
+				var errorMessage = "";
+				var whatToReplace = "";
+				var replacement = "";
+				var errorHappened = false;
+				try
+				{
+					whatToReplace =
+						TextBoxWhatToReplace.Text.Substring(1, TextBoxWhatToReplace.Text.LastIndexOf('"') - 1);
+				}
+				catch (ArgumentOutOfRangeException)
+				{
+					errorMessage +=
+						$@"You need to specify what should be replaced IN BETWEEN QUOTES (""){Environment.NewLine}";
+					errorHappened = true;
+				}
+
+				try
+				{
+					replacement =
+						TextBoxReplacement.Text.Substring(1, TextBoxReplacement.Text.LastIndexOf('"') - 1);
+				}
+				catch (ArgumentOutOfRangeException)
+				{
+					errorMessage += @"You need to specify the replacement IN BETWEEN QUOTES ("")";
+					errorHappened = true;
+				}
+
+				if (!errorHappened)
+				{
+					macro.Add(new CommandAddUrlReplacementToListbox(new KeyValuePair<string, string>(whatToReplace,replacement),
+						ListBoxUrlReplacements,ref _urlReplacements));
+					CommandsManager.Instance.Execute(macro);
+				}
+				else
+				{
+					ShowInformationMessageBox(errorMessage, "Error");
+				}
+			}
+		}
+
+		private void ButtonDeleteSelected_Click(object sender, EventArgs e)
+		{
+			var macro = new MacroCommand();
+			macro.Add(new CommandDeleteSelectedListBoxItem(ListBoxUrlReplacements));
+			CommandsManager.Instance.Execute(macro);
+		}
+	}
+}

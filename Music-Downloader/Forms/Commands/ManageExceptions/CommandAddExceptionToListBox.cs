@@ -4,7 +4,7 @@ using Business.DTOs;
 
 namespace Forms.Commands.ManageExceptions
 {
-	public class CommandAddItemToListBox : ICommand
+	public class CommandAddExceptionToListBox : ICommand
 	{
 		private string _item;
 		private ListBox _listBox;
@@ -12,7 +12,7 @@ namespace Forms.Commands.ManageExceptions
 		private ManageExceptionsScreen _screen;
 		private int _itemIndex;
 
-		public CommandAddItemToListBox(string item, ListBox listBox, ExceptionType selectedExceptionType,
+		public CommandAddExceptionToListBox(string item, ListBox listBox, ExceptionType selectedExceptionType,
 			ManageExceptionsScreen screen)
 		{
 			_item = item;

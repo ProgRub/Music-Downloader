@@ -109,5 +109,10 @@ namespace Business
 
 		public IEnumerable<ExceptionDTO> GetAllExceptions() => ExceptionsService.Instance.GetAllExceptions()
 			.Select(ExceptionDTO.ConvertYearLyricsChangeDetailsExceptionToDto);
+
+		public IDictionary<string, string> GetUrlReplacements()
+		{
+			return UrlReplacementService.Instance.GetAllUrlReplacements();
+		}
 	}
 }

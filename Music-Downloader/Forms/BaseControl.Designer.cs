@@ -35,6 +35,7 @@ namespace Forms
 			// ButtonBack
 			// 
 			this.ButtonBack.AutoSize = true;
+			this.ButtonBack.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonBack.BackColor = System.Drawing.Color.Transparent;
 			this.ButtonBack.FlatAppearance.BorderSize = 0;
 			this.ButtonBack.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -45,7 +46,7 @@ namespace Forms
 			this.ButtonBack.Location = new System.Drawing.Point(0, 3);
 			this.ButtonBack.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.ButtonBack.Name = "ButtonBack";
-			this.ButtonBack.Size = new System.Drawing.Size(66, 39);
+			this.ButtonBack.Size = new System.Drawing.Size(55, 27);
 			this.ButtonBack.TabIndex = 5;
 			this.ButtonBack.Text = "Back";
 			this.ButtonBack.UseVisualStyleBackColor = false;

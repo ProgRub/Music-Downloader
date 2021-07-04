@@ -184,6 +184,7 @@ namespace Forms
 			this.ButtonManageUrlReplacements.TabIndex = 14;
 			this.ButtonManageUrlReplacements.Text = "Manage URL Replacements";
 			this.ButtonManageUrlReplacements.UseVisualStyleBackColor = true;
+			this.ButtonManageUrlReplacements.Click += new System.EventHandler(this.ButtonManageUrlReplacements_Click);
 			// 
 			// HomeScreen
 			// 

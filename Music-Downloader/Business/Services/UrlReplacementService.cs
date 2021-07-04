@@ -17,10 +17,9 @@ namespace Business.Services
 
 		public static UrlReplacementService Instance { get; } = new();
 
-		internal IEnumerable<KeyValuePair<string, string>> GetAllUrlReplacements()
+		internal IDictionary<string,string> GetAllUrlReplacements()
 		{
-			return _urlReplacementRepository.GetAll()
-				.Select(e => new KeyValuePair<string, string>(e.StringToReplace, e.StringReplacement));
+			return _urlReplacementRepository.GetAll().ToDictionary(urlReplacement => urlReplacement.StringToReplace, urlReplacement => urlReplacement.StringReplacement);
 		}
 	}
 }

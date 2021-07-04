@@ -21,8 +21,7 @@ namespace Forms
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new Window());
 			BusinessFacade.Instance.KillDeemix();
-			BusinessFacade.Instance.SaveExceptions();
-			BusinessFacade.Instance.SaveDirectories();
+			BusinessFacade.Instance.SaveChanges();
 		}
 	}
 }

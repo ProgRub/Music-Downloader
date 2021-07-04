@@ -139,7 +139,6 @@ namespace Forms
 					if (_numberOfFilesDone == _totalNumberOfFiles)
 					{
 						AllFilesFinishedUIChanges();
-						BusinessFacade.Instance.SaveExceptions();
 					}
 
 					break;

@@ -13,7 +13,7 @@ namespace Business.Services
 	{
 		private readonly IYearLyricsChangeDetailsExceptionRepository _changeDetailsExceptionRepository;
 
-		private ICollection<YearLyricsChangeDetailsException> _deletedExceptions { get; } =
+		private ICollection<YearLyricsChangeDetailsException> _deletedExceptions  =
 			new List<YearLyricsChangeDetailsException>();
 
 		private ExceptionsService()

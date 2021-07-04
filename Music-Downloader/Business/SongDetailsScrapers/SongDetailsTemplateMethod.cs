@@ -28,7 +28,7 @@ namespace Business.SongDetailsScrapers
 		private static readonly object _accessExceptionsMutex = new();
 		internal SongFileDTO CurrentSong { get; set; }
 
-		private static readonly IEnumerable<KeyValuePair<string, string>> _urlReplacements =
+		private static readonly IDictionary<string,string> _urlReplacements =
 			UrlReplacementService.Instance.GetAllUrlReplacements();
 
 		private static readonly IEnumerable<YearLyricsChangeDetailsException> _allExceptions =

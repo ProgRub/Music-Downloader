@@ -58,6 +58,11 @@ namespace Forms
 			MoveToScreen(new ManageExceptionsScreen(),this);
 		}
 
+		private void ButtonManageUrlReplacements_Click(object sender, EventArgs e)
+		{
+			MoveToScreen(new ManageUrlReplacementsScreen(),this);
+		}
+
 		private void HomeScreen_Enter(object sender, EventArgs e)
 		{
 			CommandsManager.Instance.ResetCommandsList();

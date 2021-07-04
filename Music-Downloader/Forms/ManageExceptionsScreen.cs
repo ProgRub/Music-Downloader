@@ -319,7 +319,7 @@ namespace Forms
 				};
 				macro.Add(new CommandSetSelectedExceptionType(SelectedExceptionType, this));
 				macro.Add(new CommandAddException(newException, ref _exceptions));
-				macro.Add(new CommandAddItemToListBox(GetExceptionString(newException), ListBoxExceptions,
+				macro.Add(new CommandAddExceptionToListBox(GetExceptionString(newException), ListBoxExceptions,
 					SelectedExceptionType, this));
 			}
 

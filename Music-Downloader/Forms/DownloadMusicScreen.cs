@@ -114,6 +114,7 @@ namespace Forms
 			macroCommand.Add(new CommandRenameSelectedListBoxItem(TextBoxRenameFile.Text, ListBoxBeforeFiles));
 			CommandsManager.Instance.Execute(macroCommand);
 			ListBoxBeforeFiles.SelectedItem = null;
+			SetFormAcceptButton(ButtonMoveFilesGetLyrics);
 		}
 
 		private void ListBoxBeforeFiles_SelectedIndexChanged(object sender, EventArgs e)

@@ -4,41 +4,57 @@ using iTunesLib;
 
 namespace Business.Services.MusicServices
 {
-    public class iTunesService : IMusicService
-    {
-        private iTunesService()
-        {
-        }
+	public class iTunesService : IMusicService
+	{
+		private iTunesService()
+		{
+		}
 
-        private iTunesApp _iTunes;
-        private IITLibraryPlaylist _iTunesLibrary;
+		private iTunesApp _iTunes;
+		private IITLibraryPlaylist _iTunesLibrary;
 
-        public static IMusicService Instance { get; } = new iTunesService();
+		public static IMusicService Instance { get; } = new iTunesService();
 
-        public void AddSong(SongFileDTO song)
-        {
-            if (_iTunes == null)
-            {
-                OpenService();
-            }
+		public void AddSong(SongFileDTO song)
+		{
 
-            _iTunesLibrary.AddFile(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
-        }
+			_iTunesLibrary.AddFile(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
+		}
 
-        public void DeleteSong(SongFileDTO song)
-        {
-	        throw new System.NotImplementedException();
-        }
+		public void DeleteSong(SongFileDTO song)
+		{
+			GetTrack(song.Title,song.Album).Delete();
+		}
 
-        public int GetPlayCountOfSong(SongFileDTO song)
-        {
-	        throw new System.NotImplementedException();
-        }
+		public int GetPlayCountOfSong(SongFileDTO song)
+		{
+			return GetTrack(song.Title, song.Album).PlayedCount;
+		}
 
-        public void OpenService()
-        {
-            _iTunes = new iTunesApp();
-            _iTunesLibrary = _iTunes.LibraryPlaylist;
-        }
-    }
+		private IITTrack GetTrack(string title, string album)
+		{
+			if (_iTunes == null)
+			{
+				OpenService();
+			}
+			var tracks = _iTunesLibrary.Search(title, ITPlaylistSearchField.ITPlaylistSearchFieldSongNames);
+			if (tracks == null) return null;
+			for (var index = 1; index <= tracks.Count; index++)
+			{
+				if (tracks[index].Album == album)
+				{
+					return tracks[index];
+				}
+			}
+
+			return null;
+		}
+
+		public void OpenService()
+		{
+			if(_iTunes!=null)return;
+			_iTunes = new iTunesApp();
+			_iTunesLibrary = _iTunes.LibraryPlaylist;
+		}
+	}
 }

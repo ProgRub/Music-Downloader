@@ -11,7 +11,7 @@ namespace Business.Services
 	{
 		private readonly IUrlReplacementRepository _urlReplacementRepository;
 
-		private ICollection<string> _deletedUrlReplacementKeys =
+		private readonly ICollection<string> _deletedUrlReplacementKeys =
 			new List<string>();
 
 		private UrlReplacementService()

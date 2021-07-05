@@ -7,7 +7,7 @@ namespace Business.Commands.ManageUrlReplacements
 {
 	public class CommandDeleteUrlReplacement:ICommand
 	{
-		private string _urlReplacementKey;
+		private readonly string _urlReplacementKey;
 
 		public CommandDeleteUrlReplacement(string urlReplacementKey)
 		{

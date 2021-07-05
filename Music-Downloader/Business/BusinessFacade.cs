@@ -20,7 +20,7 @@ namespace Business
 		public event EventHandler<FileMovedArgs> NotifyMusicFileMoved;
 		public event EventHandler<SongFileProgressEventArgs> NotifySongFileProgress;
 		public event EventHandler<ThreadsConfigurationEventArgs> NotifyInitialThreadsConfiguration;
-		private IMusicService _musicService;
+		internal IMusicService MusicService { get; private set; }
 		public static BusinessFacade Instance { get; } = new();
 
 		private BusinessFacade()
@@ -63,15 +63,15 @@ namespace Business
 
 		public void SetMusicService(string type)
 		{
-			_musicService = type switch
+			MusicService = type switch
 			{
 				"iTunes" => iTunesService.Instance,
-				_ => _musicService
+				_ => MusicService
 			};
 		}
 
-		public void OpenService() => _musicService.OpenService();
-		public void AddSongToService(SongFileDTO song) => _musicService.AddSong(song);
+		public void OpenService() => MusicService.OpenService();
+		public void AddSongToService(SongFileDTO song) => MusicService.AddSong(song);
 
 		public void TrySongAgain(int threadId, SongFileDTO correctedSong)
 		{
@@ -93,6 +93,7 @@ namespace Business
 
 		public void SaveChanges()
 		{
+			SongService.Instance.SaveChanges();
 			ExceptionsService.Instance.SaveChanges();
 			DirectoriesService.Instance.SaveChanges();
 			UrlReplacementService.Instance.SaveChanges();

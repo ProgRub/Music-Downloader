@@ -7,8 +7,9 @@ namespace Forms.Commands.ManageExceptions
 {
 	public class CommandChangeExceptionInList : ICommand
 	{
-		private IList<ExceptionDTO> _exceptions;
-		private ExceptionDTO _oldException, _newException;
+		private readonly IList<ExceptionDTO> _exceptions;
+		private readonly ExceptionDTO _oldException;
+		private readonly ExceptionDTO _newException;
 
 		public CommandChangeExceptionInList(ref IList<ExceptionDTO> exceptions, ExceptionDTO oldException,
 			ExceptionDTO newException)

@@ -21,9 +21,9 @@ namespace Business.SongDetailsScrapers
 				htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(false));
 			} while (!htmlDoc.DocumentNode.Descendants("main").Any());
 
-			_htmlDocumentOfSingle = htmlDoc;
+			HtmlDocumentOfSingle = htmlDoc;
 			var htmlNode = htmlDoc.DocumentNode.Descendants("div").Where(e =>
-					e.GetAttributeValue("class", "") == "HeaderMetadata__Section-sc-1p42fnf-2 grjXi")
+					e.GetAttributeValue("class", "").Contains("HeaderMetadata__Section-sc-1p42fnf-2"))
 				.First(e => GetDecodedInnerText(e).Contains("Release"));
 			var textSplit = GetDecodedInnerText(htmlNode).Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
 			return int.Parse(textSplit.Last());

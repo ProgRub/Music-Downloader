@@ -7,10 +7,10 @@ namespace Forms.Commands.ManageUrlReplacements
 {
 	public class CommandAddUrlReplacementToListbox:ICommand
 	{
-		private KeyValuePair<string,string> _urlReplacementPair;
-		private ListBox _listBox;
-		private int _itemIndex;
-		private IDictionary<string, string> _urlReplacements;
+		private readonly KeyValuePair<string,string> _urlReplacementPair;
+		private readonly ListBox _listBox;
+		private readonly int _itemIndex;
+		private readonly IDictionary<string, string> _urlReplacements;
 
 		public CommandAddUrlReplacementToListbox(KeyValuePair<string,string> urlReplacementPair, ListBox listBox,
 			ref IDictionary<string, string> urlReplacements)

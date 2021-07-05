@@ -10,9 +10,9 @@ namespace Business.Commands.ManageExceptions
 {
 	public class CommandAddException : ICommand
 	{
-		private YearLyricsChangeDetailsException _exception;
-		private IList<ExceptionDTO> _exceptions;
-		private ExceptionDTO _exceptionDtoToAddToList;
+		private readonly YearLyricsChangeDetailsException _exception;
+		private readonly IList<ExceptionDTO> _exceptions;
+		private readonly ExceptionDTO _exceptionDtoToAddToList;
 
 		public CommandAddException(ExceptionDTO exception, ref IList<ExceptionDTO> exceptions)
 		{

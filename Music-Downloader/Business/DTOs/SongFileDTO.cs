@@ -22,11 +22,17 @@ namespace Business.DTOs
 		public int Year { get; set; }
 		public string Lyrics { get; set; }
 
+		private static IDictionary<string, string> _genreReplacements = new Dictionary<string, string>
+			{{"Alternativa", "Alternative"}};
+
 		public bool IsSingle => TrackNumber == 1 && TotalTrackCount == 1 && DiscNumber == 1 && TotalDiscCount == 1;
 
 		internal static SongFileDTO GetSongFileDTOFromFilePath(string filePath)
 		{
 			using var songFile = TagLib.File.Create(filePath);
+			var genre = _genreReplacements.ContainsKey(songFile.Tag.FirstGenre)
+				? _genreReplacements[songFile.Tag.FirstGenre]
+				: songFile.Tag.FirstGenre;
 			return new SongFileDTO
 			{
 				Filename = Path.GetFileName(filePath),
@@ -36,7 +42,7 @@ namespace Business.DTOs
 				DiscNumber = (int) songFile.Tag.Disc,
 				TrackNumber = (int) songFile.Tag.Track,
 				Title = songFile.Tag.Title,
-				Genre = songFile.Tag.FirstGenre,
+				Genre = genre,
 				TotalTrackCount = (int) songFile.Tag.TrackCount,
 				TotalDiscCount = (int) songFile.Tag.DiscCount,
 				Year = (int) songFile.Tag.Year
@@ -85,15 +91,19 @@ namespace Business.DTOs
 					}
 
 					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(renameOptions), renameOptions, null);
 			}
 		}
 
 		public void SaveToFile()
 		{
+			SongService.Instance.SetYearAndLyricsOfSongByFilename(Filename, Year, Lyrics);
 			using var songFile =
 				TagLib.File.Create(Path.Combine(DirectoriesService.Instance.MusicToDirectory, Filename));
 			songFile.Tag.Lyrics = Lyrics;
 			songFile.Tag.Year = (uint) Year;
+			songFile.Tag.Genres = new[] {Genre};
 			songFile.Save();
 		}
 

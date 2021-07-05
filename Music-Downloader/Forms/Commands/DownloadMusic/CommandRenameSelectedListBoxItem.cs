@@ -5,9 +5,10 @@ namespace Forms.Commands.DownloadMusic
 {
 	public class CommandRenameSelectedListBoxItem : ICommand
 	{
-		private string _newText, _oldText;
-		private ListBox _listBox;
-		private int _itemIndex;
+		private readonly string _newText;
+		private readonly string _oldText;
+		private readonly ListBox _listBox;
+		private readonly int _itemIndex;
 
 		public CommandRenameSelectedListBoxItem(string newText, ListBox listBox)
 		{

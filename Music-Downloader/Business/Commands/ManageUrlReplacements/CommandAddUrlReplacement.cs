@@ -8,7 +8,8 @@ namespace Business.Commands.ManageUrlReplacements
 {
 	public class CommandAddUrlReplacement : ICommand
 	{
-		private string _whatToReplace, _replacement;
+		private readonly string _whatToReplace;
+		private readonly string _replacement;
 
 		public CommandAddUrlReplacement(string whatToReplace,string replacement)
 		{

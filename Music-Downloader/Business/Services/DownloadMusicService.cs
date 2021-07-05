@@ -174,8 +174,14 @@ namespace Business.Services
 			{
 				if (condition == FileMovedCondition.ReplacedSingle)
 				{
+					BusinessFacade.Instance.MusicService.DeleteSong(SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath));
+					SongService.Instance.ChangeSingleInformation(song);
 					FileSystem.DeleteFile(destinationFilePath, UIOption.OnlyErrorDialogs,
 						RecycleOption.SendToRecycleBin);
+				}
+				else
+				{
+					SongService.Instance.AddSong(song);
 				}
 
 				File.Move(originFilePath,

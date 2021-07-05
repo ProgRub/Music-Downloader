@@ -7,8 +7,9 @@ namespace Business.Commands.ManageExceptions
 {
 	public class CommandChangeException : ICommand
 	{
-		private ExceptionDTO _oldException, _newException;
-		private YearLyricsChangeDetailsException _exception;
+		private readonly ExceptionDTO _oldException;
+		private readonly ExceptionDTO _newException;
+		private readonly YearLyricsChangeDetailsException _exception;
 
 
 		public CommandChangeException(ExceptionDTO oldException,ExceptionDTO newException)

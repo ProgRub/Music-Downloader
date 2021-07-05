@@ -100,6 +100,8 @@ namespace Forms
 			this.ButtonRenameFile.AutoSize = true;
 			this.ButtonRenameFile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonRenameFile.FlatAppearance.BorderSize = 0;
+			this.ButtonRenameFile.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonRenameFile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonRenameFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonRenameFile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonRenameFile.Location = new System.Drawing.Point(1030, 760);
@@ -116,6 +118,8 @@ namespace Forms
 			this.ButtonMoveFilesGetLyrics.AutoSize = true;
 			this.ButtonMoveFilesGetLyrics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonMoveFilesGetLyrics.FlatAppearance.BorderSize = 0;
+			this.ButtonMoveFilesGetLyrics.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonMoveFilesGetLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonMoveFilesGetLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonMoveFilesGetLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(775, 798);

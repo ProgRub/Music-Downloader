@@ -163,6 +163,7 @@ namespace Forms
 			this.TextBoxThreadsStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
 			this.TextBoxThreadsStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxThreadsStatus.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.TextBoxThreadsStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
 			this.TextBoxThreadsStatus.Location = new System.Drawing.Point(16, 695);
 			this.TextBoxThreadsStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxThreadsStatus.Multiline = true;
@@ -176,6 +177,7 @@ namespace Forms
 			this.TextBoxCorrectArtist.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxCorrectArtist.Enabled = false;
 			this.TextBoxCorrectArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.TextBoxCorrectArtist.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
 			this.TextBoxCorrectArtist.Location = new System.Drawing.Point(627, 696);
 			this.TextBoxCorrectArtist.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectArtist.Name = "TextBoxCorrectArtist";
@@ -188,6 +190,7 @@ namespace Forms
 			this.TextBoxCorrectAlbum.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxCorrectAlbum.Enabled = false;
 			this.TextBoxCorrectAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.TextBoxCorrectAlbum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
 			this.TextBoxCorrectAlbum.Location = new System.Drawing.Point(627, 724);
 			this.TextBoxCorrectAlbum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectAlbum.Name = "TextBoxCorrectAlbum";
@@ -200,6 +203,7 @@ namespace Forms
 			this.TextBoxCorrectTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxCorrectTitle.Enabled = false;
 			this.TextBoxCorrectTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.TextBoxCorrectTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
 			this.TextBoxCorrectTitle.Location = new System.Drawing.Point(627, 752);
 			this.TextBoxCorrectTitle.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectTitle.Name = "TextBoxCorrectTitle";
@@ -249,6 +253,8 @@ namespace Forms
 			this.ButtonTryAgain.BackColor = System.Drawing.Color.Transparent;
 			this.ButtonTryAgain.Enabled = false;
 			this.ButtonTryAgain.FlatAppearance.BorderSize = 0;
+			this.ButtonTryAgain.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonTryAgain.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonTryAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonTryAgain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonTryAgain.Location = new System.Drawing.Point(848, 780);
@@ -266,6 +272,8 @@ namespace Forms
 			this.ButtonSkipYear.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonSkipYear.Enabled = false;
 			this.ButtonSkipYear.FlatAppearance.BorderSize = 0;
+			this.ButtonSkipYear.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonSkipYear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSkipYear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSkipYear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonSkipYear.Location = new System.Drawing.Point(848, 811);
@@ -283,6 +291,8 @@ namespace Forms
 			this.ButtonSkipLyrics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonSkipLyrics.Enabled = false;
 			this.ButtonSkipLyrics.FlatAppearance.BorderSize = 0;
+			this.ButtonSkipLyrics.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonSkipLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSkipLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSkipLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
 			this.ButtonSkipLyrics.Location = new System.Drawing.Point(848, 842);

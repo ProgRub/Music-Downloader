@@ -6,11 +6,11 @@ namespace Forms.Commands.ManageExceptions
 {
 	public class CommandAddExceptionToListBox : ICommand
 	{
-		private string _item;
-		private ListBox _listBox;
-		private ExceptionType _selectedExceptionType;
-		private ManageExceptionsScreen _screen;
-		private int _itemIndex;
+		private readonly string _item;
+		private readonly ListBox _listBox;
+		private readonly ExceptionType _selectedExceptionType;
+		private readonly ManageExceptionsScreen _screen;
+		private readonly int _itemIndex;
 
 		public CommandAddExceptionToListBox(string item, ListBox listBox, ExceptionType selectedExceptionType,
 			ManageExceptionsScreen screen)

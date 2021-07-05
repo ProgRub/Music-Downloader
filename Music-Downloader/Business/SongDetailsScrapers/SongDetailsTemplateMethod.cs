@@ -21,7 +21,7 @@ namespace Business.SongDetailsScrapers
 		private readonly ISet<SongFileDTO> _songs;
 		internal int ThreadId { get; }
 
-		private static IDictionary<string, List<SemaphoreSlim>> _albumsBeingChecked =
+		private static readonly IDictionary<string, List<SemaphoreSlim>> _albumsBeingChecked =
 			new Dictionary<string, List<SemaphoreSlim>>();
 
 		private static readonly object _checkAlbumsMutex = new();
@@ -44,7 +44,7 @@ namespace Business.SongDetailsScrapers
 		internal bool SkipYear { get; set; }
 		internal bool SkipLyrics { get; set; }
 
-		protected HtmlDocument _htmlDocumentOfSingle;
+		protected HtmlDocument HtmlDocumentOfSingle { get; set; }
 
 
 		internal SongDetailsTemplateMethod(ISet<SongFileDTO> songs, int threadId)
@@ -86,7 +86,7 @@ namespace Business.SongDetailsScrapers
 					SetSongLyrics();
 				CurrentSong.SaveToFile();
 				RaiseEvent(SongFileProgress.AddingToService);
-				//BusinessFacade.Instance.AddSongToService(CurrentSong);
+				BusinessFacade.Instance.AddSongToService(CurrentSong);
 				RaiseEvent(SongFileProgress.FileDone);
 			}
 		}
@@ -95,7 +95,7 @@ namespace Business.SongDetailsScrapers
 		{
 			if (CurrentSong.IsSingle)
 			{
-				CurrentSong.Lyrics = GetLyrics(_htmlDocumentOfSingle);
+				CurrentSong.Lyrics = GetLyrics(HtmlDocumentOfSingle);
 				return;
 			}
 

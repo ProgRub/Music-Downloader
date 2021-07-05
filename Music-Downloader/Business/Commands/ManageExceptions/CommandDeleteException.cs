@@ -7,7 +7,7 @@ namespace Business.Commands.ManageExceptions
 {
 	public class CommandDeleteException:ICommand
 	{
-		private YearLyricsChangeDetailsException _exception;
+		private readonly YearLyricsChangeDetailsException _exception;
 
 		public CommandDeleteException(ExceptionDTO exception)
 		{

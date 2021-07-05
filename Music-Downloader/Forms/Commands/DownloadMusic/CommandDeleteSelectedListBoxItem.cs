@@ -5,9 +5,9 @@ namespace Forms.Commands.DownloadMusic
 {
 	public class CommandDeleteSelectedListBoxItem : ICommand
 	{
-		private ListBox _listBox;
-		private object _item;
-		private int _itemIndex;
+		private readonly ListBox _listBox;
+		private readonly object _item;
+		private readonly int _itemIndex;
 
 		public CommandDeleteSelectedListBoxItem(ListBox listBox)
 		{

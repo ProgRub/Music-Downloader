@@ -5,8 +5,8 @@ namespace Forms.Commands.ManageExceptions
 {
 	public class CommandSetSelectedExceptionType : ICommand
 	{
-		private ExceptionType _exceptionType;
-		private ManageExceptionsScreen _screen;
+		private readonly ExceptionType _exceptionType;
+		private readonly ManageExceptionsScreen _screen;
 
 		public CommandSetSelectedExceptionType(ExceptionType exceptionType, ManageExceptionsScreen screen)
 		{

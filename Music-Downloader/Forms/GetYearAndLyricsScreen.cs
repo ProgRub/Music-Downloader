@@ -20,15 +20,15 @@ namespace Forms
 	{
 		private int _numberOfFilesDone, _totalNumberOfFiles, _lastWrittenLineIndex;
 
-		private IDictionary<int, int> _numberOfFilesDonePerThread =
+		private readonly IDictionary<int, int> _numberOfFilesDonePerThread =
 			new Dictionary<int, int>();
 
-		private IDictionary<int, int> _numberOfTotalFilesPerThread =
+		private readonly IDictionary<int, int> _numberOfTotalFilesPerThread =
 			new Dictionary<int, int>();
 
-		private IDictionary<int, int> _lastUsedLineByThread = new Dictionary<int, int>();
-		private Stopwatch _timeElapsed;
-		private Timer _clock;
+		private readonly IDictionary<int, int> _lastUsedLineByThread = new Dictionary<int, int>();
+		private readonly Stopwatch _timeElapsed;
+		private readonly Timer _clock;
 		private SongFileDTO _errorSong;
 		private SongFileProgress _typeOfException;
 		private int _threadIdWithError;

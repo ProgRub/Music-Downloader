@@ -118,5 +118,7 @@ namespace Business
 		{
 			return UrlReplacementService.Instance.GetAllUrlReplacements();
 		}
+
+		public IEnumerable<string> GetGrimeArtists() => GrimeArtistService.Instance.GetAllGrimeArtists();
 	}
 }

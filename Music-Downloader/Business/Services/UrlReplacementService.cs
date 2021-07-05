@@ -43,9 +43,6 @@ namespace Business.Services
 				{StringToReplace = toReplace, StringReplacement = replacement});
 		}
 
-		internal UrlReplacement GetUrlReplacementByToReplace(string toReplace) =>
-			_urlReplacementRepository.Find(e => e.StringToReplace == toReplace).First();
-
 		internal void SaveChanges()
 		{
 			foreach (var deletedUrlReplacementKey in _deletedUrlReplacementKeys)

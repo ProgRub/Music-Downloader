@@ -30,14 +30,25 @@ namespace Business.DTOs
 		internal static SongFileDTO GetSongFileDTOFromFilePath(string filePath)
 		{
 			using var songFile = TagLib.File.Create(filePath);
-			var genre = _genreReplacements.ContainsKey(songFile.Tag.FirstGenre)
-				? _genreReplacements[songFile.Tag.FirstGenre]
-				: songFile.Tag.FirstGenre;
+			var albumArtist = songFile.Tag.FirstAlbumArtist;
+
+			string genre;
+			if (GrimeArtistService.Instance.GetAllGrimeArtists().Contains(albumArtist))
+			{
+				genre = "Grime";
+			}
+			else
+			{
+				genre = _genreReplacements.ContainsKey(songFile.Tag.FirstGenre)
+					? _genreReplacements[songFile.Tag.FirstGenre]
+					: songFile.Tag.FirstGenre;
+			}
+
 			return new SongFileDTO
 			{
 				Filename = Path.GetFileName(filePath),
 				Album = songFile.Tag.Album,
-				AlbumArtist = songFile.Tag.FirstAlbumArtist,
+				AlbumArtist = albumArtist,
 				ContributingArtists = songFile.Tag.Performers,
 				DiscNumber = (int) songFile.Tag.Disc,
 				TrackNumber = (int) songFile.Tag.Track,
@@ -104,6 +115,7 @@ namespace Business.DTOs
 			songFile.Tag.Lyrics = Lyrics;
 			songFile.Tag.Year = (uint) Year;
 			songFile.Tag.Genres = new[] {Genre};
+			songFile.Tag.AlbumArtists = new[] {AlbumArtist};
 			songFile.Save();
 		}
 

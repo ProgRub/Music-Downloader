@@ -39,6 +39,7 @@ namespace Forms
 			this.FolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.ButtonManageExceptions = new System.Windows.Forms.Button();
 			this.ButtonManageUrlReplacements = new System.Windows.Forms.Button();
+			this.ButtonManageGrimeArtists = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// ButtonBack
@@ -186,10 +187,29 @@ namespace Forms
 			this.ButtonManageUrlReplacements.UseVisualStyleBackColor = true;
 			this.ButtonManageUrlReplacements.Click += new System.EventHandler(this.ButtonManageUrlReplacements_Click);
 			// 
+			// ButtonManageGrimeArtists
+			// 
+			this.ButtonManageGrimeArtists.AutoSize = true;
+			this.ButtonManageGrimeArtists.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.ButtonManageGrimeArtists.FlatAppearance.BorderSize = 0;
+			this.ButtonManageGrimeArtists.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+			this.ButtonManageGrimeArtists.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonManageGrimeArtists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ButtonManageGrimeArtists.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+			this.ButtonManageGrimeArtists.Location = new System.Drawing.Point(374, 185);
+			this.ButtonManageGrimeArtists.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.ButtonManageGrimeArtists.Name = "ButtonManageGrimeArtists";
+			this.ButtonManageGrimeArtists.Size = new System.Drawing.Size(183, 27);
+			this.ButtonManageGrimeArtists.TabIndex = 15;
+			this.ButtonManageGrimeArtists.Text = "Manage Grime Artists";
+			this.ButtonManageGrimeArtists.UseVisualStyleBackColor = true;
+			this.ButtonManageGrimeArtists.Click += new System.EventHandler(this.ButtonManageGrimeArtists_Click);
+			// 
 			// HomeScreen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.ButtonManageGrimeArtists);
 			this.Controls.Add(this.ButtonManageUrlReplacements);
 			this.Controls.Add(this.ButtonManageExceptions);
 			this.Controls.Add(this.ButtonChooseMusicToDirectory);
@@ -213,6 +233,7 @@ namespace Forms
 			this.Controls.SetChildIndex(this.ButtonChooseMusicToDirectory, 0);
 			this.Controls.SetChildIndex(this.ButtonManageExceptions, 0);
 			this.Controls.SetChildIndex(this.ButtonManageUrlReplacements, 0);
+			this.Controls.SetChildIndex(this.ButtonManageGrimeArtists, 0);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -230,5 +251,6 @@ namespace Forms
 		private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialog;
 		private System.Windows.Forms.Button ButtonManageExceptions;
 		private System.Windows.Forms.Button ButtonManageUrlReplacements;
+		private System.Windows.Forms.Button ButtonManageGrimeArtists;
 	}
 }

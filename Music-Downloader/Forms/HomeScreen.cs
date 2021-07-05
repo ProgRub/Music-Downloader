@@ -63,6 +63,11 @@ namespace Forms
 			MoveToScreen(new ManageUrlReplacementsScreen(),this);
 		}
 
+		private void ButtonManageGrimeArtists_Click(object sender, EventArgs e)
+		{
+			MoveToScreen(new ManageGrimeArtistsScreen(),this);
+		}
+
 		private void HomeScreen_Enter(object sender, EventArgs e)
 		{
 			CommandsManager.Instance.ResetCommandsList();

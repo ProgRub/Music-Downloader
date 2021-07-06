@@ -60,11 +60,7 @@ namespace Business
 			GetLyricsAndYearService.Instance.Mode = mode;
 
 			if (GetLyricsAndYearService.Instance.Mode != GetYearAndLyricsMode.AllFiles) return;
-			var musicToDirectory = DirectoriesService.Instance.MusicToDirectory;
-			Debug.WriteLine(musicToDirectory);
-			GetLyricsAndYearService.Instance.SongsToGetDetails = Directory.GetFiles(musicToDirectory, "*.mp3",
-				SearchOption.TopDirectoryOnly).Select(e =>
-				SongFileDTO.GetSongFileDTOFromFilePath(Path.Combine(musicToDirectory, e))).ToHashSet();
+			GetLyricsAndYearService.Instance.SongsToGetDetails = DirectoriesService.Instance.GetAllStoredSongs();
 		}
 
 		public void StartGettingYearAndLyrics() => GetLyricsAndYearService.Instance.StartThreads();
@@ -128,5 +124,7 @@ namespace Business
 		}
 
 		public IEnumerable<string> GetGrimeArtists() => GrimeArtistService.Instance.GetAllGrimeArtists();
+
+		public ISet<SongFileDTO> GetAllStoredSongs()=>DirectoriesService.Instance.GetAllStoredSongs();
 	}
 }

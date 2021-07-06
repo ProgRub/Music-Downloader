@@ -1,4 +1,5 @@
-﻿using DB.Entities;
+﻿using Business.Enums;
+using DB.Entities;
 
 namespace Business.DTOs
 {
@@ -25,13 +26,5 @@ namespace Business.DTOs
 				Type = (ExceptionType) exception.Type
 			};
 		}
-	}
-
-	public enum ExceptionType
-	{
-		ChangeDetailsForAlbumYear,
-		ChangeDetailsForLyrics,
-		SkipAlbumYear,
-		SkipLyrics,
 	}
 }

@@ -75,6 +75,11 @@ namespace Forms
 			MoveToScreen(new GetYearAndLyricsScreen(),this);
 		}
 
+		private void ButtonSelectFiles_Click(object sender, EventArgs e)
+		{
+			MoveToScreen(new SelectFilesScreen(),this);
+		}
+
 		private void HomeScreen_Enter(object sender, EventArgs e)
 		{
 			CommandsManager.Instance.ResetCommandsList();

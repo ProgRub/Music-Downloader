@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DB;
 using DB.Entities;
@@ -13,6 +14,8 @@ namespace Business.Services
 
 		private readonly ICollection<string> _deletedUrlReplacementKeys =
 			new List<string>();
+
+		private readonly IDictionary<string, string> _addedUrlsDictionary = new Dictionary<string, string>();
 
 		private UrlReplacementService()
 		{
@@ -39,8 +42,7 @@ namespace Business.Services
 
 		internal void AddUrlReplacement(string toReplace, string replacement)
 		{
-			_urlReplacementRepository.Add(new UrlReplacement
-				{StringToReplace = toReplace, StringReplacement = replacement});
+			_addedUrlsDictionary.Add(new KeyValuePair<string, string>(toReplace,  replacement));
 		}
 
 		internal void SaveChanges()
@@ -49,6 +51,11 @@ namespace Business.Services
 			{
 				_urlReplacementRepository.Remove(_urlReplacementRepository
 					.Find(e => e.StringToReplace == deletedUrlReplacementKey).First());
+			}
+
+			foreach (var (key, value) in _addedUrlsDictionary)
+			{
+				_urlReplacementRepository.Add(new UrlReplacement{StringToReplace = key,StringReplacement = value});
 			}
 
 			_urlReplacementRepository.SaveChanges();

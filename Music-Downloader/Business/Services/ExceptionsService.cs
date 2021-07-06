@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Business.DTOs;
@@ -13,7 +14,10 @@ namespace Business.Services
 	{
 		private readonly IYearLyricsChangeDetailsExceptionRepository _changeDetailsExceptionRepository;
 
-		private readonly ICollection<YearLyricsChangeDetailsException> _deletedExceptions  =
+		private readonly ICollection<YearLyricsChangeDetailsException> _deletedExceptions =
+			new List<YearLyricsChangeDetailsException>();
+
+		private readonly ICollection<YearLyricsChangeDetailsException> _addedExceptions =
 			new List<YearLyricsChangeDetailsException>();
 
 		private ExceptionsService()
@@ -30,7 +34,7 @@ namespace Business.Services
 				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album,
 				Type = ChangeDetailsExceptionType.SkipAlbumYear
 			};
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
 		internal void AddSkipLyricsException(SongFileDTO song)
@@ -40,7 +44,7 @@ namespace Business.Services
 				OriginalArtist = song.AlbumArtist, OriginalTitle = song.Title,
 				Type = ChangeDetailsExceptionType.SkipLyrics
 			};
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
 		internal void AddCorrectionForAlbumYearException(SongFileDTO originalSong, SongFileDTO newSong)
@@ -51,7 +55,8 @@ namespace Business.Services
 				NewArtist = newSong.AlbumArtist, NewAlbum = newSong.Album,
 				Type = ChangeDetailsExceptionType.ChangeDetailsForAlbumYear
 			};
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
+			AddCorrectionForLyricsException(originalSong,newSong);
 		}
 
 		internal void AddCorrectionForLyricsException(SongFileDTO originalSong, SongFileDTO newSong)
@@ -59,14 +64,16 @@ namespace Business.Services
 			var exception = new YearLyricsChangeDetailsException
 			{
 				OriginalArtist = originalSong.AlbumArtist,
+				OriginalAlbum = originalSong.Album,
 				OriginalTitle = originalSong.Title,
 				NewArtist = newSong.AlbumArtist, NewTitle = newSong.Title,
 				Type = ChangeDetailsExceptionType.ChangeDetailsForLyrics
 			};
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
-		internal void AddCorrectionForAlbumYearException(YearLyricsChangeDetailsException exception, bool recentlyDeleted)
+		internal void AddCorrectionForAlbumYearException(YearLyricsChangeDetailsException exception,
+			bool recentlyDeleted)
 		{
 			if (recentlyDeleted)
 			{
@@ -74,7 +81,7 @@ namespace Business.Services
 				return;
 			}
 
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
 		internal void AddCorrectionForLyricsException(YearLyricsChangeDetailsException exception, bool recentlyDeleted)
@@ -85,7 +92,7 @@ namespace Business.Services
 				return;
 			}
 
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
 		internal void AddSkipAlbumYearException(YearLyricsChangeDetailsException exception, bool recentlyDeleted)
@@ -96,7 +103,7 @@ namespace Business.Services
 				return;
 			}
 
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
 		internal void AddSkipLyricsException(YearLyricsChangeDetailsException exception, bool recentlyDeleted)
@@ -107,11 +114,15 @@ namespace Business.Services
 				return;
 			}
 
-			_changeDetailsExceptionRepository.Add(exception);
+			_addedExceptions.Add(exception);
 		}
 
-		internal void RemoveException(YearLyricsChangeDetailsException exception) => _deletedExceptions.Add(exception);
-		
+		internal void RemoveException(YearLyricsChangeDetailsException exception)
+		{
+			if (!_addedExceptions.Remove(exception))
+				_deletedExceptions.Add(exception);
+		}
+
 
 		internal IEnumerable<YearLyricsChangeDetailsException> GetAllSkipAlbumYearExceptions() =>
 			_changeDetailsExceptionRepository.Find(e => e.Type == ChangeDetailsExceptionType.SkipAlbumYear);
@@ -131,8 +142,14 @@ namespace Business.Services
 			{
 				_changeDetailsExceptionRepository.Remove(deletedException);
 			}
+
+			foreach (var addedException in _addedExceptions)
+			{
+				_changeDetailsExceptionRepository.Add(addedException);
+			}
+
 			_changeDetailsExceptionRepository.SaveChanges();
-		} 
+		}
 
 		internal IEnumerable<YearLyricsChangeDetailsException> GetAllExceptions()
 		{
@@ -146,9 +163,22 @@ namespace Business.Services
 
 		internal YearLyricsChangeDetailsException GetExceptionFromDTO(ExceptionDTO dto)
 		{
-			return _changeDetailsExceptionRepository.Find(e =>
-				e.OriginalAlbum == dto.OriginalAlbum && e.OriginalArtist == dto.OriginalArtist &&
-				e.OriginalTitle == dto.OriginalTitle && e.Type == (ChangeDetailsExceptionType) dto.Type).First();
+			try
+			{
+				return _changeDetailsExceptionRepository.Find(e =>
+					e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
+					e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
+					e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase) &&
+					e.Type == (ChangeDetailsExceptionType) dto.Type).First();
+			}
+			catch (InvalidOperationException)
+			{
+				return _addedExceptions.ToList().First(e =>
+					e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
+					e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
+					e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase) &&
+					e.Type == (ChangeDetailsExceptionType) dto.Type);
+			}
 		}
 	}
 }

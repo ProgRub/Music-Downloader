@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Business;
 using Business.Commands;
+using Business.Enums;
 
 namespace Forms
 {
@@ -68,9 +69,16 @@ namespace Forms
 			MoveToScreen(new ManageGrimeArtistsScreen(),this);
 		}
 
+		private void ButtonAllFilesYearAndLyrics_Click(object sender, EventArgs e)
+		{
+			BusinessFacade.Instance.SetGetYearAndLyricsMode(GetYearAndLyricsMode.AllFiles);
+			MoveToScreen(new GetYearAndLyricsScreen(),this);
+		}
+
 		private void HomeScreen_Enter(object sender, EventArgs e)
 		{
 			CommandsManager.Instance.ResetCommandsList();
+			BusinessFacade.Instance.SaveChanges();
 			_musicFromDirectory = BusinessFacade.Instance.GetMusicFromDirectory();
 			_musicToDirectory = BusinessFacade.Instance.GetMusicToDirectory();
 			TextBoxMusicFromDirectory.Text = _musicFromDirectory;

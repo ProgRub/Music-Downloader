@@ -64,11 +64,21 @@ namespace Business.Services
 					!FilesToMove.Contains(Path.GetFileName(filePath)) &&
 					!DeletedFiles.Contains(Path.GetFileName(filePath))))
 				{
-					FilesToMove.Add(Path.GetFileName(filePath));
+					var fileName = Path.GetFileName(filePath);
+					fileName=UnCensorFilename(fileName);
+					FilesToMove.Add(fileName);
 					NotifyNewDownloadedMusicFile?.Invoke(this,
-						new NewFileEventArgs {Filename = Path.GetFileName(filePath)});
+						new NewFileEventArgs {Filename = fileName});
 				}
 			}
+		}
+
+		internal static string UnCensorFilename(string fileName)
+		{
+			return fileName.Replace("f_ck", "fuck").Replace("f___", "fuck").Replace("f__k", "fuck").Replace("sh_t", "shit")
+				.Replace("s__t", "shit").Replace("sh__", "shit").Replace("ni__as", "niggas").Replace(
+					"F_ck", "Fuck").Replace("F__k", "Fuck").Replace("F___", "Fuck").Replace("Sh_t", "Shit")
+				.Replace("S__t", "Shit").Replace("Sh__", "Shit").Replace("Ni__as", "Niggas");
 		}
 
 		private static string GetMostRecentPythonExecutable()

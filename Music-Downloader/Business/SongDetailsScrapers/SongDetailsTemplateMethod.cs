@@ -26,9 +26,10 @@ namespace Business.SongDetailsScrapers
 
 		private static readonly object _checkAlbumsMutex = new();
 		private static readonly object _accessExceptionsMutex = new();
+		private static readonly object _accessDBMutex = new();
 		internal SongFileDTO CurrentSong { get; set; }
 
-		private static readonly IDictionary<string,string> _urlReplacements =
+		private static readonly IDictionary<string, string> _urlReplacements =
 			UrlReplacementService.Instance.GetAllUrlReplacements();
 
 		private static readonly IEnumerable<YearLyricsChangeDetailsException> _allExceptions =
@@ -62,21 +63,30 @@ namespace Business.SongDetailsScrapers
 			foreach (var song in _songs)
 			{
 				CurrentSong = song;
+				
+				CurrentSong.Album = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Deluxe" }, CurrentSong.Album);
+				CurrentSong.Title = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "feat", "Feat", "bonus", "Bonus", "Conclusion", "Vocal Mix", "Extended" }, CurrentSong.Title);
 				RaiseEvent(SongFileProgress.GettingYear);
 				bool haveToGetSongYear, haveToGetSongLyrics;
 				lock (_accessExceptionsMutex)
 				{
 					haveToGetSongYear = !(!CurrentSong.IsSingle && _allExceptions.Any(e =>
 						                      e.Type == ChangeDetailsExceptionType.SkipAlbumYear &&
-						                      e.OriginalAlbum == CurrentSong.Album &&
-						                      e.OriginalArtist == CurrentSong.AlbumArtist) ||
+						                      e.OriginalAlbum.Equals(CurrentSong.Album,
+							                      StringComparison.OrdinalIgnoreCase) &&
+						                      e.OriginalArtist.Equals(CurrentSong.AlbumArtist,
+							                      StringComparison.OrdinalIgnoreCase)) ||
 					                      CurrentSong.IsSingle && _allExceptions.Any(e =>
 						                      e.Type == ChangeDetailsExceptionType.SkipLyrics &&
-						                      e.OriginalTitle == CurrentSong.Title &&
-						                      e.OriginalArtist == CurrentSong.AlbumArtist));
+						                      e.OriginalTitle.Equals(CurrentSong.Title,
+							                      StringComparison.OrdinalIgnoreCase) &&
+						                      e.OriginalArtist.Equals(CurrentSong.AlbumArtist,
+							                      StringComparison.OrdinalIgnoreCase)));
 					haveToGetSongLyrics = !_allExceptions.Any(e => e.Type == ChangeDetailsExceptionType.SkipLyrics &&
-					                                               e.OriginalTitle == CurrentSong.Title &&
-					                                               e.OriginalArtist == CurrentSong.AlbumArtist);
+					                                               e.OriginalTitle.Equals(CurrentSong.Title,
+						                                               StringComparison.OrdinalIgnoreCase) &&
+					                                               e.OriginalArtist.Equals(CurrentSong.AlbumArtist,
+						                                               StringComparison.OrdinalIgnoreCase));
 				}
 
 				if (haveToGetSongYear)
@@ -84,7 +94,10 @@ namespace Business.SongDetailsScrapers
 				RaiseEvent(SongFileProgress.GettingLyrics);
 				if (haveToGetSongLyrics)
 					SetSongLyrics();
-				CurrentSong.SaveToFile();
+				lock (_accessDBMutex)
+				{
+					CurrentSong.SaveToFile();
+				}
 				RaiseEvent(SongFileProgress.AddingToService);
 				BusinessFacade.Instance.AddSongToService(CurrentSong);
 				RaiseEvent(SongFileProgress.FileDone);
@@ -107,8 +120,9 @@ namespace Business.SongDetailsScrapers
 			{
 				changeDetailsException = _allExceptions.FirstOrDefault(e =>
 					e.Type == ChangeDetailsExceptionType.ChangeDetailsForLyrics &&
-					e.OriginalTitle == originalSong.Title &&
-					e.OriginalArtist == originalSong.AlbumArtist);
+					e.OriginalTitle.Equals(originalSong.Title, StringComparison.OrdinalIgnoreCase) &&
+					e.OriginalAlbum.Equals(originalSong.Album, StringComparison.OrdinalIgnoreCase) &&
+					e.OriginalArtist.Equals(originalSong.AlbumArtist, StringComparison.OrdinalIgnoreCase));
 			}
 
 			if (changeDetailsException != null)
@@ -121,6 +135,9 @@ namespace Business.SongDetailsScrapers
 			{
 				ThreadIdWithError = ThreadId;
 				SemaphoreErrorRaised.Wait();
+				Process.Start(new ProcessStartInfo("cmd",
+						$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
+					{CreateNoWindow = true});
 				RaiseEvent(SongFileProgress.GettingLyricsException);
 				SemaphoreErrorHandled.Wait();
 				SemaphoreErrorRaised.Release();
@@ -153,8 +170,9 @@ namespace Business.SongDetailsScrapers
 				{
 					changeDetailsException = _allExceptions.FirstOrDefault(e =>
 						e.Type == ChangeDetailsExceptionType.ChangeDetailsForLyrics &&
-						e.OriginalTitle == originalSong.Title &&
-						e.OriginalArtist == originalSong.AlbumArtist);
+						e.OriginalTitle.Equals(originalSong.Title, StringComparison.OrdinalIgnoreCase) &&
+						e.OriginalAlbum.Equals(originalSong.Album, StringComparison.OrdinalIgnoreCase) &&
+						e.OriginalArtist.Equals(originalSong.AlbumArtist, StringComparison.OrdinalIgnoreCase));
 				}
 
 				if (changeDetailsException != null)
@@ -167,6 +185,9 @@ namespace Business.SongDetailsScrapers
 				{
 					ThreadIdWithError = ThreadId;
 					SemaphoreErrorRaised.Wait();
+					Process.Start(new ProcessStartInfo("cmd",
+							$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
+						{CreateNoWindow = true});
 					RaiseEvent(SongFileProgress.GettingYearException);
 					SemaphoreErrorHandled.Wait();
 					SemaphoreErrorRaised.Release();
@@ -189,9 +210,9 @@ namespace Business.SongDetailsScrapers
 				return;
 			}
 
-			if (_alreadyVisitedAlbumPages.ContainsKey(CurrentSong.AlbumArtist + CurrentSong.Album))
+			if (_alreadyVisitedAlbumPages.ContainsKey(originalSong.AlbumArtist + originalSong.Album))
 			{
-				CurrentSong.Year = _alreadyVisitedAlbumPages[CurrentSong.AlbumArtist + CurrentSong.Album];
+				CurrentSong.Year = _alreadyVisitedAlbumPages[originalSong.AlbumArtist + originalSong.Album];
 			}
 			else
 			{
@@ -222,8 +243,8 @@ namespace Business.SongDetailsScrapers
 					{
 						changeDetailsException = _allExceptions.FirstOrDefault(e =>
 							e.Type == ChangeDetailsExceptionType.ChangeDetailsForAlbumYear &&
-							e.OriginalAlbum == originalSong.Album &&
-							e.OriginalArtist == originalSong.AlbumArtist);
+							e.OriginalAlbum.Equals(originalSong.Album, StringComparison.OrdinalIgnoreCase) &&
+							e.OriginalArtist.Equals(originalSong.AlbumArtist, StringComparison.OrdinalIgnoreCase));
 					}
 
 					if (changeDetailsException != null)
@@ -236,6 +257,9 @@ namespace Business.SongDetailsScrapers
 					{
 						ThreadIdWithError = ThreadId;
 						SemaphoreErrorRaised.Wait();
+						Process.Start(new ProcessStartInfo("cmd",
+								$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Album.Replace(" &", "")).Replace(" ", "+")}+site:Genius.com")
+							{CreateNoWindow = true});
 						RaiseEvent(SongFileProgress.GettingYearException);
 						SemaphoreErrorHandled.Wait();
 						SemaphoreErrorRaised.Release();
@@ -243,6 +267,13 @@ namespace Business.SongDetailsScrapers
 						{
 							SkipYear = false;
 							ExceptionsService.Instance.AddSkipAlbumYearException(originalSong);
+							_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album, CurrentSong.Year);
+							foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
+							{
+								semaphore.Release();
+							}
+
+							_albumsBeingChecked.Remove(originalSong.Album);
 							return;
 						}
 
@@ -255,7 +286,7 @@ namespace Business.SongDetailsScrapers
 					}
 
 					CurrentSong.Year = GetYearOfAlbumTrack();
-					_alreadyVisitedAlbumPages.Add(CurrentSong.AlbumArtist + CurrentSong.Album, CurrentSong.Year);
+					_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album, CurrentSong.Year);
 					foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
 					{
 						semaphore.Release();
@@ -295,24 +326,16 @@ namespace Business.SongDetailsScrapers
 			}
 
 			return response.StatusCode == HttpStatusCode.OK;
-			//try
-			//{
-			//    response = (HttpWebResponse) request.GetResponse();
-			//}
-			//catch (WebException e)
-			//{
-			//    if (e.Message.Contains("301"))
-			//    {
-			//        request = (HttpWebRequest) WebRequest.Create(e.Response.Headers[HttpResponseHeader.Location]);
-			//        response = (HttpWebResponse) request.GetResponse();
-			//    }
-			//}
 		}
 
 
-		protected static string MakeUrlReplacementsOnString(string detailParameter, bool forSongTitle)
+		protected static string MakeUrlReplacementsOnString(string detailParameter, bool forSongTitle,bool forAlbumName)
 		{
 			var detail = detailParameter.ToLower();
+			if (forAlbumName)
+			{
+				detail = detail.Replace(".", " ");
+			}
 			foreach (var (key, value) in _urlReplacements)
 			{
 				detail = detail.Replace(key, value);

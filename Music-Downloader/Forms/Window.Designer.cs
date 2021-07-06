@@ -29,6 +29,7 @@ namespace Forms
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Window));
 			this.homeScreen1 = new Forms.HomeScreen();
 			this.SuspendLayout();
 			// 
@@ -41,7 +42,7 @@ namespace Forms
 			this.homeScreen1.Location = new System.Drawing.Point(-1, -3);
 			this.homeScreen1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.homeScreen1.Name = "homeScreen1";
-			this.homeScreen1.Size = new System.Drawing.Size(906, 121);
+			this.homeScreen1.Size = new System.Drawing.Size(916, 245);
 			this.homeScreen1.TabIndex = 0;
 			// 
 			// Window
@@ -53,8 +54,9 @@ namespace Forms
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(41)))));
 			this.ClientSize = new System.Drawing.Size(1131, 450);
 			this.Controls.Add(this.homeScreen1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Window";
-			this.Text = "Window";
+			this.Text = "MusicDownloader";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

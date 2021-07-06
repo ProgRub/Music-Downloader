@@ -56,10 +56,18 @@ namespace Business
 			});
 		}
 
-		public void StartGettingYearAndLyrics()
-		{
-			GetLyricsAndYearService.Instance.StartThreads();
+		public void SetGetYearAndLyricsMode(GetYearAndLyricsMode mode)  {
+			GetLyricsAndYearService.Instance.Mode = mode;
+
+			if (GetLyricsAndYearService.Instance.Mode != GetYearAndLyricsMode.AllFiles) return;
+			var musicToDirectory = DirectoriesService.Instance.MusicToDirectory;
+			Debug.WriteLine(musicToDirectory);
+			GetLyricsAndYearService.Instance.SongsToGetDetails = Directory.GetFiles(musicToDirectory, "*.mp3",
+				SearchOption.TopDirectoryOnly).Select(e =>
+				SongFileDTO.GetSongFileDTOFromFilePath(Path.Combine(musicToDirectory, e))).ToHashSet();
 		}
+
+		public void StartGettingYearAndLyrics() => GetLyricsAndYearService.Instance.StartThreads();
 
 		public void SetMusicService(string type)
 		{

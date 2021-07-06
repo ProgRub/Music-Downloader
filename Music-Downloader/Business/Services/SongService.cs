@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Business.DTOs;
@@ -25,6 +26,7 @@ namespace Business.Services
 
 		internal void AddSong(SongFileDTO song)
 		{
+			if(_songRepository.Find(e=>e.Filename==song.Filename).Any()) return;
 			var songDB = new Song
 			{
 				Filename = song.Filename, ContributingArtists = song.ContributingArtists.ToList(), PlayCount = 0,
@@ -38,17 +40,26 @@ namespace Business.Services
 
 		internal void ChangeSingleInformation(SongFileDTO albumTrack)
 		{
-
 			var songDB = _songRepository.Find(e => e.Filename == albumTrack.Filename).First();
 			_songRepository.RemoveSingle(songDB);
 			AddSong(albumTrack);
 		}
 
-		internal void SetYearAndLyricsOfSongByFilename(string filename, int year, string lyrics)
+		internal void SetYearAndLyricsOfSong(SongFileDTO song, int year, string lyrics)
 		{
-			var song = _addedSongs.First(e => e.Filename == filename);
-			song.Year = year;
-			song.Lyrics = lyrics;
+			Song songInDB;
+			try
+			{
+				songInDB = _songRepository.Find(e=>e.Filename==song.Filename).First();
+			}
+			catch (InvalidOperationException)
+			{
+				AddSong(song);
+				songInDB = _addedSongs.First(e => e.Filename == song.Filename);
+			}
+
+			songInDB.Year = year;
+			songInDB.Lyrics = lyrics;
 		}
 
 		internal void SaveChanges() => _songRepository.SaveChanges();

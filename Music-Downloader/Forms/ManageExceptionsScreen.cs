@@ -65,6 +65,7 @@ namespace Forms
 
 		private void ManageExceptionsScreen_Enter(object sender, EventArgs e)
 		{
+			SetFormAcceptButton(ButtonAddChange);
 			CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
 			CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
 			_exceptions = BusinessFacade.Instance.GetAllExceptions().ToList();
@@ -105,7 +106,7 @@ namespace Forms
 				ExceptionType.SkipAlbumYear =>
 					$"{exception.Id} - {exception.OriginalArtist} | {exception.OriginalAlbum}",
 				ExceptionType.ChangeDetailsForLyrics =>
-					$"{exception.Id} - {exception.OriginalArtist} | {exception.OriginalTitle}",
+					$"{exception.Id} - {exception.OriginalArtist} | {exception.OriginalAlbum} | {exception.OriginalTitle}",
 				ExceptionType.SkipLyrics =>
 					$"{exception.Id} - {exception.OriginalArtist} | {exception.OriginalTitle}",
 				_ => throw new ArgumentOutOfRangeException()
@@ -159,8 +160,8 @@ namespace Forms
 					MakeControlsVisible(
 						new List<Control>
 						{
-							LabelOriginalTitle, LabelOriginalArtist, LabelNewArtist, LabelNewTitle,
-							TextBoxOriginalArtist, TextBoxOriginalTitle, TextBoxNewArtist, TextBoxNewTitle
+							LabelOriginalTitle, LabelOriginalArtist, LabelOriginalAlbum, LabelNewArtist, LabelNewTitle,
+							TextBoxOriginalArtist, TextBoxOriginalTitle, TextBoxOriginalAlbum, TextBoxNewArtist, TextBoxNewTitle
 						});
 					break;
 				case ExceptionType.SkipAlbumYear:
@@ -223,6 +224,7 @@ namespace Forms
 					break;
 				case ExceptionType.ChangeDetailsForLyrics:
 					TextBoxOriginalArtist.Text = _selectedException.OriginalArtist;
+					TextBoxOriginalAlbum.Text = _selectedException.OriginalAlbum;
 					TextBoxOriginalTitle.Text = _selectedException.OriginalTitle;
 					TextBoxNewArtist.Text = _selectedException.NewArtist;
 					TextBoxNewTitle.Text = _selectedException.NewTitle;
@@ -266,37 +268,37 @@ namespace Forms
 					ExceptionType.ChangeDetailsForAlbumYear => new ExceptionDTO
 					{
 						Id = _selectedException.Id,
-						OriginalArtist = TextBoxOriginalArtist.Text,
-						OriginalAlbum = TextBoxOriginalAlbum.Text,
+						OriginalArtist = TextBoxOriginalArtist.Text.Trim(),
+						OriginalAlbum = TextBoxOriginalAlbum.Text.Trim(),
 						OriginalTitle = _selectedException.OriginalTitle,
-						NewArtist = TextBoxNewArtist.Text,
-						NewAlbum = TextBoxNewAlbum.Text,
+						NewArtist = TextBoxNewArtist.Text.Trim(),
+						NewAlbum = TextBoxNewAlbum.Text.Trim(),
 						Type = _selectedException.Type
 					},
 					ExceptionType.ChangeDetailsForLyrics => new ExceptionDTO
 					{
 						Id = _selectedException.Id,
-						OriginalArtist = TextBoxOriginalArtist.Text,
-						OriginalAlbum = _selectedException.OriginalAlbum,
-						OriginalTitle = TextBoxOriginalTitle.Text,
-						NewArtist = TextBoxNewArtist.Text,
-						NewTitle = TextBoxNewTitle.Text,
+						OriginalArtist = TextBoxOriginalArtist.Text.Trim(),
+						OriginalAlbum = TextBoxOriginalAlbum.Text.Trim(),
+						OriginalTitle = TextBoxOriginalTitle.Text.Trim(),
+						NewArtist = TextBoxNewArtist.Text.Trim(),
+						NewTitle = TextBoxNewTitle.Text.Trim(),
 						Type = _selectedException.Type
 					},
 					ExceptionType.SkipAlbumYear => new ExceptionDTO
 					{
 						Id = _selectedException.Id,
-						OriginalArtist = TextBoxOriginalArtist.Text,
-						OriginalAlbum = TextBoxOriginalAlbum.Text,
+						OriginalArtist = TextBoxOriginalArtist.Text.Trim(),
+						OriginalAlbum = TextBoxOriginalAlbum.Text.Trim(),
 						OriginalTitle = _selectedException.OriginalTitle,
 						Type = _selectedException.Type
 					},
 					ExceptionType.SkipLyrics => new ExceptionDTO
 					{
 						Id = _selectedException.Id,
-						OriginalArtist = TextBoxOriginalArtist.Text,
+						OriginalArtist = TextBoxOriginalArtist.Text.Trim(),
 						OriginalAlbum = _selectedException.OriginalAlbum,
-						OriginalTitle = TextBoxOriginalTitle.Text,
+						OriginalTitle = TextBoxOriginalTitle.Text.Trim(),
 						Type = _selectedException.Type
 					},
 					_ => throw new ArgumentOutOfRangeException()
@@ -311,10 +313,10 @@ namespace Forms
 			{
 				var newException = new ExceptionDTO
 				{
-					Id =_exceptions.Count>0? _exceptions.Last().Id + 1:1,
-					OriginalArtist = TextBoxOriginalArtist.Text, OriginalAlbum = TextBoxOriginalAlbum.Text,
-					OriginalTitle = TextBoxOriginalTitle.Text,
-					NewArtist = TextBoxNewArtist.Text, NewAlbum = TextBoxNewAlbum.Text, NewTitle = TextBoxNewTitle.Text,
+					Id =_exceptions.Count>0? _exceptions.Max(e=>e.Id) + 1:1,
+					OriginalArtist = TextBoxOriginalArtist.Text.Trim(), OriginalAlbum = TextBoxOriginalAlbum.Text.Trim(),
+					OriginalTitle = TextBoxOriginalTitle.Text.Trim(),
+					NewArtist = TextBoxNewArtist.Text.Trim(), NewAlbum = TextBoxNewAlbum.Text.Trim(), NewTitle = TextBoxNewTitle.Text.Trim(),
 					Type = SelectedExceptionType
 				};
 				macro.Add(new CommandSetSelectedExceptionType(SelectedExceptionType, this));
@@ -325,5 +327,6 @@ namespace Forms
 
 			CommandsManager.Instance.Execute(macro);
 		}
+		
 	}
 }

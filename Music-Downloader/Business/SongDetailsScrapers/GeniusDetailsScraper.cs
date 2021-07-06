@@ -83,13 +83,13 @@ namespace Business.SongDetailsScrapers
 		{
 			if (forAlbumYear)
 			{
-				return "http://www.genius.com/albums/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false) +
+				return "http://www.genius.com/albums/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false,false) +
 				       "/" +
-				       MakeUrlReplacementsOnString(CurrentSong.Album, false);
+				       MakeUrlReplacementsOnString(CurrentSong.Album, false,true);
 			}
 
-			return "http://genius.com/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false) + "-" +
-			       MakeUrlReplacementsOnString(CurrentSong.Title, true) + "-lyrics";
+			return "http://genius.com/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false,false) + "-" +
+			       MakeUrlReplacementsOnString(CurrentSong.Title, true,false) + "-lyrics";
 		}
 	}
 }

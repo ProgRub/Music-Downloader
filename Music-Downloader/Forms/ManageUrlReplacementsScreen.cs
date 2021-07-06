@@ -120,7 +120,7 @@ namespace Forms
 		private void ButtonDeleteSelected_Click(object sender, EventArgs e)
 		{
 			var macro = new MacroCommand();
-			macro.Add(new CommandDeleteUrlReplacement(_selectedUrlReplacementKey));
+			macro.Add(new CommandDeleteUrlReplacement(_selectedUrlReplacementKey,ref _urlReplacements));
 			macro.Add(new CommandDeleteSelectedListBoxItem(ListBoxUrlReplacements));
 			CommandsManager.Instance.Execute(macro);
 		}

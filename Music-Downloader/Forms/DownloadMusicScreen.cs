@@ -84,6 +84,7 @@ namespace Forms
 			var button = (Button) sender;
 			if (button.Text != "Move Files")
 			{
+				BusinessFacade.Instance.SetGetYearAndLyricsMode(GetYearAndLyricsMode.DownloadedFiles);
 				MoveToScreen(new GetYearAndLyricsScreen(), this);
 				return;
 			}

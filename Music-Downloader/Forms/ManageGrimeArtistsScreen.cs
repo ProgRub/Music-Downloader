@@ -70,13 +70,14 @@ namespace Forms
 		{
 			if (string.IsNullOrWhiteSpace(TextBoxGrimeArtist.Text))
 			{
-				ShowInformationMessageBox("You can't insert an artist without a name","Error");
+				ShowInformationMessageBox("You can't insert an artist without a name", "Error");
 				return;
 			}
+
 			var grimeArtist = TextBoxGrimeArtist.Text;
 			var macro = new MacroCommand();
 			macro.Add(new CommandAddGrimeArtist(grimeArtist));
-			macro.Add(new CommandAddGrimeArtistToListBox(grimeArtist,ListBoxGrimeArtists,ref _grimeArtists));
+			macro.Add(new CommandAddGrimeArtistToListBox(grimeArtist, ListBoxGrimeArtists, ref _grimeArtists));
 			CommandsManager.Instance.Execute(macro);
 		}
 

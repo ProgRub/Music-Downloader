@@ -25,7 +25,7 @@ namespace Business.DTOs
 		private static IDictionary<string, string> _genreReplacements = new Dictionary<string, string>
 			{{"Alternativa", "Alternative"}};
 
-		public bool IsSingle => TrackNumber == 1 && TotalTrackCount == 1 && DiscNumber == 1 && TotalDiscCount == 1;
+		public bool IsSingle => TotalTrackCount < 5 && DiscNumber == 1 && TotalDiscCount == 1;
 
 		internal static SongFileDTO GetSongFileDTOFromFilePath(string filePath)
 		{
@@ -44,20 +44,45 @@ namespace Business.DTOs
 					: songFile.Tag.FirstGenre;
 			}
 
+			if (albumArtist.Contains("King Gizzard"))
+			{
+				songFile.Tag.Performers = songFile.Tag.Performers.Select(e => e.Replace("And", "&")).ToArray();
+				albumArtist = albumArtist.Replace("And", "&");
+			}
+
+			var fileName = Path.GetFileName(filePath);
 			return new SongFileDTO
 			{
-				Filename = Path.GetFileName(filePath),
-				Album = songFile.Tag.Album,
+				Filename = fileName,
+				Album = RemoveWordsInParenthesisFromWord(new List<string>() {"Remaster", "Anniversary", "Expanded"},
+					songFile.Tag.Album),
 				AlbumArtist = albumArtist,
 				ContributingArtists = songFile.Tag.Performers,
 				DiscNumber = (int) songFile.Tag.Disc,
 				TrackNumber = (int) songFile.Tag.Track,
-				Title = songFile.Tag.Title,
+				Title = UnCensorTitle(RemoveWordsInParenthesisFromWord(new List<string>()
+				{
+					"Remaster", "Album Version", "Stereo", "Hidden Track", "Explicit",
+					"explicit"
+				}, songFile.Tag.Title)),
 				Genre = genre,
 				TotalTrackCount = (int) songFile.Tag.TrackCount,
 				TotalDiscCount = (int) songFile.Tag.DiscCount,
-				Year = (int) songFile.Tag.Year
+				Year = (int) songFile.Tag.Year,
+				Lyrics = songFile.Tag.Lyrics
 			};
+		}
+
+		internal static string UnCensorTitle(string title)
+		{
+			return title.Replace("f*ck", "fuck").Replace(
+				"f***",
+				"fuck").Replace("f**k", "fuck").Replace("sh*t", "shit").Replace(
+				"s**t", "shit").Replace("sh**", "shit").Replace(
+				"ni**as", "niggas").Replace("F*ck", "Fuck").Replace(
+				"F**k", "Fuck").Replace("F***", "Fuck").Replace(
+				"Sh*t", "Shit").Replace("S**t", "Shit").Replace(
+				"Sh**", "Shit").Replace("Ni**as", "Niggas");
 		}
 
 		internal void RenameSongFile(RenameFileOptions renameOptions)
@@ -109,13 +134,14 @@ namespace Business.DTOs
 
 		public void SaveToFile()
 		{
-			SongService.Instance.SetYearAndLyricsOfSongByFilename(Filename, Year, Lyrics);
+			SongService.Instance.SetYearAndLyricsOfSong(this, Year, Lyrics);
 			using var songFile =
 				TagLib.File.Create(Path.Combine(DirectoriesService.Instance.MusicToDirectory, Filename));
 			songFile.Tag.Lyrics = Lyrics;
 			songFile.Tag.Year = (uint) Year;
 			songFile.Tag.Genres = new[] {Genre};
 			songFile.Tag.AlbumArtists = new[] {AlbumArtist};
+			songFile.Tag.Performers = ContributingArtists.ToArray();
 			songFile.Save();
 		}
 
@@ -135,6 +161,64 @@ namespace Business.DTOs
 				DiscNumber = DiscNumber,
 				TotalDiscCount = TotalDiscCount
 			};
+		}
+
+		internal static string RemoveWordsInParenthesisFromWord(IEnumerable<string> setOfWords, string wordPar)
+		{
+			var word = wordPar;
+			if (!word.Contains("(") && !word.Contains("[")) return word.Trim();
+			foreach (var wordToRemove in setOfWords)
+			{
+				var inRoundParenthesis = true;
+				var startParenthesisPosition = -1;
+				var endParenthesisPosition = -1;
+				while (word.Contains(wordToRemove))
+				{
+					if (inRoundParenthesis)
+					{
+						startParenthesisPosition = word.IndexOf("(");
+						endParenthesisPosition = word.IndexOf(")");
+					}
+
+					if (!inRoundParenthesis || startParenthesisPosition == -1)
+					{
+						startParenthesisPosition = word.IndexOf("[");
+						endParenthesisPosition = word.IndexOf("]");
+					}
+
+					if (startParenthesisPosition != -1 && word
+						.Substring(startParenthesisPosition, endParenthesisPosition - startParenthesisPosition + 1)
+						.Contains(wordToRemove))
+					{
+						word = RemoveWordsInParenthesisFromWord(setOfWords,
+							word.Remove(startParenthesisPosition - 1,
+								endParenthesisPosition - startParenthesisPosition + 2));
+					}
+					else
+					{
+						if (!inRoundParenthesis)
+						{
+							if (word.Contains("("))
+							{
+								word = word.Replace(word.Substring(word.IndexOf(")") + 1),
+									RemoveWordsInParenthesisFromWord(setOfWords,
+										word.Substring(word.IndexOf(")") + 1)));
+							}
+
+							if (word.Contains("["))
+							{
+								word = word.Replace(word.Substring(word.IndexOf("]") + 1),
+									RemoveWordsInParenthesisFromWord(setOfWords,
+										word.Substring(word.IndexOf("]") + 1)));
+							}
+						}
+
+						inRoundParenthesis = false;
+					}
+				}
+			}
+
+			return word.Trim();
 		}
 	}
 }

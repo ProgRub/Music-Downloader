@@ -65,7 +65,8 @@ namespace Forms
 			MaximizeWindow();
 			SetFormAcceptButton(ButtonTryAgain);
 			BusinessFacade.Instance.OpenService();
-			Task.Delay(250).ContinueWith(_ => BusinessFacade.Instance.StartGettingYearAndLyrics());
+			//Task.Delay(100).ContinueWith(_=>BusinessFacade.Instance.StartGettingYearAndLyrics());
+			BusinessFacade.Instance.StartGettingYearAndLyrics();
 		}
 
 		private void Clock_Tick(object sender, EventArgs e)
@@ -87,16 +88,25 @@ namespace Forms
 					{
 						RichTextBoxArtist.AppendText((line > 0 ? Environment.NewLine : "") +
 						                             eventArgs.Song.AlbumArtist);
+						RichTextBoxArtist.Select(RichTextBoxArtist.GetFirstCharIndexFromLine(line),
+							RichTextBoxArtist.Lines[line].Length);
+						RichTextBoxArtist.SelectionColor = RichTextBoxArtist.ForeColor;
 						RichTextBoxArtist.ScrollToCaret();
 					}));
 					RichTextBoxAlbum.Invoke(new MethodInvoker(delegate
 					{
 						RichTextBoxAlbum.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Album);
+						RichTextBoxAlbum.Select(RichTextBoxAlbum.GetFirstCharIndexFromLine(line),
+							RichTextBoxAlbum.Lines[line].Length);
+						RichTextBoxAlbum.SelectionColor = RichTextBoxAlbum.ForeColor;
 						RichTextBoxAlbum.ScrollToCaret();
 					}));
 					RichTextBoxTitle.Invoke(new MethodInvoker(delegate
 					{
 						RichTextBoxTitle.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Title);
+						RichTextBoxTitle.Select(RichTextBoxTitle.GetFirstCharIndexFromLine(line),
+							RichTextBoxTitle.Lines[line].Length);
+						RichTextBoxTitle.SelectionColor = RichTextBoxTitle.ForeColor;
 						RichTextBoxTitle.ScrollToCaret();
 					}));
 					break;

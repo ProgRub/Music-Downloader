@@ -26,7 +26,6 @@ namespace Forms.Commands.ManageExceptions
 		{
 			if (_selectedExceptionType != _screen.SelectedExceptionType) return;
 			_listBox.Items.Add(_item);
-			_listBox.SelectedIndex = _itemIndex;
 		}
 
 		public void Undo()

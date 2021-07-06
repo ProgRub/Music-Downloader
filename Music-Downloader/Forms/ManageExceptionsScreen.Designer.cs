@@ -55,6 +55,7 @@ namespace Forms
 			this.ButtonBack.FlatAppearance.BorderSize = 0;
 			this.ButtonBack.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
 			this.ButtonBack.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+			this.ButtonBack.Click += new System.EventHandler(this.ButtonBack_Click);
 			// 
 			// LabelExceptionType
 			// 

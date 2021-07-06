@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Business.CustomEventArgs;
 using Business.DTOs;
+using Business.Enums;
 using Business.SongDetailsScrapers;
 using DB.Entities;
 
@@ -15,7 +17,8 @@ namespace Business.Services
 		private static int NumberOfThreads = (int) Math.Pow(2, (int) Math.Sqrt(Environment.ProcessorCount));
 		internal event EventHandler<SongFileProgressEventArgs> NotifySongFileProgress;
 		internal event EventHandler<ThreadsConfigurationEventArgs> NotifyInitialThreadsConfiguration;
-		
+		internal GetYearAndLyricsMode Mode { get; set; }
+
 
 		private GetLyricsAndYearService()
 		{
@@ -23,11 +26,12 @@ namespace Business.Services
 
 		public static GetLyricsAndYearService Instance { get; } = new();
 
-		public ISet<SongFileDTO> SongsToGetDetails { get; } = new HashSet<SongFileDTO>();
+		public ISet<SongFileDTO> SongsToGetDetails { get; internal set; } = new HashSet<SongFileDTO>();
 
 
 		public void StartThreads()
 		{
+
 			var totalNumberOfSongs = SongsToGetDetails.Count;
 			NumberOfThreads = Math.Min(totalNumberOfSongs, NumberOfThreads);
 			var rest = totalNumberOfSongs % NumberOfThreads;
@@ -61,12 +65,6 @@ namespace Business.Services
 				aux.Start(new object[2]
 					{index, SongsToGetDetails.Skip(previousFiles).Take(filesPerThreadList[index]).ToHashSet()});
 			}
-
-			//this.FinishedAllFiles();
-			//var saveExceptions = new Thread(this.Window.LAFContainer.SaveExceptions);
-			//var saveMFs = new Thread(this.Window.LAFContainer.SaveMusicFiles);
-			//saveExceptions.Start();
-			//saveMFs.Start();
 		}
 
 		internal void ThreadFunction(object parameters)

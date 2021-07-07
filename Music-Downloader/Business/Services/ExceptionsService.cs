@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Business.DTOs;
+using Business.Enums;
 using DB;
 using DB.Entities;
 using DB.Repositories.Implementations;
 using DB.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
@@ -27,11 +29,17 @@ namespace Business.Services
 
 		internal static ExceptionsService Instance { get; } = new();
 
+		internal IEnumerable<YearLyricsChangeDetailsException> ForTest()
+		{
+			return _changeDetailsExceptionRepository.Find(e =>
+				e.Type == ChangeDetailsExceptionType.ChangeDetailsForAlbumYear);
+		}
+
 		internal void AddSkipAlbumYearException(SongFileDTO song)
 		{
 			var exception = new YearLyricsChangeDetailsException
 			{
-				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album, OriginalTitle = song.Title,
+				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album,
 				Type = ChangeDetailsExceptionType.SkipAlbumYear
 			};
 			_addedExceptions.Add(exception);
@@ -41,7 +49,7 @@ namespace Business.Services
 		{
 			var exception = new YearLyricsChangeDetailsException
 			{
-				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album, OriginalTitle = song.Title,
+				OriginalArtist = song.AlbumArtist, OriginalTitle = song.Title,
 				Type = ChangeDetailsExceptionType.SkipLyrics
 			};
 			_addedExceptions.Add(exception);
@@ -52,7 +60,6 @@ namespace Business.Services
 			var exception = new YearLyricsChangeDetailsException
 			{
 				OriginalArtist = originalSong.AlbumArtist, OriginalAlbum = originalSong.Album,
-				OriginalTitle = originalSong.Title,
 				NewArtist = newSong.AlbumArtist, NewAlbum = newSong.Album,
 				Type = ChangeDetailsExceptionType.ChangeDetailsForAlbumYear
 			};
@@ -165,19 +172,69 @@ namespace Business.Services
 		{
 			try
 			{
-				return _changeDetailsExceptionRepository.Find(e =>
-					e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
-					e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
-					e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase) &&
-					e.Type == (ChangeDetailsExceptionType) dto.Type).First();
+				switch (dto.Type)
+				{
+					case ExceptionType.ChangeDetailsForAlbumYear:
+						return _changeDetailsExceptionRepository.Find(e =>
+								e.Type ==ChangeDetailsExceptionType.ChangeDetailsForAlbumYear &&
+								EF.Functions.Like(e.OriginalAlbum, dto.OriginalAlbum) &&
+								EF.Functions.Like(e.OriginalArtist, dto.OriginalArtist))
+							.First();
+					case ExceptionType.ChangeDetailsForLyrics:
+						return _changeDetailsExceptionRepository.Find(e =>
+								e.Type == ChangeDetailsExceptionType.ChangeDetailsForLyrics &&
+								EF.Functions.Like(e.OriginalAlbum, dto.OriginalAlbum) &&
+								EF.Functions.Like(e.OriginalArtist, dto.OriginalArtist) &&
+								EF.Functions.Like(e.OriginalTitle, dto.OriginalTitle))
+							.First();
+					case ExceptionType.SkipAlbumYear:
+						return _changeDetailsExceptionRepository.Find(e =>
+								e.Type == ChangeDetailsExceptionType.SkipAlbumYear &&
+								EF.Functions.Like(e.OriginalAlbum, dto.OriginalAlbum) &&
+								EF.Functions.Like(e.OriginalArtist, dto.OriginalArtist))
+							.First();
+					case ExceptionType.SkipLyrics:
+						return _changeDetailsExceptionRepository.Find(e =>
+								e.Type == ChangeDetailsExceptionType.SkipLyrics &&
+								EF.Functions.Like(e.OriginalArtist, dto.OriginalArtist) &&
+								EF.Functions.Like(e.OriginalTitle, dto.OriginalTitle))
+							.First();
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 			}
-			catch (InvalidOperationException)
+			catch (InvalidOperationException e)
 			{
-				return _addedExceptions.ToList().FirstOrDefault(e =>
-					e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
-					e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
-					e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase) &&
-					e.Type == (ChangeDetailsExceptionType) dto.Type);
+				switch (dto.Type)
+				{
+					case ExceptionType.ChangeDetailsForAlbumYear:
+						return _addedExceptions.ToList()
+							.FirstOrDefault(e =>
+								e.Type == ChangeDetailsExceptionType.ChangeDetailsForAlbumYear &&
+								e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
+								e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase));
+					case ExceptionType.ChangeDetailsForLyrics:
+						return _addedExceptions.ToList()
+							.FirstOrDefault(e =>
+								e.Type == ChangeDetailsExceptionType.ChangeDetailsForLyrics &&
+								e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
+								e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
+								e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase));
+					case ExceptionType.SkipAlbumYear:
+						return _addedExceptions.ToList()
+							.FirstOrDefault(e =>
+								e.Type == ChangeDetailsExceptionType.SkipAlbumYear &&
+								e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
+								e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase));
+					case ExceptionType.SkipLyrics:
+						return _addedExceptions.ToList()
+							.FirstOrDefault(e =>
+								e.Type == ChangeDetailsExceptionType.SkipLyrics &&
+								e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
+								e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase));
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 			}
 		}
 	}

@@ -77,8 +77,6 @@ namespace Forms
 			var selectedSongs = new HashSet<SongFileDTO>();
 			foreach (int checkedIndex in ListViewSongFiles.CheckedIndices)
 			{
-				Debug.WriteLine(ListViewSongFiles.Items[checkedIndex].SubItems[2].Text );
-				Debug.WriteLine(ListViewSongFiles.Items[checkedIndex].SubItems[3].Text );
 				selectedSongs.Add(_songs.First(e =>
 					e.Title == ListViewSongFiles.Items[checkedIndex].Text &&
 					e.AlbumArtist == ListViewSongFiles.Items[checkedIndex].SubItems[2].Text &&

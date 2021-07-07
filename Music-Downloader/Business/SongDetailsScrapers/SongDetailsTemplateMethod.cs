@@ -91,10 +91,12 @@ namespace Business.SongDetailsScrapers
 						Type = ExceptionType.SkipLyrics
 					}) == null;
 				}
-
 				if (haveToGetSongYear)
 					SetSongYear();
 				song.Year = CurrentSong.Year;
+				CurrentSong.Album = song.Album;
+				CurrentSong.AlbumArtist = song.AlbumArtist;
+				CurrentSong.Title = song.Title;
 				RaiseEvent(SongFileProgress.GettingLyrics);
 				if (haveToGetSongLyrics && !SkipLyrics)
 					SetSongLyrics();
@@ -129,29 +131,21 @@ namespace Business.SongDetailsScrapers
 					OriginalTitle = CurrentSong.Title,
 					OriginalArtist = CurrentSong.AlbumArtist,
 					OriginalAlbum = CurrentSong.Album,
+					Type = ExceptionType.ChangeDetailsForLyrics
+				}) ?? ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+				{
+					OriginalTitle = CurrentSong.Title,
+					OriginalArtist = CurrentSong.AlbumArtist,
+					OriginalAlbum = CurrentSong.Album,
 					Type = ExceptionType.ChangeDetailsForAlbumYear
 				});
-
-				Debug.WriteLine(
-					$"{changeDetailsException.OriginalArtist} {changeDetailsException.NewArtist} {changeDetailsException.OriginalArtist.Equals(changeDetailsException.NewArtist, StringComparison.OrdinalIgnoreCase)}");
-				if (changeDetailsException == null ||
-				    changeDetailsException.OriginalArtist.Equals(changeDetailsException.NewArtist,
-					    StringComparison.OrdinalIgnoreCase))
-				{
-					changeDetailsException = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
-					{
-						OriginalTitle = CurrentSong.Title,
-						OriginalArtist = CurrentSong.AlbumArtist,
-						OriginalAlbum = CurrentSong.Album,
-						Type = ExceptionType.ChangeDetailsForLyrics
-					});
-				}
 			}
 
 			if (changeDetailsException != null)
 			{
 				CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
-				CurrentSong.Title = changeDetailsException.NewTitle;
+				if(!string.IsNullOrWhiteSpace(changeDetailsException.OriginalTitle))
+					CurrentSong.Title = changeDetailsException.NewTitle;
 			}
 
 			while (!DoesWebpageExist(GetUrlFromSong(false)))
@@ -177,7 +171,6 @@ namespace Business.SongDetailsScrapers
 			{
 				ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 			}
-
 			CurrentSong.Lyrics = GetLyrics();
 		}
 
@@ -258,6 +251,7 @@ namespace Business.SongDetailsScrapers
 				if (waitAtSemaphore)
 				{
 					_albumsBeingChecked[originalSong.Album][semaphoreIndex].Wait();
+					CurrentSong.Year = _alreadyVisitedAlbumPages[originalSong.AlbumArtist + originalSong.Album];
 				}
 				else
 				{
@@ -266,7 +260,6 @@ namespace Business.SongDetailsScrapers
 					{
 						changeDetailsException = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
 						{
-							OriginalTitle = CurrentSong.Title,
 							OriginalArtist = CurrentSong.AlbumArtist,
 							OriginalAlbum = CurrentSong.Album,
 							Type = ExceptionType.ChangeDetailsForAlbumYear

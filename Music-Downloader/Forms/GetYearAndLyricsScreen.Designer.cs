@@ -143,11 +143,11 @@ namespace Forms
 			// LabelTimeElapsed
 			// 
 			this.LabelTimeElapsed.AutoSize = true;
-			this.LabelTimeElapsed.Location = new System.Drawing.Point(805, 9);
+			this.LabelTimeElapsed.Location = new System.Drawing.Point(848, 8);
 			this.LabelTimeElapsed.Name = "LabelTimeElapsed";
-			this.LabelTimeElapsed.Size = new System.Drawing.Size(167, 17);
+			this.LabelTimeElapsed.Size = new System.Drawing.Size(193, 17);
 			this.LabelTimeElapsed.TabIndex = 13;
-			this.LabelTimeElapsed.Text = "Time Elapsed: 00:00";
+			this.LabelTimeElapsed.Text = "Time Elapsed: 00:00:00";
 			// 
 			// LabelThreadsStatus
 			// 

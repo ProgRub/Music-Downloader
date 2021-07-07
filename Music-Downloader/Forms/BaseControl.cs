@@ -18,6 +18,8 @@ namespace Forms
 
 		protected void MaximizeWindow() => ((Window) Parent).WindowState = FormWindowState.Maximized;
 
+		protected Size GetWindowSize() => ((Window) Parent).Size;
+
 		protected void MoveToScreen(BaseControl newControl, BaseControl previousControl)
 		{
 			newControl.PreviousScreen = previousControl;

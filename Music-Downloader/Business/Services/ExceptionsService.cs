@@ -31,7 +31,7 @@ namespace Business.Services
 		{
 			var exception = new YearLyricsChangeDetailsException
 			{
-				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album,
+				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album, OriginalTitle = song.Title,
 				Type = ChangeDetailsExceptionType.SkipAlbumYear
 			};
 			_addedExceptions.Add(exception);
@@ -41,7 +41,7 @@ namespace Business.Services
 		{
 			var exception = new YearLyricsChangeDetailsException
 			{
-				OriginalArtist = song.AlbumArtist, OriginalTitle = song.Title,
+				OriginalArtist = song.AlbumArtist, OriginalAlbum = song.Album, OriginalTitle = song.Title,
 				Type = ChangeDetailsExceptionType.SkipLyrics
 			};
 			_addedExceptions.Add(exception);
@@ -52,11 +52,11 @@ namespace Business.Services
 			var exception = new YearLyricsChangeDetailsException
 			{
 				OriginalArtist = originalSong.AlbumArtist, OriginalAlbum = originalSong.Album,
+				OriginalTitle = originalSong.Title,
 				NewArtist = newSong.AlbumArtist, NewAlbum = newSong.Album,
 				Type = ChangeDetailsExceptionType.ChangeDetailsForAlbumYear
 			};
 			_addedExceptions.Add(exception);
-			AddCorrectionForLyricsException(originalSong,newSong);
 		}
 
 		internal void AddCorrectionForLyricsException(SongFileDTO originalSong, SongFileDTO newSong)
@@ -173,7 +173,7 @@ namespace Business.Services
 			}
 			catch (InvalidOperationException)
 			{
-				return _addedExceptions.ToList().First(e =>
+				return _addedExceptions.ToList().FirstOrDefault(e =>
 					e.OriginalTitle.Equals(dto.OriginalTitle, StringComparison.OrdinalIgnoreCase) &&
 					e.OriginalAlbum.Equals(dto.OriginalAlbum, StringComparison.OrdinalIgnoreCase) &&
 					e.OriginalArtist.Equals(dto.OriginalArtist, StringComparison.OrdinalIgnoreCase) &&

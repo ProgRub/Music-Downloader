@@ -21,6 +21,7 @@ namespace Business.DTOs
 		public int TotalDiscCount { get; set; }
 		public int Year { get; set; }
 		public string Lyrics { get; set; }
+		public DateTime LastModified { get; private init; }
 
 		private static IDictionary<string, string> _genreReplacements = new Dictionary<string, string>
 			{{"Alternativa", "Alternative"}};
@@ -69,7 +70,8 @@ namespace Business.DTOs
 				TotalTrackCount = (int) songFile.Tag.TrackCount,
 				TotalDiscCount = (int) songFile.Tag.DiscCount,
 				Year = (int) songFile.Tag.Year,
-				Lyrics = songFile.Tag.Lyrics
+				Lyrics = songFile.Tag.Lyrics,
+				LastModified = File.GetLastWriteTime(filePath)
 			};
 		}
 

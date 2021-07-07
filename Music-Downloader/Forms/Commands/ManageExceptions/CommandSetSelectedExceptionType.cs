@@ -1,5 +1,6 @@
 ﻿using Business.Commands;
 using Business.DTOs;
+using Business.Enums;
 
 namespace Forms.Commands.ManageExceptions
 {

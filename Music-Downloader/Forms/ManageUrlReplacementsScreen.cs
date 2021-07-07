@@ -104,6 +104,12 @@ namespace Forms
 				errorHappened = true;
 			}
 
+			if (_urlReplacements.ContainsKey(whatToReplace))
+			{
+				errorHappened = true;
+				errorMessage += "You can't specify two different replacements for the same part to replace.";
+			}
+
 			if (errorHappened)
 			{
 				ShowInformationMessageBox(errorMessage, "Error");

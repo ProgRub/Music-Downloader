@@ -13,6 +13,7 @@ using Business;
 using Business.Commands;
 using Business.Commands.ManageExceptions;
 using Business.DTOs;
+using Business.Enums;
 using Forms.Commands.DownloadMusic;
 using Forms.Commands.ManageExceptions;
 

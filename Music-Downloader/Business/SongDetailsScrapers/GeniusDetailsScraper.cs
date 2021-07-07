@@ -31,7 +31,6 @@ namespace Business.SongDetailsScrapers
 
 		internal override int GetYearOfAlbumTrack()
 		{
-			Debug.WriteLine("HERE");
 			var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(true));
 			var divs = htmlDoc.DocumentNode.Descendants("div").ToList();
 			var textSplit = divs

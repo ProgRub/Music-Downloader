@@ -179,7 +179,6 @@ namespace Forms
 							}));
 						ButtonTryAgain.Invoke(new MethodInvoker(delegate { ButtonTryAgain.Enabled = true; }));
 						ButtonSkipLyrics.Invoke(new MethodInvoker(delegate { ButtonSkipLyrics.Enabled = true; }));
-						ButtonSkipYear.Invoke(new MethodInvoker(delegate { ButtonSkipYear.Enabled = true; }));
 					}
 					else
 					{

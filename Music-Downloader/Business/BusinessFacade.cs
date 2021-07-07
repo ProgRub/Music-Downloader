@@ -126,5 +126,8 @@ namespace Business
 		public IEnumerable<string> GetGrimeArtists() => GrimeArtistService.Instance.GetAllGrimeArtists();
 
 		public ISet<SongFileDTO> GetAllStoredSongs()=>DirectoriesService.Instance.GetAllStoredSongs();
+
+		public void SetSelectedFiles(ISet<SongFileDTO> selectedSongs) =>
+			GetLyricsAndYearService.Instance.SongsToGetDetails = selectedSongs;
 	}
 }

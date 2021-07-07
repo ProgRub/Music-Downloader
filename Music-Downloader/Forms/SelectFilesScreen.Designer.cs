@@ -30,9 +30,8 @@ namespace Forms
 		private void InitializeComponent()
 		{
 			this.ListViewSongFiles = new System.Windows.Forms.ListView();
-			this.ColumnHeaderFilename = new System.Windows.Forms.ColumnHeader();
-			this.ColumnHeaderLastModified = new System.Windows.Forms.ColumnHeader();
 			this.ColumnHeaderSongTitle = new System.Windows.Forms.ColumnHeader();
+			this.ColumnHeaderLastModified = new System.Windows.Forms.ColumnHeader();
 			this.ColumnHeaderAlbumArtist = new System.Windows.Forms.ColumnHeader();
 			this.ColumnHeaderAlbum = new System.Windows.Forms.ColumnHeader();
 			this.ColumnHeaderGenre = new System.Windows.Forms.ColumnHeader();
@@ -52,9 +51,8 @@ namespace Forms
 			this.ListViewSongFiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.ListViewSongFiles.CheckBoxes = true;
 			this.ListViewSongFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ColumnHeaderFilename,
-            this.ColumnHeaderLastModified,
             this.ColumnHeaderSongTitle,
+            this.ColumnHeaderLastModified,
             this.ColumnHeaderAlbumArtist,
             this.ColumnHeaderAlbum,
             this.ColumnHeaderGenre,
@@ -64,29 +62,23 @@ namespace Forms
 			this.ListViewSongFiles.GridLines = true;
 			this.ListViewSongFiles.HideSelection = false;
 			this.ListViewSongFiles.Location = new System.Drawing.Point(3, 36);
-			this.ListViewSongFiles.MultiSelect = false;
 			this.ListViewSongFiles.Name = "ListViewSongFiles";
-			this.ListViewSongFiles.Size = new System.Drawing.Size(1915, 884);
+			this.ListViewSongFiles.Size = new System.Drawing.Size(1648, 884);
 			this.ListViewSongFiles.TabIndex = 6;
 			this.ListViewSongFiles.UseCompatibleStateImageBehavior = false;
 			this.ListViewSongFiles.View = System.Windows.Forms.View.Details;
 			this.ListViewSongFiles.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ListViewSongFiles_ColumnClick);
-			this.ListViewSongFiles.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListViewSongFiles_MouseClick);
-			// 
-			// ColumnHeaderFilename
-			// 
-			this.ColumnHeaderFilename.Text = "Filename";
-			this.ColumnHeaderFilename.Width = 480;
-			// 
-			// ColumnHeaderLastModified
-			// 
-			this.ColumnHeaderLastModified.Text = "Last Modified";
-			this.ColumnHeaderLastModified.Width = 127;
+			this.ListViewSongFiles.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.ListViewSongFiles_ItemSelectionChanged);
 			// 
 			// ColumnHeaderSongTitle
 			// 
 			this.ColumnHeaderSongTitle.Text = "Song Title";
 			this.ColumnHeaderSongTitle.Width = 480;
+			// 
+			// ColumnHeaderLastModified
+			// 
+			this.ColumnHeaderLastModified.Text = "Last Modified";
+			this.ColumnHeaderLastModified.Width = 127;
 			// 
 			// ColumnHeaderAlbumArtist
 			// 
@@ -117,13 +109,14 @@ namespace Forms
 			this.ButtonGetYearAndLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonGetYearAndLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonGetYearAndLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonGetYearAndLyrics.Location = new System.Drawing.Point(1620, 2);
+			this.ButtonGetYearAndLyrics.Location = new System.Drawing.Point(1353, 4);
 			this.ButtonGetYearAndLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonGetYearAndLyrics.Name = "ButtonGetYearAndLyrics";
 			this.ButtonGetYearAndLyrics.Size = new System.Drawing.Size(298, 27);
 			this.ButtonGetYearAndLyrics.TabIndex = 17;
 			this.ButtonGetYearAndLyrics.Text = "Get Year and Lyrics of Selected Files";
 			this.ButtonGetYearAndLyrics.UseVisualStyleBackColor = true;
+			this.ButtonGetYearAndLyrics.Click += new System.EventHandler(this.ButtonGetYearAndLyrics_Click);
 			// 
 			// SelectFilesScreen
 			// 
@@ -145,7 +138,6 @@ namespace Forms
 		#endregion
 
 		private System.Windows.Forms.ListView ListViewSongFiles;
-		private System.Windows.Forms.ColumnHeader ColumnHeaderFilename;
 		private System.Windows.Forms.ColumnHeader ColumnHeaderLastModified;
 		private System.Windows.Forms.ColumnHeader ColumnHeaderSongTitle;
 		private System.Windows.Forms.ColumnHeader ColumnHeaderAlbumArtist;

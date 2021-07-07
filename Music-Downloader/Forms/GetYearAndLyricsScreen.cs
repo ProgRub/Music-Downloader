@@ -118,6 +118,17 @@ namespace Forms
 					break;
 				case SongFileProgress.GettingLyrics:
 					ChangeColorOfLastUsedLineByThread(eventArgs);
+					break;
+				case SongFileProgress.GettingLyricsException:
+					SystemSounds.Exclamation.Play();
+					LabelUrl.Invoke(new MethodInvoker(delegate { LabelUrl.Text = eventArgs.Url; }));
+					ActivateCorrectionControls(eventArgs);
+					_threadIdWithError = eventArgs.ThreadId;
+					break;
+				case SongFileProgress.AddingToService:
+					ChangeColorOfLastUsedLineByThread(eventArgs);
+					break;
+				case SongFileProgress.FileDone:
 					_numberOfFilesDone++;
 					_numberOfFilesDonePerThread[eventArgs.ThreadId]++;
 					TextBoxThreadsStatus.Invoke(
@@ -134,17 +145,6 @@ namespace Forms
 							TextBoxThreadsStatus.SelectedText =
 								$"All Files: {_numberOfFilesDone}/{_totalNumberOfFiles} Files Processed";
 						}));
-					break;
-				case SongFileProgress.GettingLyricsException:
-					SystemSounds.Exclamation.Play();
-					LabelUrl.Invoke(new MethodInvoker(delegate { LabelUrl.Text = eventArgs.Url; }));
-					ActivateCorrectionControls(eventArgs);
-					_threadIdWithError = eventArgs.ThreadId;
-					break;
-				case SongFileProgress.AddingToService:
-					ChangeColorOfLastUsedLineByThread(eventArgs);
-					break;
-				case SongFileProgress.FileDone:
 					ChangeColorOfLastUsedLineByThread(eventArgs);
 					if (_numberOfFilesDone == _totalNumberOfFiles)
 					{

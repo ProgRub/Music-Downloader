@@ -51,7 +51,7 @@ namespace Business.SongDetailsScrapers
 
 			var lyrics = "";
 			foreach (var htmlNode in htmlDocument.DocumentNode.Descendants("main").First().Descendants("div").Where(e =>
-				e.GetAttributeValue("class", "").Contains("Lyrics__Container-sc-1ynbvzw-7 jjqBBp")))
+				e.GetAttributeValue("class", "").Contains("Lyrics__Container-sc-1ynbvzw")))
 			{
 				htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine);
 				lyrics += GetDecodedInnerText(htmlNode);

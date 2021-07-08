@@ -264,7 +264,7 @@ namespace Forms
 			if (ListBoxExceptions.SelectedItems.Count == 0) _selectedException = null;
 			if (_selectedException != null)
 			{
-				ExceptionDTO newException = _selectedException.Type switch
+				var newException = _selectedException.Type switch
 				{
 					ExceptionType.ChangeDetailsForAlbumYear => new ExceptionDTO
 					{

@@ -19,9 +19,13 @@ namespace Business.Commands.ManageExceptions
 			_exceptionDtoToAddToList = exception;
 			_exception = new YearLyricsChangeDetailsException()
 			{
-				OriginalArtist = exception.OriginalArtist, OriginalAlbum = exception.OriginalAlbum,
-				OriginalTitle = exception.OriginalTitle, NewArtist = exception.NewArtist, NewAlbum = exception.NewAlbum,
-				NewTitle = exception.NewTitle, Type = (ChangeDetailsExceptionType) exception.Type
+				OriginalArtist = string.IsNullOrWhiteSpace(exception.OriginalArtist) ? null : exception.OriginalArtist,
+				OriginalAlbum = string.IsNullOrWhiteSpace(exception.OriginalAlbum) ? null : exception.OriginalAlbum,
+				OriginalTitle = string.IsNullOrWhiteSpace(exception.OriginalTitle) ? null : exception.OriginalTitle,
+				NewArtist = string.IsNullOrWhiteSpace(exception.NewArtist) ? null : exception.NewArtist,
+				NewAlbum = string.IsNullOrWhiteSpace(exception.NewAlbum) ? null : exception.NewAlbum,
+				NewTitle = string.IsNullOrWhiteSpace(exception.NewTitle) ? null : exception.NewTitle,
+				Type = (ChangeDetailsExceptionType) exception.Type
 			};
 			_exceptions = exceptions;
 		}
@@ -31,16 +35,16 @@ namespace Business.Commands.ManageExceptions
 			switch (_exception.Type)
 			{
 				case ChangeDetailsExceptionType.ChangeDetailsForAlbumYear:
-					ExceptionsService.Instance.AddCorrectionForAlbumYearException(_exception,false);
+					ExceptionsService.Instance.AddCorrectionForAlbumYearException(_exception, false);
 					break;
 				case ChangeDetailsExceptionType.ChangeDetailsForLyrics:
-					ExceptionsService.Instance.AddCorrectionForLyricsException(_exception,false);
+					ExceptionsService.Instance.AddCorrectionForLyricsException(_exception, false);
 					break;
 				case ChangeDetailsExceptionType.SkipAlbumYear:
-					ExceptionsService.Instance.AddSkipAlbumYearException(_exception,false);
+					ExceptionsService.Instance.AddSkipAlbumYearException(_exception, false);
 					break;
 				case ChangeDetailsExceptionType.SkipLyrics:
-					ExceptionsService.Instance.AddSkipLyricsException(_exception,false);
+					ExceptionsService.Instance.AddSkipLyricsException(_exception, false);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

@@ -32,6 +32,7 @@ namespace Business.Services
 
 		internal void RemoveUrlReplacement(string urlReplacementKey)
 		{
+			if (_addedUrlsDictionary.Remove(urlReplacementKey)) return;
 			_deletedUrlReplacementKeys.Add(urlReplacementKey);
 		}
 
@@ -42,7 +43,7 @@ namespace Business.Services
 
 		internal void AddUrlReplacement(string toReplace, string replacement)
 		{
-			_addedUrlsDictionary.Add(new KeyValuePair<string, string>(toReplace,  replacement));
+			_addedUrlsDictionary.Add(new KeyValuePair<string, string>(toReplace, replacement));
 		}
 
 		internal void SaveChanges()
@@ -55,10 +56,12 @@ namespace Business.Services
 
 			foreach (var (key, value) in _addedUrlsDictionary)
 			{
-				_urlReplacementRepository.Add(new UrlReplacement{StringToReplace = key,StringReplacement = value});
+				_urlReplacementRepository.Add(new UrlReplacement {StringToReplace = key, StringReplacement = value});
 			}
 
 			_urlReplacementRepository.SaveChanges();
+			_deletedUrlReplacementKeys.Clear();
+			_addedUrlsDictionary.Clear();
 		}
 	}
 }

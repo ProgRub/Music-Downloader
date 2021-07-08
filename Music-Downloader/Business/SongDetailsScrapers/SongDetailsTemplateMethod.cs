@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using Business.CustomEventArgs;
 using Business.DTOs;
@@ -16,6 +18,7 @@ namespace Business.SongDetailsScrapers
 {
 	public abstract class SongDetailsTemplateMethod
 	{
+		private const int MaxTimeout = 1000 * 15;
 		internal event EventHandler<SongFileProgressEventArgs> NotifySongFileProgress;
 		private static readonly IDictionary<string, int> _alreadyVisitedAlbumPages = new Dictionary<string, int>();
 		private readonly ISet<SongFileDTO> _songs;
@@ -25,6 +28,7 @@ namespace Business.SongDetailsScrapers
 			new Dictionary<string, List<SemaphoreSlim>>();
 
 		private static readonly object _checkAlbumsMutex = new();
+		private static readonly object _accessAlreadyVisitedPages = new();
 		private static readonly object _accessExceptionsMutex = new();
 		private static readonly object _accessDBMutex = new();
 		internal SongFileDTO CurrentSong { get; set; }
@@ -42,7 +46,7 @@ namespace Business.SongDetailsScrapers
 		internal bool SkipYear { get; set; }
 		internal bool SkipLyrics { get; set; }
 
-		protected HtmlDocument HtmlDocumentOfSingle { get; set; }
+		protected HtmlDocument CachedHtmlDocument { get; set; }
 
 
 		internal SongDetailsTemplateMethod(ISet<SongFileDTO> songs, int threadId)
@@ -62,11 +66,13 @@ namespace Business.SongDetailsScrapers
 				CurrentSong = song.Copy();
 				SkipLyrics = false;
 				SkipYear = false;
-				CurrentSong.Album =
+				song.Album =
 					SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() {"Deluxe"}, CurrentSong.Album);
-				CurrentSong.Title = SongFileDTO.RemoveWordsInParenthesisFromWord(
+				song.Title = SongFileDTO.RemoveWordsInParenthesisFromWord(
 					new List<string>() {"feat", "Feat", "bonus", "Bonus", "Conclusion", "Vocal Mix", "Extended"},
 					CurrentSong.Title);
+				CurrentSong.Album = song.Album;
+				CurrentSong.Title = song.Title;
 				RaiseEvent(SongFileProgress.GettingYear);
 				bool haveToGetSongYear, haveToGetSongLyrics;
 				lock (_accessExceptionsMutex)
@@ -91,6 +97,7 @@ namespace Business.SongDetailsScrapers
 						Type = ExceptionType.SkipLyrics
 					}) == null;
 				}
+
 				if (haveToGetSongYear)
 					SetSongYear();
 				song.Year = CurrentSong.Year;
@@ -109,14 +116,15 @@ namespace Business.SongDetailsScrapers
 				RaiseEvent(SongFileProgress.AddingToService);
 				BusinessFacade.Instance.AddSongToService(CurrentSong);
 				RaiseEvent(SongFileProgress.FileDone);
+				CachedHtmlDocument = null;
 			}
 		}
 
 		private void SetSongLyrics()
 		{
-			if (CurrentSong.IsSingle)
+			if (CachedHtmlDocument != null)
 			{
-				CurrentSong.Lyrics = GetLyrics(HtmlDocumentOfSingle);
+				CurrentSong.Lyrics = GetLyrics();
 				return;
 			}
 
@@ -144,7 +152,7 @@ namespace Business.SongDetailsScrapers
 			if (changeDetailsException != null)
 			{
 				CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
-				if(!string.IsNullOrWhiteSpace(changeDetailsException.OriginalTitle))
+				if (!string.IsNullOrWhiteSpace(changeDetailsException.OriginalTitle))
 					CurrentSong.Title = changeDetailsException.NewTitle;
 			}
 
@@ -167,10 +175,11 @@ namespace Business.SongDetailsScrapers
 				errorHappened = true;
 			}
 
-			if (errorHappened)
+			if (errorHappened && originalSong != CurrentSong)
 			{
 				ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 			}
+
 			CurrentSong.Lyrics = GetLyrics();
 		}
 
@@ -217,7 +226,7 @@ namespace Business.SongDetailsScrapers
 					errorHappened = true;
 				}
 
-				if (errorHappened)
+				if (errorHappened && originalSong != CurrentSong)
 				{
 					ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 				}
@@ -226,94 +235,110 @@ namespace Business.SongDetailsScrapers
 				return;
 			}
 
-			if (_alreadyVisitedAlbumPages.ContainsKey(originalSong.AlbumArtist + originalSong.Album))
+			var year = 0;
+			lock (_accessAlreadyVisitedPages)
 			{
+				if (_alreadyVisitedAlbumPages.ContainsKey(originalSong.AlbumArtist + originalSong.Album))
+					year = _alreadyVisitedAlbumPages[originalSong.AlbumArtist + originalSong.Album];
+			}
+
+			if (year != 0)
+			{
+				CurrentSong.Year = year;
+				return;
+			}
+
+			var semaphoreIndex = -1;
+			var waitAtSemaphore = false;
+			lock (_checkAlbumsMutex)
+			{
+				if (_albumsBeingChecked.ContainsKey(originalSong.Album))
+				{
+					_albumsBeingChecked[originalSong.Album].Add(new SemaphoreSlim(0, 1));
+					semaphoreIndex = _albumsBeingChecked[originalSong.Album].Count - 1;
+					waitAtSemaphore = true;
+				}
+				else
+				{
+					_albumsBeingChecked.Add(originalSong.Album, new List<SemaphoreSlim>());
+				}
+			}
+
+			if (waitAtSemaphore)
+			{
+				_albumsBeingChecked[originalSong.Album][semaphoreIndex].Wait();
 				CurrentSong.Year = _alreadyVisitedAlbumPages[originalSong.AlbumArtist + originalSong.Album];
 			}
 			else
 			{
-				var semaphoreIndex = -1;
-				var waitAtSemaphore = false;
-				lock (_checkAlbumsMutex)
+				YearLyricsChangeDetailsException? changeDetailsException;
+				lock (_accessExceptionsMutex)
 				{
-					if (_albumsBeingChecked.ContainsKey(originalSong.Album))
+					changeDetailsException = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
 					{
-						_albumsBeingChecked[originalSong.Album].Add(new SemaphoreSlim(0, 1));
-						semaphoreIndex = _albumsBeingChecked[originalSong.Album].Count - 1;
-						waitAtSemaphore = true;
-					}
-					else
-					{
-						_albumsBeingChecked.Add(originalSong.Album, new List<SemaphoreSlim>());
-					}
+						OriginalArtist = CurrentSong.AlbumArtist,
+						OriginalAlbum = CurrentSong.Album,
+						Type = ExceptionType.ChangeDetailsForAlbumYear
+					});
 				}
 
-				if (waitAtSemaphore)
+				if (changeDetailsException != null)
 				{
-					_albumsBeingChecked[originalSong.Album][semaphoreIndex].Wait();
-					CurrentSong.Year = _alreadyVisitedAlbumPages[originalSong.AlbumArtist + originalSong.Album];
+					CurrentSong.Album = changeDetailsException.NewAlbum;
+					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
 				}
-				else
+
+				while (!DoesWebpageExist(GetUrlFromSong(true)) || !CanGetYear())
 				{
-					YearLyricsChangeDetailsException? changeDetailsException;
-					lock (_accessExceptionsMutex)
+					ThreadIdWithError = ThreadId;
+					SemaphoreErrorRaised.Wait();
+					Process.Start(new ProcessStartInfo("cmd",
+							$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Album.Replace(" &", "")).Replace(" ", "+")}+site:Genius.com")
+						{CreateNoWindow = true});
+					RaiseEvent(SongFileProgress.GettingYearException);
+					SemaphoreErrorHandled.Wait();
+					SemaphoreErrorRaised.Release();
+					if (SkipYear)
 					{
-						changeDetailsException = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+						ExceptionsService.Instance.AddSkipAlbumYearException(originalSong);
+						_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album,
+							CurrentSong.Year);
+						foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
 						{
-							OriginalArtist = CurrentSong.AlbumArtist,
-							OriginalAlbum = CurrentSong.Album,
-							Type = ExceptionType.ChangeDetailsForAlbumYear
-						});
-					}
-
-					if (changeDetailsException != null)
-					{
-						CurrentSong.Album = changeDetailsException.NewAlbum;
-						CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
-					}
-
-					while (!DoesWebpageExist(GetUrlFromSong(true)))
-					{
-						ThreadIdWithError = ThreadId;
-						SemaphoreErrorRaised.Wait();
-						Process.Start(new ProcessStartInfo("cmd",
-								$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Album.Replace(" &", "")).Replace(" ", "+")}+site:Genius.com")
-							{CreateNoWindow = true});
-						RaiseEvent(SongFileProgress.GettingYearException);
-						SemaphoreErrorHandled.Wait();
-						SemaphoreErrorRaised.Release();
-						if (SkipYear)
-						{
-							ExceptionsService.Instance.AddSkipAlbumYearException(originalSong);
-							_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album,
-								CurrentSong.Year);
-							foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
-							{
-								semaphore.Release();
-							}
-
-							_albumsBeingChecked.Remove(originalSong.Album);
-							return;
+							semaphore.Release();
 						}
 
-						errorHappened = true;
+						_albumsBeingChecked.Remove(originalSong.Album);
+						return;
 					}
 
-					if (errorHappened)
-					{
-						ExceptionsService.Instance.AddCorrectionForAlbumYearException(originalSong, CurrentSong);
-					}
+					errorHappened = true;
+				}
 
-					CurrentSong.Year = GetYearOfAlbumTrack();
+				if (errorHappened && originalSong != CurrentSong)
+				{
+					ExceptionsService.Instance.AddCorrectionForAlbumYearException(originalSong, CurrentSong);
+				}
+
+				CurrentSong.Year = GetYearOfAlbumTrack();
+				lock (_accessAlreadyVisitedPages)
+				{
 					_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album, CurrentSong.Year);
+				}
+
+				lock (_checkAlbumsMutex)
+				{
 					foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
 					{
 						semaphore.Release();
 					}
-
-					_albumsBeingChecked.Remove(originalSong.Album);
 				}
+
+
+				_albumsBeingChecked.Remove(originalSong.Album);
 			}
+
+			CachedHtmlDocument = null;
 		}
 
 		private void RaiseEvent(SongFileProgress progress)
@@ -331,20 +356,12 @@ namespace Business.SongDetailsScrapers
 				});
 		}
 
-		private static bool DoesWebpageExist(string url)
+		private bool DoesWebpageExist(string url)
 		{
-			var request = (HttpWebRequest) WebRequest.Create(url);
-			HttpWebResponse response;
-			try
-			{
-				response = (HttpWebResponse) request.GetResponse();
-			}
-			catch (WebException e)
-			{
-				response = (HttpWebResponse) e.Response;
-			}
-
-			return response.StatusCode == HttpStatusCode.OK;
+			var doc = GetHtmlDocFromUrl(url);
+			if (doc == null) return false;
+			CachedHtmlDocument = doc;
+			return true;
 		}
 
 
@@ -354,7 +371,7 @@ namespace Business.SongDetailsScrapers
 			var detail = detailParameter.ToLower();
 			if (forAlbumName)
 			{
-				detail = detail.Replace(".", " ");
+				detail = detail.Replace(".", " ").Replace("'", " ");
 			}
 
 			foreach (var (key, value) in _urlReplacements)
@@ -379,7 +396,47 @@ namespace Business.SongDetailsScrapers
 
 		protected static HtmlDocument GetHtmlDocFromUrl(string url)
 		{
-			return new HtmlWeb().Load(url);
+			Exception exception;
+			do
+			{
+				exception = null;
+				HttpWebResponse response;
+				try
+				{
+					var request = (HttpWebRequest) WebRequest.Create(url);
+					request.Timeout = MaxTimeout;
+					response = (HttpWebResponse) request.GetResponse();
+					string html;
+					using (var stream = response.GetResponseStream())
+					using (var reader = new StreamReader(stream))
+					{
+						html = reader.ReadToEnd();
+					}
+
+					var doc = new HtmlDocument();
+					doc.LoadHtml(html);
+					return doc;
+				}
+				catch (WebException e)
+				{
+					response = (HttpWebResponse) e.Response;
+					if (response == null)
+					{
+						Debug.WriteLine("TIMEOUT");
+						exception = e;
+					}
+				}
+				catch (IOException e)
+				{
+					Debug.WriteLine("PREMATURE");
+					exception = e;
+				}
+			} while (exception is WebException
+			{
+				Status: WebExceptionStatus.Timeout
+			} or IOException);
+
+			return null;
 		}
 
 		protected string GetDecodedInnerText(HtmlNode node)
@@ -387,10 +444,25 @@ namespace Business.SongDetailsScrapers
 			return WebUtility.HtmlDecode(node.InnerText);
 		}
 
+		protected bool CanGetYear()
+		{
+			try
+			{
+				if (CurrentSong.IsSingle)
+					GetYearOfSingle();
+				else
+					GetYearOfAlbumTrack();
+				return true;
+			}
+			catch (FormatException)
+			{
+				return false;
+			}
+		}
+
 		internal abstract int GetYearOfSingle();
 		internal abstract int GetYearOfAlbumTrack();
 		internal abstract string GetLyrics();
-		internal abstract string GetLyrics(HtmlDocument htmlDocument);
 		internal abstract string GetUrlFromSong(bool forAlbumYear);
 	}
 }

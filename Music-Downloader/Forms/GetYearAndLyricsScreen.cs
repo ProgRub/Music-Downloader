@@ -33,11 +33,26 @@ namespace Forms
 		private SongFileProgress _typeOfException;
 		private int _threadIdWithError;
 
-		public object Mutex { get; set; } = new();
+		public object UIChangesMutex { get; set; } = new();
 
 		public GetYearAndLyricsScreen()
 		{
 			InitializeComponent();
+			var buddies = new Control[]
+			{
+				SyncRichTextBoxAlbum, SyncRichTextBoxTitle
+			};
+			SyncRichTextBoxArtist.Buddies = buddies;
+			buddies = new Control[]
+			{
+				SyncRichTextBoxArtist, SyncRichTextBoxTitle
+			};
+			SyncRichTextBoxAlbum.Buddies = buddies;
+			buddies = new Control[]
+			{
+				SyncRichTextBoxAlbum, SyncRichTextBoxArtist
+			};
+			SyncRichTextBoxTitle.Buddies = buddies;
 			_lastWrittenLineIndex = 0;
 			_timeElapsed = new Stopwatch();
 			_clock = new Timer
@@ -54,7 +69,7 @@ namespace Forms
 			BusinessFacade.Instance.NotifySongFileProgress +=
 				(_, args) =>
 				{
-					lock (Mutex)
+					lock (UIChangesMutex)
 					{
 						UIChanges(args);
 					}
@@ -65,7 +80,6 @@ namespace Forms
 			MaximizeWindow();
 			SetFormAcceptButton(ButtonTryAgain);
 			BusinessFacade.Instance.OpenService();
-			//Task.Delay(100).ContinueWith(_=>BusinessFacade.Instance.StartGettingYearAndLyrics());
 			BusinessFacade.Instance.StartGettingYearAndLyrics();
 		}
 
@@ -78,37 +92,10 @@ namespace Forms
 
 		private void UIChanges(SongFileProgressEventArgs eventArgs)
 		{
-			int line;
 			switch (eventArgs.Progress)
 			{
 				case SongFileProgress.GettingYear:
-					line = _lastWrittenLineIndex;
-					_lastUsedLineByThread[eventArgs.ThreadId] = _lastWrittenLineIndex++;
-					RichTextBoxArtist.Invoke(new MethodInvoker(delegate
-					{
-						RichTextBoxArtist.AppendText((line > 0 ? Environment.NewLine : "") +
-						                             eventArgs.Song.AlbumArtist);
-						RichTextBoxArtist.Select(RichTextBoxArtist.GetFirstCharIndexFromLine(line),
-							RichTextBoxArtist.Lines[line].Length);
-						RichTextBoxArtist.SelectionColor = RichTextBoxArtist.ForeColor;
-						RichTextBoxArtist.ScrollToCaret();
-					}));
-					RichTextBoxAlbum.Invoke(new MethodInvoker(delegate
-					{
-						RichTextBoxAlbum.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Album);
-						RichTextBoxAlbum.Select(RichTextBoxAlbum.GetFirstCharIndexFromLine(line),
-							RichTextBoxAlbum.Lines[line].Length);
-						RichTextBoxAlbum.SelectionColor = RichTextBoxAlbum.ForeColor;
-						RichTextBoxAlbum.ScrollToCaret();
-					}));
-					RichTextBoxTitle.Invoke(new MethodInvoker(delegate
-					{
-						RichTextBoxTitle.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Title);
-						RichTextBoxTitle.Select(RichTextBoxTitle.GetFirstCharIndexFromLine(line),
-							RichTextBoxTitle.Lines[line].Length);
-						RichTextBoxTitle.SelectionColor = RichTextBoxTitle.ForeColor;
-						RichTextBoxTitle.ScrollToCaret();
-					}));
+					AddSongInformationToTextBoxes(eventArgs);
 					break;
 				case SongFileProgress.GettingYearException:
 					SystemSounds.Exclamation.Play();
@@ -129,22 +116,7 @@ namespace Forms
 					ChangeColorOfLastUsedLineByThread(eventArgs);
 					break;
 				case SongFileProgress.FileDone:
-					_numberOfFilesDone++;
-					_numberOfFilesDonePerThread[eventArgs.ThreadId]++;
-					TextBoxThreadsStatus.Invoke(
-						new MethodInvoker(delegate
-						{
-							TextBoxThreadsStatus.Select(
-								TextBoxThreadsStatus.GetFirstCharIndexFromLine(eventArgs.ThreadId),
-								TextBoxThreadsStatus.Lines[eventArgs.ThreadId].Length);
-							TextBoxThreadsStatus.SelectedText =
-								$"Thread {eventArgs.ThreadId + 1}: {_numberOfFilesDonePerThread[eventArgs.ThreadId]}/{_numberOfTotalFilesPerThread[eventArgs.ThreadId]} Files Processed";
-							TextBoxThreadsStatus.Select(
-								TextBoxThreadsStatus.GetFirstCharIndexFromLine(_lastUsedLineByThread.Count),
-								TextBoxThreadsStatus.Lines[_lastUsedLineByThread.Count].Length);
-							TextBoxThreadsStatus.SelectedText =
-								$"All Files: {_numberOfFilesDone}/{_totalNumberOfFiles} Files Processed";
-						}));
+					FileDoneUpdateThreadsStatus(eventArgs);
 					ChangeColorOfLastUsedLineByThread(eventArgs);
 					if (_numberOfFilesDone == _totalNumberOfFiles)
 					{
@@ -155,6 +127,60 @@ namespace Forms
 				default:
 					throw new ArgumentOutOfRangeException(nameof(eventArgs.Progress), eventArgs.Progress, null);
 			}
+		}
+
+		private void FileDoneUpdateThreadsStatus(SongFileProgressEventArgs eventArgs)
+		{
+			_numberOfFilesDone++;
+			_numberOfFilesDonePerThread[eventArgs.ThreadId]++;
+			TextBoxThreadsStatus.Invoke(
+				new MethodInvoker(delegate
+				{
+					TextBoxThreadsStatus.Select(
+						TextBoxThreadsStatus.GetFirstCharIndexFromLine(eventArgs.ThreadId),
+						TextBoxThreadsStatus.Lines[eventArgs.ThreadId].Length);
+					TextBoxThreadsStatus.SelectedText =
+						$"Thread {eventArgs.ThreadId + 1}: {_numberOfFilesDonePerThread[eventArgs.ThreadId]}/{_numberOfTotalFilesPerThread[eventArgs.ThreadId]} Files Processed";
+					TextBoxThreadsStatus.Select(
+						TextBoxThreadsStatus.GetFirstCharIndexFromLine(_lastUsedLineByThread.Count),
+						TextBoxThreadsStatus.Lines[_lastUsedLineByThread.Count].Length);
+					TextBoxThreadsStatus.SelectedText =
+						$"All Files: {_numberOfFilesDone}/{_totalNumberOfFiles} Files Processed";
+				}));
+		}
+
+		private void AddSongInformationToTextBoxes(SongFileProgressEventArgs eventArgs)
+		{
+			var line = _lastWrittenLineIndex;
+			_lastUsedLineByThread[eventArgs.ThreadId] = _lastWrittenLineIndex++;
+			SyncRichTextBoxArtist.Invoke(new MethodInvoker(delegate
+			{
+				SyncRichTextBoxArtist.AppendText((line > 0 ? Environment.NewLine : "") +
+				                                 eventArgs.Song.AlbumArtist);
+				SyncRichTextBoxArtist.Select(SyncRichTextBoxArtist.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxArtist.Lines[line].Length);
+				SyncRichTextBoxArtist.SelectionColor = SyncRichTextBoxArtist.ForeColor;
+				if (CheckBoxScrollToEnd.Checked)
+					SyncRichTextBoxArtist.ScrollToCaret();
+			}));
+			SyncRichTextBoxAlbum.Invoke(new MethodInvoker(delegate
+			{
+				SyncRichTextBoxAlbum.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Album);
+				SyncRichTextBoxAlbum.Select(SyncRichTextBoxAlbum.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxAlbum.Lines[line].Length);
+				SyncRichTextBoxAlbum.SelectionColor = SyncRichTextBoxAlbum.ForeColor;
+				if (CheckBoxScrollToEnd.Checked)
+					SyncRichTextBoxAlbum.ScrollToCaret();
+			}));
+			SyncRichTextBoxTitle.Invoke(new MethodInvoker(delegate
+			{
+				SyncRichTextBoxTitle.AppendText((line > 0 ? Environment.NewLine : "") + eventArgs.Song.Title);
+				SyncRichTextBoxTitle.Select(SyncRichTextBoxTitle.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxTitle.Lines[line].Length);
+				SyncRichTextBoxTitle.SelectionColor = SyncRichTextBoxTitle.ForeColor;
+				if (CheckBoxScrollToEnd.Checked)
+					SyncRichTextBoxTitle.ScrollToCaret();
+			}));
 		}
 
 		private void ActivateCorrectionControls(SongFileProgressEventArgs eventArgs)
@@ -170,6 +196,7 @@ namespace Forms
 						{
 							TextBoxCorrectArtist.Enabled = true;
 							TextBoxCorrectArtist.Text = _errorSong.AlbumArtist;
+							TextBoxCorrectArtist.Focus();
 						}));
 						TextBoxCorrectTitle.Invoke(
 							new MethodInvoker(delegate
@@ -182,17 +209,18 @@ namespace Forms
 					}
 					else
 					{
+						TextBoxCorrectArtist.Invoke(new MethodInvoker(delegate
+						{
+							TextBoxCorrectArtist.Enabled = true;
+							TextBoxCorrectArtist.Text = _errorSong.AlbumArtist;
+							TextBoxCorrectArtist.Focus();
+						}));
 						TextBoxCorrectAlbum.Invoke(
 							new MethodInvoker(delegate
 							{
 								TextBoxCorrectAlbum.Enabled = true;
 								TextBoxCorrectAlbum.Text = _errorSong.Album;
 							}));
-						TextBoxCorrectArtist.Invoke(new MethodInvoker(delegate
-						{
-							TextBoxCorrectArtist.Enabled = true;
-							TextBoxCorrectArtist.Text = _errorSong.AlbumArtist;
-						}));
 						ButtonTryAgain.Invoke(new MethodInvoker(delegate { ButtonTryAgain.Enabled = true; }));
 						ButtonSkipYear.Invoke(new MethodInvoker(delegate { ButtonSkipYear.Enabled = true; }));
 					}
@@ -203,6 +231,7 @@ namespace Forms
 					{
 						TextBoxCorrectArtist.Enabled = true;
 						TextBoxCorrectArtist.Text = _errorSong.AlbumArtist;
+						TextBoxCorrectArtist.Focus();
 					}));
 					TextBoxCorrectTitle.Invoke(new MethodInvoker(delegate
 					{
@@ -234,6 +263,7 @@ namespace Forms
 				TextBoxCorrectTitle.Enabled = false;
 				ClearTextBox(TextBoxCorrectTitle);
 			}));
+			LabelUrl.Invoke(new MethodInvoker(delegate { LabelUrl.Text = "Genius URL"; }));
 			ButtonTryAgain.Invoke(new MethodInvoker(delegate { ButtonTryAgain.Enabled = false; }));
 			ButtonSkipLyrics.Invoke(new MethodInvoker(delegate { ButtonSkipLyrics.Enabled = false; }));
 			ButtonSkipYear.Invoke(new MethodInvoker(delegate { ButtonSkipYear.Enabled = false; }));
@@ -309,10 +339,15 @@ namespace Forms
 			DeactivateCorrectionControls();
 		}
 
+		private void CheckBoxScrollToEnd_CheckedChanged(object sender, EventArgs e)
+		{
+			CheckBoxScrollToEnd.ForeColor = CheckBoxScrollToEnd.Checked ? Color.Green : Color.Maroon;
+		}
+
 		private void ChangeColorOfLastUsedLineByThread(SongFileProgressEventArgs eventArgs)
 		{
 			var line = _lastUsedLineByThread[eventArgs.ThreadId];
-			Color color = eventArgs.Progress switch
+			var color = eventArgs.Progress switch
 			{
 				SongFileProgress.GettingLyrics => Color.DarkGreen,
 				SongFileProgress.AddingToService => Color.Aquamarine,
@@ -320,23 +355,23 @@ namespace Forms
 				_ => throw new ArgumentOutOfRangeException(nameof(eventArgs.Progress), eventArgs.Progress, null)
 			};
 
-			RichTextBoxArtist.Invoke(new MethodInvoker(delegate
+			SyncRichTextBoxArtist.Invoke(new MethodInvoker(delegate
 			{
-				RichTextBoxArtist.Select(RichTextBoxArtist.GetFirstCharIndexFromLine(line),
-					RichTextBoxArtist.Lines[line].Length);
-				RichTextBoxArtist.SelectionColor = color;
+				SyncRichTextBoxArtist.Select(SyncRichTextBoxArtist.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxArtist.Lines[line].Length);
+				SyncRichTextBoxArtist.SelectionColor = color;
 			}));
-			RichTextBoxAlbum.Invoke(new MethodInvoker(delegate
+			SyncRichTextBoxAlbum.Invoke(new MethodInvoker(delegate
 			{
-				RichTextBoxAlbum.Select(RichTextBoxAlbum.GetFirstCharIndexFromLine(line),
-					RichTextBoxAlbum.Lines[line].Length);
-				RichTextBoxAlbum.SelectionColor = color;
+				SyncRichTextBoxAlbum.Select(SyncRichTextBoxAlbum.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxAlbum.Lines[line].Length);
+				SyncRichTextBoxAlbum.SelectionColor = color;
 			}));
-			RichTextBoxTitle.Invoke(new MethodInvoker(delegate
+			SyncRichTextBoxTitle.Invoke(new MethodInvoker(delegate
 			{
-				RichTextBoxTitle.Select(RichTextBoxTitle.GetFirstCharIndexFromLine(line),
-					RichTextBoxTitle.Lines[line].Length);
-				RichTextBoxTitle.SelectionColor = color;
+				SyncRichTextBoxTitle.Select(SyncRichTextBoxTitle.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxTitle.Lines[line].Length);
+				SyncRichTextBoxTitle.SelectionColor = color;
 			}));
 		}
 

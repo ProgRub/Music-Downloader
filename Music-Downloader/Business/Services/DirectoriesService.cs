@@ -30,9 +30,9 @@ namespace Business.Services
 
 		internal ISet<SongFileDTO> GetAllStoredSongs()
 		{
-			return Directory.GetFiles(MusicToDirectory, "WickedSkeng*",//*.mp3
+			return Directory.GetFiles(MusicToDirectory, "*.mp3",
 				SearchOption.TopDirectoryOnly).Select(e =>
-				SongFileDTO.GetSongFileDTOFromFilePath(Path.Combine(MusicToDirectory, e))).Reverse().ToHashSet();
+				SongFileDTO.GetSongFileDTOFromFilePath(Path.Combine(MusicToDirectory, e))).ToHashSet();
 		}
 
 		public void SaveChanges()

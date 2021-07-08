@@ -30,6 +30,7 @@ namespace Forms
 		{
 			CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
 			CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
+			SetFormAcceptButton(ButtonAddNewUrlReplacement);
 			_urlReplacements = BusinessFacade.Instance.GetUrlReplacements();
 			foreach (var (key, value) in _urlReplacements)
 			{

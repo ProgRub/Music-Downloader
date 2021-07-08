@@ -28,6 +28,7 @@ namespace Forms
 
 		private void ManageGrimeArtistsScreen_Enter(object sender, EventArgs e)
 		{
+			SetFormAcceptButton(ButtonAddNewGrimeArtist);
 			CommandsManager.Instance.Notify += (_, _) => { ButtonUndo.Enabled = CommandsManager.Instance.HasUndo; };
 			CommandsManager.Instance.Notify += (_, _) => { ButtonRedo.Enabled = CommandsManager.Instance.HasRedo; };
 			_grimeArtists = BusinessFacade.Instance.GetGrimeArtists().ToList();

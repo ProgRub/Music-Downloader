@@ -15,24 +15,37 @@ namespace Business.SongDetailsScrapers
 
 		internal override int GetYearOfSingle()
 		{
-			HtmlDocument htmlDoc;
-			do
-			{
-				htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(false));
-			} while (!htmlDoc.DocumentNode.Descendants("main").Any());
+			return CachedHtmlDocument.DocumentNode.Descendants("main").Any()
+				? GetYearOfSingleVersion1()
+				: GetYearOfSingleVersion2();
+		}
 
-			HtmlDocumentOfSingle = htmlDoc;
-			var htmlNode = htmlDoc.DocumentNode.Descendants("div").Where(e =>
+		private int GetYearOfSingleVersion1()
+		{
+			var htmlNode = CachedHtmlDocument.DocumentNode.Descendants("div").Where(e =>
 					e.GetAttributeValue("class", "").Contains("HeaderMetadata__Section-sc-1p42fnf-2"))
 				.First(e => GetDecodedInnerText(e).Contains("Release"));
 			var textSplit = GetDecodedInnerText(htmlNode).Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
 			return int.Parse(textSplit.Last());
 		}
 
+		private int GetYearOfSingleVersion2()
+		{
+			foreach (var htmlNode in CachedHtmlDocument.DocumentNode.Descendants("div").Where(e=>e.GetAttributeValue("class","")=="metadata_unit metadata_unit--table_row"))
+			{
+				var innerTextSplit = GetDecodedInnerText(htmlNode).Split(new char[0],StringSplitOptions.RemoveEmptyEntries);
+				if (innerTextSplit[0].Contains("Release") && innerTextSplit[1] == "Date")
+				{
+					return int.Parse(innerTextSplit.Last());
+				}
+			}
+
+			throw new FormatException();
+		}
 		internal override int GetYearOfAlbumTrack()
 		{
-			var htmlDoc = GetHtmlDocFromUrl(GetUrlFromSong(true));
-			var divs = htmlDoc.DocumentNode.Descendants("div").ToList();
+			CachedHtmlDocument ??= GetHtmlDocFromUrl(GetUrlFromSong(true));
+			var divs = CachedHtmlDocument.DocumentNode.Descendants("div").ToList();
 			var textSplit = divs
 				.First(e => e.GetAttributeValue("class", "nothing") == "header_with_cover_art-inner column_layout")
 				.Descendants().First(e =>
@@ -43,38 +56,45 @@ namespace Business.SongDetailsScrapers
 
 		internal override string GetLyrics()
 		{
-			HtmlDocument htmlDocument;
-			do
-			{
-				htmlDocument = GetHtmlDocFromUrl(GetUrlFromSong(false));
-			} while (!htmlDocument.DocumentNode.Descendants("main").Any());
+			return CachedHtmlDocument.DocumentNode.Descendants("main").Any()
+				? GetLyricsVersion1()
+				: GetLyricsVersion2();
+		}
 
+		private string GetLyricsVersion1()
+		{
 			var lyrics = "";
-			foreach (var htmlNode in htmlDocument.DocumentNode.Descendants("main").First().Descendants("div").Where(e =>
-				e.GetAttributeValue("class", "").Contains("Lyrics__Container-sc-1ynbvzw")))
+			foreach (var htmlNode in CachedHtmlDocument.DocumentNode.Descendants("main").First().Descendants("div")
+				.Where(e =>
+					e.GetAttributeValue("class", "").Contains("Lyrics__Container-sc-1ynbvzw")))
 			{
-				htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine);
+				htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine)
+					.Replace("<inread-ad></inread-ad>", Environment.NewLine);
 				lyrics += GetDecodedInnerText(htmlNode);
+				lyrics += Environment.NewLine;
 			}
+
+			lyrics = lyrics.Trim();
+			if (string.IsNullOrWhiteSpace(lyrics)) lyrics = "[Instrumental]";
 
 			return lyrics;
 		}
 
-		internal override string GetLyrics(HtmlDocument htmlDocument)
+		private string GetLyricsVersion2()
 		{
-			do
-			{
-				htmlDocument = GetHtmlDocFromUrl(GetUrlFromSong(false));
-			} while (!htmlDocument.DocumentNode.Descendants("main").Any());
-
 			var lyrics = "";
-			foreach (var htmlNode in htmlDocument.DocumentNode.Descendants("main").First().Descendants("div").Where(e =>
-				e.GetAttributeValue("class", "").Contains("Lyrics__Container-sc-1ynbvzw-7 jjqBBp")))
+			foreach (var div in CachedHtmlDocument.DocumentNode
+				.Descendants("div").First(e => e.GetAttributeValue("class", "") == "song_body column_layout")
+				.Descendants())
 			{
-				htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine);
+				if (div.GetAttributeValue("class", "") != "lyrics") continue;
+				var htmlNode = div;
 				lyrics += GetDecodedInnerText(htmlNode);
+				break;
 			}
 
+			lyrics = lyrics.Replace("\n", Environment.NewLine).Trim();
+			if (lyrics is "(Instrumental)" or "[instrumental]") lyrics = "[Instrumental]";
 			return lyrics;
 		}
 
@@ -82,13 +102,14 @@ namespace Business.SongDetailsScrapers
 		{
 			if (forAlbumYear)
 			{
-				return "http://www.genius.com/albums/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false,false) +
+				return "https://genius.com/albums/" +
+				       MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false, false) +
 				       "/" +
-				       MakeUrlReplacementsOnString(CurrentSong.Album, false,true);
+				       MakeUrlReplacementsOnString(CurrentSong.Album, false, true);
 			}
 
-			return "http://genius.com/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false,false) + "-" +
-			       MakeUrlReplacementsOnString(CurrentSong.Title, true,false) + "-lyrics";
+			return "https://genius.com/" + MakeUrlReplacementsOnString(CurrentSong.AlbumArtist, false, false) + "-" +
+			       MakeUrlReplacementsOnString(CurrentSong.Title, true, false) + "-lyrics";
 		}
 	}
 }

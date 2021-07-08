@@ -222,5 +222,33 @@ namespace Business.DTOs
 
 			return word.Trim();
 		}
+
+		protected bool Equals(SongFileDTO other)
+		{
+			return AlbumArtist == other.AlbumArtist && Album == other.Album && Title == other.Title;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((SongFileDTO) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(AlbumArtist, Album, Title);
+		}
+
+		public static bool operator ==(SongFileDTO left, SongFileDTO right)
+		{
+			return Equals(left, right);
+		}
+
+		public static bool operator !=(SongFileDTO left, SongFileDTO right)
+		{
+			return !Equals(left, right);
+		}
 	}
 }

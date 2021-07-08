@@ -156,6 +156,8 @@ namespace Business.Services
 			}
 
 			_changeDetailsExceptionRepository.SaveChanges();
+			_deletedExceptions.Clear();
+			_addedExceptions.Clear();
 		}
 
 		internal IEnumerable<YearLyricsChangeDetailsException> GetAllExceptions()

@@ -43,6 +43,7 @@ namespace Business.Services
 			}
 
 			_grimeArtistRepository.SaveChanges();
+			_deletedGrimeArtists.Clear();
 		}
 
 		public IEnumerable<string> GetAllGrimeArtists() => _grimeArtistRepository.GetAll().Select(e => e.ArtistName);

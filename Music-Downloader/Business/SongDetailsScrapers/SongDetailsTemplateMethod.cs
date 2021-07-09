@@ -406,51 +406,9 @@ namespace Business.SongDetailsScrapers
 
 		protected HtmlDocument GetHtmlDocFromUrl(string url)
 		{
-			Exception exception;
-			do
-			{
-				exception = null;
-				HttpWebResponse response;
-				try
-				{
-					var request = (HttpWebRequest) WebRequest.Create(url);
-					request.Proxy = null;
-					request.Timeout = MaxTimeout;
-					request.ReadWriteTimeout = 2;
-					response = (HttpWebResponse) request.GetResponse();
-					string html;
-					using (var stream = response.GetResponseStream())
-					using (var reader = new StreamReader(stream))
-					{
-						html = reader.ReadToEnd();
-					}
-					var doc = new HtmlDocument();
-					doc.LoadHtml(html);
-					return doc;
-				}
-				catch (WebException e)
-				{
-					response = (HttpWebResponse) e.Response;
-					if (response == null)
-					{
-						Debug.WriteLine($"TIMEOUT|{ThreadId}|{CurrentSong}");
-						exception = e;
-					}
-				}
-				catch (IOException e)
-				{
-					Debug.WriteLine($"PREMATURE|{ThreadId}|{CurrentSong} OR ReadToEnd HANGED");
-					exception = e;
-				}
-			} while (exception is WebException
-			{
-				Status: WebExceptionStatus.Timeout
-			}or WebException
-			{
-				Status: WebExceptionStatus.RequestCanceled
-			} or IOException);
-
-			return null;
+			var htmlWeb = new HtmlWeb();
+			var htmlDoc = htmlWeb.Load(url);
+			return htmlWeb.StatusCode == HttpStatusCode.OK ? htmlDoc : null;
 		}
 
 		protected string GetDecodedInnerText(HtmlNode node)

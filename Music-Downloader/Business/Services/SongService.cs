@@ -26,11 +26,12 @@ namespace Business.Services
 
 		internal void AddSong(SongFileDTO song)
 		{
-			if(_songRepository.Find(e=>e.Filename==song.Filename).Any())
+			if (_songRepository.Find(e => e.Filename == song.Filename).Any())
 			{
 				ModifySong(song);
 				return;
 			}
+
 			_addedSongs.Add(song);
 		}
 
@@ -56,7 +57,7 @@ namespace Business.Services
 		{
 			try
 			{
-				var songInDB = _songRepository.Find(e=>e.Filename==song.Filename).First();
+				var songInDB = _songRepository.Find(e => e.Filename == song.Filename).First();
 				ModifySong(song);
 
 				songInDB.Year = year;
@@ -64,24 +65,24 @@ namespace Business.Services
 			}
 			catch (InvalidOperationException)
 			{
-				song.Year = year;
-				song.Lyrics = lyrics;
 				AddSong(song);
 			}
 		}
 
-		internal void SaveChanges()  {
+		internal void SaveChanges()
+		{
 			foreach (var addedSong in _addedSongs)
 			{
-				var songDB = new Song
+				_songRepository.Add(new Song
 				{
-					Filename = addedSong.Filename, ContributingArtists = addedSong.ContributingArtists.ToList(), PlayCount = 0,
+					Filename = addedSong.Filename, ContributingArtists = addedSong.ContributingArtists.ToList(),
+					PlayCount = 0,
 					Year = addedSong.Year,
 					TrackNumber = addedSong.TrackNumber, DiscNumber = addedSong.DiscNumber, Title = addedSong.Title,
-					AlbumArtist = addedSong.AlbumArtist,Duration = addedSong.Duration
-				};
-				_songRepository.Add(songDB,addedSong.Album,addedSong.Genre,addedSong.TotalTrackCount,addedSong.TotalDiscCount);
+					AlbumArtist = addedSong.AlbumArtist, Duration = addedSong.Duration,Lyrics = addedSong.Lyrics
+				},addedSong.Album,addedSong.Genre,addedSong.TotalTrackCount,addedSong.TotalDiscCount);
 			}
+
 			_songRepository.SaveChanges();
 		}
 	}

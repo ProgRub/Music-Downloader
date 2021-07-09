@@ -97,11 +97,11 @@ namespace Business
 
 		public void SaveChanges()
 		{
-			SongService.Instance.SaveChanges();
 			ExceptionsService.Instance.SaveChanges();
 			DirectoriesService.Instance.SaveChanges();
 			UrlReplacementService.Instance.SaveChanges();
 			GrimeArtistService.Instance.SaveChanges();
+			SongService.Instance.SaveChanges();
 		}
 
 		public string GetMusicFromDirectory() => DirectoriesService.Instance.MusicFromDirectory;

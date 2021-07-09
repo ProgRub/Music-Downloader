@@ -144,8 +144,10 @@ namespace Forms
 					TextBoxThreadsStatus.Select(
 						TextBoxThreadsStatus.GetFirstCharIndexFromLine(eventArgs.ThreadId),
 						TextBoxThreadsStatus.Lines[eventArgs.ThreadId].Length);
+					var totalFilesOfThread = _numberOfTotalFilesPerThread[eventArgs.ThreadId];
+					var filesDoneByThread = _numberOfFilesDonePerThread[eventArgs.ThreadId];
 					TextBoxThreadsStatus.SelectedText =
-						$"Thread {eventArgs.ThreadId + 1}: {_numberOfFilesDonePerThread[eventArgs.ThreadId]}/{_numberOfTotalFilesPerThread[eventArgs.ThreadId]} Files Processed";
+						$"Thread {eventArgs.ThreadId + 1}: {filesDoneByThread}/{totalFilesOfThread} Files Processed {(filesDoneByThread == totalFilesOfThread ? "All Done!" : "")}";
 					TextBoxThreadsStatus.Select(
 						TextBoxThreadsStatus.GetFirstCharIndexFromLine(_lastUsedLineByThread.Count),
 						TextBoxThreadsStatus.Lines[_lastUsedLineByThread.Count].Length);

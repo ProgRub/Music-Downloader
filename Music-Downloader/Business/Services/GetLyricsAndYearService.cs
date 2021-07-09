@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using Business.CustomEventArgs;
 using Business.DTOs;
@@ -34,6 +35,7 @@ namespace Business.Services
 
 			var totalNumberOfSongs = SongsToGetDetails.Count;
 			NumberOfThreads = Math.Min(totalNumberOfSongs, NumberOfThreads);
+			ServicePointManager.DefaultConnectionLimit = NumberOfThreads;
 			var rest = totalNumberOfSongs % NumberOfThreads;
 			var result = totalNumberOfSongs / (double) NumberOfThreads;
 			var filesPerThreadList = new List<int>();

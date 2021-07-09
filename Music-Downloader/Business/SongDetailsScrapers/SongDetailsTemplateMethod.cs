@@ -155,7 +155,7 @@ namespace Business.SongDetailsScrapers
 				if (!string.IsNullOrWhiteSpace(changeDetailsException.OriginalTitle))
 					CurrentSong.Title = changeDetailsException.NewTitle;
 			}
-
+			
 			while (!DoesWebpageExist(GetUrlFromSong(false)))
 			{
 				ThreadIdWithError = ThreadId;
@@ -174,7 +174,7 @@ namespace Business.SongDetailsScrapers
 
 				errorHappened = true;
 			}
-
+			
 			if (errorHappened && originalSong != CurrentSong)
 			{
 				ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
@@ -206,8 +206,9 @@ namespace Business.SongDetailsScrapers
 					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
 					CurrentSong.Title = changeDetailsException.NewTitle;
 				}
+				
 
-				while (!DoesWebpageExist(GetUrlFromSong(false)))
+				while (!DoesWebpageExist(GetUrlFromSong(false)) || !CanGetYear())
 				{
 					ThreadIdWithError = ThreadId;
 					SemaphoreErrorRaised.Wait();
@@ -225,7 +226,7 @@ namespace Business.SongDetailsScrapers
 
 					errorHappened = true;
 				}
-
+				
 				if (errorHappened && originalSong != CurrentSong)
 				{
 					ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
@@ -287,7 +288,7 @@ namespace Business.SongDetailsScrapers
 					CurrentSong.Album = changeDetailsException.NewAlbum;
 					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
 				}
-
+				
 				while (!DoesWebpageExist(GetUrlFromSong(true)) || !CanGetYear())
 				{
 					ThreadIdWithError = ThreadId;
@@ -301,20 +302,29 @@ namespace Business.SongDetailsScrapers
 					if (SkipYear)
 					{
 						ExceptionsService.Instance.AddSkipAlbumYearException(originalSong);
-						_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album,
-							CurrentSong.Year);
-						foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
+						lock (_accessAlreadyVisitedPages)
 						{
-							semaphore.Release();
+							_alreadyVisitedAlbumPages.Add(originalSong.AlbumArtist + originalSong.Album,
+								CurrentSong.Year);
 						}
 
-						_albumsBeingChecked.Remove(originalSong.Album);
+
+						lock (_checkAlbumsMutex)
+						{
+							foreach (var semaphore in _albumsBeingChecked[originalSong.Album])
+							{
+								semaphore.Release();
+							}
+
+							_albumsBeingChecked.Remove(originalSong.Album);
+						}
+
 						return;
 					}
 
 					errorHappened = true;
 				}
-
+				
 				if (errorHappened && originalSong != CurrentSong)
 				{
 					ExceptionsService.Instance.AddCorrectionForAlbumYearException(originalSong, CurrentSong);
@@ -332,10 +342,10 @@ namespace Business.SongDetailsScrapers
 					{
 						semaphore.Release();
 					}
+					_albumsBeingChecked.Remove(originalSong.Album);
 				}
 
 
-				_albumsBeingChecked.Remove(originalSong.Album);
 			}
 
 			CachedHtmlDocument = null;
@@ -394,7 +404,7 @@ namespace Business.SongDetailsScrapers
 			return detail.ToLower();
 		}
 
-		protected static HtmlDocument GetHtmlDocFromUrl(string url)
+		protected HtmlDocument GetHtmlDocFromUrl(string url)
 		{
 			Exception exception;
 			do
@@ -404,7 +414,9 @@ namespace Business.SongDetailsScrapers
 				try
 				{
 					var request = (HttpWebRequest) WebRequest.Create(url);
+					request.Proxy = null;
 					request.Timeout = MaxTimeout;
+					request.ReadWriteTimeout = 2;
 					response = (HttpWebResponse) request.GetResponse();
 					string html;
 					using (var stream = response.GetResponseStream())
@@ -412,7 +424,6 @@ namespace Business.SongDetailsScrapers
 					{
 						html = reader.ReadToEnd();
 					}
-
 					var doc = new HtmlDocument();
 					doc.LoadHtml(html);
 					return doc;
@@ -422,18 +433,21 @@ namespace Business.SongDetailsScrapers
 					response = (HttpWebResponse) e.Response;
 					if (response == null)
 					{
-						Debug.WriteLine("TIMEOUT");
+						Debug.WriteLine($"TIMEOUT|{ThreadId}|{CurrentSong}");
 						exception = e;
 					}
 				}
 				catch (IOException e)
 				{
-					Debug.WriteLine("PREMATURE");
+					Debug.WriteLine($"PREMATURE|{ThreadId}|{CurrentSong} OR ReadToEnd HANGED");
 					exception = e;
 				}
 			} while (exception is WebException
 			{
 				Status: WebExceptionStatus.Timeout
+			}or WebException
+			{
+				Status: WebExceptionStatus.RequestCanceled
 			} or IOException);
 
 			return null;

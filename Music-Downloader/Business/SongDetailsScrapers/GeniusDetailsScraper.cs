@@ -34,17 +34,15 @@ namespace Business.SongDetailsScrapers
 			foreach (var htmlNode in CachedHtmlDocument.DocumentNode.Descendants("div").Where(e=>e.GetAttributeValue("class","")=="metadata_unit metadata_unit--table_row"))
 			{
 				var innerTextSplit = GetDecodedInnerText(htmlNode).Split(new char[0],StringSplitOptions.RemoveEmptyEntries);
-				if (innerTextSplit[0].Contains("Release") && innerTextSplit[1] == "Date")
+				if (innerTextSplit[0].Contains("Release"))
 				{
 					return int.Parse(innerTextSplit.Last());
 				}
 			}
-
 			throw new FormatException();
 		}
 		internal override int GetYearOfAlbumTrack()
 		{
-			CachedHtmlDocument ??= GetHtmlDocFromUrl(GetUrlFromSong(true));
 			var divs = CachedHtmlDocument.DocumentNode.Descendants("div").ToList();
 			var textSplit = divs
 				.First(e => e.GetAttributeValue("class", "nothing") == "header_with_cover_art-inner column_layout")
@@ -76,7 +74,7 @@ namespace Business.SongDetailsScrapers
 
 			lyrics = lyrics.Trim();
 			if (string.IsNullOrWhiteSpace(lyrics)) lyrics = "[Instrumental]";
-
+			
 			return lyrics;
 		}
 

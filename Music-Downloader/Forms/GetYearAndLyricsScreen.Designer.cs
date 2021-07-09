@@ -50,6 +50,8 @@ namespace Forms
 			this.SyncRichTextBoxArtist = new Forms.SyncRichTextBox();
 			this.SyncRichTextBoxAlbum = new Forms.SyncRichTextBox();
 			this.SyncRichTextBoxTitle = new Forms.SyncRichTextBox();
+			this.SyncRichTextBoxThreadIdStartEndTimes = new Forms.SyncRichTextBox();
+			this.LabelThreadIdStartAndEnd = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxLabel)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -64,7 +66,7 @@ namespace Forms
 			// PictureBoxLabel
 			// 
 			this.PictureBoxLabel.Image = global::Forms.Properties.Resources.image_removebg_preview__1_;
-			this.PictureBoxLabel.Location = new System.Drawing.Point(1617, 152);
+			this.PictureBoxLabel.Location = new System.Drawing.Point(1620, 179);
 			this.PictureBoxLabel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.PictureBoxLabel.Name = "PictureBoxLabel";
 			this.PictureBoxLabel.Size = new System.Drawing.Size(251, 200);
@@ -75,7 +77,7 @@ namespace Forms
 			// LabelArtist
 			// 
 			this.LabelArtist.AutoSize = true;
-			this.LabelArtist.Location = new System.Drawing.Point(149, 31);
+			this.LabelArtist.Location = new System.Drawing.Point(315, 55);
 			this.LabelArtist.Name = "LabelArtist";
 			this.LabelArtist.Size = new System.Drawing.Size(50, 17);
 			this.LabelArtist.TabIndex = 10;
@@ -84,7 +86,7 @@ namespace Forms
 			// LabelAlbum
 			// 
 			this.LabelAlbum.AutoSize = true;
-			this.LabelAlbum.Location = new System.Drawing.Point(627, 31);
+			this.LabelAlbum.Location = new System.Drawing.Point(736, 55);
 			this.LabelAlbum.Name = "LabelAlbum";
 			this.LabelAlbum.Size = new System.Drawing.Size(57, 17);
 			this.LabelAlbum.TabIndex = 11;
@@ -93,7 +95,7 @@ namespace Forms
 			// LabelTitle
 			// 
 			this.LabelTitle.AutoSize = true;
-			this.LabelTitle.Location = new System.Drawing.Point(1272, 31);
+			this.LabelTitle.Location = new System.Drawing.Point(1317, 55);
 			this.LabelTitle.Name = "LabelTitle";
 			this.LabelTitle.Size = new System.Drawing.Size(41, 17);
 			this.LabelTitle.TabIndex = 12;
@@ -102,7 +104,7 @@ namespace Forms
 			// LabelTimeElapsed
 			// 
 			this.LabelTimeElapsed.AutoSize = true;
-			this.LabelTimeElapsed.Location = new System.Drawing.Point(909, 8);
+			this.LabelTimeElapsed.Location = new System.Drawing.Point(899, 8);
 			this.LabelTimeElapsed.Name = "LabelTimeElapsed";
 			this.LabelTimeElapsed.Size = new System.Drawing.Size(193, 17);
 			this.LabelTimeElapsed.TabIndex = 13;
@@ -111,7 +113,7 @@ namespace Forms
 			// LabelThreadsStatus
 			// 
 			this.LabelThreadsStatus.AutoSize = true;
-			this.LabelThreadsStatus.Location = new System.Drawing.Point(111, 769);
+			this.LabelThreadsStatus.Location = new System.Drawing.Point(114, 796);
 			this.LabelThreadsStatus.Name = "LabelThreadsStatus";
 			this.LabelThreadsStatus.Size = new System.Drawing.Size(125, 17);
 			this.LabelThreadsStatus.TabIndex = 14;
@@ -123,7 +125,7 @@ namespace Forms
 			this.TextBoxThreadsStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxThreadsStatus.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxThreadsStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxThreadsStatus.Location = new System.Drawing.Point(17, 788);
+			this.TextBoxThreadsStatus.Location = new System.Drawing.Point(20, 815);
 			this.TextBoxThreadsStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxThreadsStatus.Multiline = true;
 			this.TextBoxThreadsStatus.Name = "TextBoxThreadsStatus";
@@ -137,7 +139,7 @@ namespace Forms
 			this.TextBoxCorrectArtist.Enabled = false;
 			this.TextBoxCorrectArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectArtist.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxCorrectArtist.Location = new System.Drawing.Point(733, 788);
+			this.TextBoxCorrectArtist.Location = new System.Drawing.Point(736, 815);
 			this.TextBoxCorrectArtist.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectArtist.Name = "TextBoxCorrectArtist";
 			this.TextBoxCorrectArtist.Size = new System.Drawing.Size(526, 24);
@@ -150,7 +152,7 @@ namespace Forms
 			this.TextBoxCorrectAlbum.Enabled = false;
 			this.TextBoxCorrectAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectAlbum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxCorrectAlbum.Location = new System.Drawing.Point(733, 816);
+			this.TextBoxCorrectAlbum.Location = new System.Drawing.Point(736, 843);
 			this.TextBoxCorrectAlbum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectAlbum.Name = "TextBoxCorrectAlbum";
 			this.TextBoxCorrectAlbum.Size = new System.Drawing.Size(526, 24);
@@ -163,7 +165,7 @@ namespace Forms
 			this.TextBoxCorrectTitle.Enabled = false;
 			this.TextBoxCorrectTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxCorrectTitle.Location = new System.Drawing.Point(733, 844);
+			this.TextBoxCorrectTitle.Location = new System.Drawing.Point(736, 871);
 			this.TextBoxCorrectTitle.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectTitle.Name = "TextBoxCorrectTitle";
 			this.TextBoxCorrectTitle.Size = new System.Drawing.Size(526, 24);
@@ -172,7 +174,7 @@ namespace Forms
 			// LabelUrl
 			// 
 			this.LabelUrl.AutoSize = true;
-			this.LabelUrl.Location = new System.Drawing.Point(733, 769);
+			this.LabelUrl.Location = new System.Drawing.Point(736, 796);
 			this.LabelUrl.Name = "LabelUrl";
 			this.LabelUrl.Size = new System.Drawing.Size(39, 17);
 			this.LabelUrl.TabIndex = 20;
@@ -181,7 +183,7 @@ namespace Forms
 			// LabelCorrectArtist
 			// 
 			this.LabelCorrectArtist.AutoSize = true;
-			this.LabelCorrectArtist.Location = new System.Drawing.Point(675, 789);
+			this.LabelCorrectArtist.Location = new System.Drawing.Point(678, 816);
 			this.LabelCorrectArtist.Name = "LabelCorrectArtist";
 			this.LabelCorrectArtist.Size = new System.Drawing.Size(50, 17);
 			this.LabelCorrectArtist.TabIndex = 21;
@@ -190,7 +192,7 @@ namespace Forms
 			// LabelCorrectAlbum
 			// 
 			this.LabelCorrectAlbum.AutoSize = true;
-			this.LabelCorrectAlbum.Location = new System.Drawing.Point(668, 820);
+			this.LabelCorrectAlbum.Location = new System.Drawing.Point(671, 847);
 			this.LabelCorrectAlbum.Name = "LabelCorrectAlbum";
 			this.LabelCorrectAlbum.Size = new System.Drawing.Size(57, 17);
 			this.LabelCorrectAlbum.TabIndex = 22;
@@ -199,7 +201,7 @@ namespace Forms
 			// LabelCorrectTitle
 			// 
 			this.LabelCorrectTitle.AutoSize = true;
-			this.LabelCorrectTitle.Location = new System.Drawing.Point(684, 846);
+			this.LabelCorrectTitle.Location = new System.Drawing.Point(687, 873);
 			this.LabelCorrectTitle.Name = "LabelCorrectTitle";
 			this.LabelCorrectTitle.Size = new System.Drawing.Size(41, 17);
 			this.LabelCorrectTitle.TabIndex = 23;
@@ -216,7 +218,7 @@ namespace Forms
 			this.ButtonTryAgain.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonTryAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonTryAgain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonTryAgain.Location = new System.Drawing.Point(954, 872);
+			this.ButtonTryAgain.Location = new System.Drawing.Point(957, 899);
 			this.ButtonTryAgain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonTryAgain.Name = "ButtonTryAgain";
 			this.ButtonTryAgain.Size = new System.Drawing.Size(93, 27);
@@ -235,7 +237,7 @@ namespace Forms
 			this.ButtonSkipYear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSkipYear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSkipYear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonSkipYear.Location = new System.Drawing.Point(954, 903);
+			this.ButtonSkipYear.Location = new System.Drawing.Point(957, 930);
 			this.ButtonSkipYear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSkipYear.Name = "ButtonSkipYear";
 			this.ButtonSkipYear.Size = new System.Drawing.Size(91, 27);
@@ -254,7 +256,7 @@ namespace Forms
 			this.ButtonSkipLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSkipLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSkipLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonSkipLyrics.Location = new System.Drawing.Point(954, 934);
+			this.ButtonSkipLyrics.Location = new System.Drawing.Point(957, 961);
 			this.ButtonSkipLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSkipLyrics.Name = "ButtonSkipLyrics";
 			this.ButtonSkipLyrics.Size = new System.Drawing.Size(101, 27);
@@ -272,7 +274,7 @@ namespace Forms
 			this.CheckBoxScrollToEnd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
 			this.CheckBoxScrollToEnd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.CheckBoxScrollToEnd.ForeColor = System.Drawing.Color.Green;
-			this.CheckBoxScrollToEnd.Location = new System.Drawing.Point(1613, 49);
+			this.CheckBoxScrollToEnd.Location = new System.Drawing.Point(1616, 76);
 			this.CheckBoxScrollToEnd.Name = "CheckBoxScrollToEnd";
 			this.CheckBoxScrollToEnd.Size = new System.Drawing.Size(255, 21);
 			this.CheckBoxScrollToEnd.TabIndex = 29;
@@ -287,11 +289,11 @@ namespace Forms
 			this.SyncRichTextBoxArtist.Buddies = null;
 			this.SyncRichTextBoxArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.SyncRichTextBoxArtist.ForeColor = System.Drawing.Color.Yellow;
-			this.SyncRichTextBoxArtist.Location = new System.Drawing.Point(17, 49);
+			this.SyncRichTextBoxArtist.Location = new System.Drawing.Point(193, 75);
 			this.SyncRichTextBoxArtist.Name = "SyncRichTextBoxArtist";
 			this.SyncRichTextBoxArtist.ReadOnly = true;
 			this.SyncRichTextBoxArtist.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxArtist.Size = new System.Drawing.Size(316, 711);
+			this.SyncRichTextBoxArtist.Size = new System.Drawing.Size(281, 711);
 			this.SyncRichTextBoxArtist.TabIndex = 30;
 			this.SyncRichTextBoxArtist.Text = "";
 			// 
@@ -302,11 +304,11 @@ namespace Forms
 			this.SyncRichTextBoxAlbum.Buddies = null;
 			this.SyncRichTextBoxAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.SyncRichTextBoxAlbum.ForeColor = System.Drawing.Color.Yellow;
-			this.SyncRichTextBoxAlbum.Location = new System.Drawing.Point(339, 49);
+			this.SyncRichTextBoxAlbum.Location = new System.Drawing.Point(480, 75);
 			this.SyncRichTextBoxAlbum.Name = "SyncRichTextBoxAlbum";
 			this.SyncRichTextBoxAlbum.ReadOnly = true;
 			this.SyncRichTextBoxAlbum.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxAlbum.Size = new System.Drawing.Size(633, 711);
+			this.SyncRichTextBoxAlbum.Size = new System.Drawing.Size(562, 711);
 			this.SyncRichTextBoxAlbum.TabIndex = 31;
 			this.SyncRichTextBoxAlbum.Text = "";
 			// 
@@ -317,18 +319,43 @@ namespace Forms
 			this.SyncRichTextBoxTitle.Buddies = null;
 			this.SyncRichTextBoxTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.SyncRichTextBoxTitle.ForeColor = System.Drawing.Color.Yellow;
-			this.SyncRichTextBoxTitle.Location = new System.Drawing.Point(978, 48);
+			this.SyncRichTextBoxTitle.Location = new System.Drawing.Point(1048, 75);
 			this.SyncRichTextBoxTitle.Name = "SyncRichTextBoxTitle";
 			this.SyncRichTextBoxTitle.ReadOnly = true;
 			this.SyncRichTextBoxTitle.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxTitle.Size = new System.Drawing.Size(633, 712);
+			this.SyncRichTextBoxTitle.Size = new System.Drawing.Size(562, 712);
 			this.SyncRichTextBoxTitle.TabIndex = 32;
 			this.SyncRichTextBoxTitle.Text = "";
+			// 
+			// SyncRichTextBoxThreadIdStartEndTimes
+			// 
+			this.SyncRichTextBoxThreadIdStartEndTimes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
+			this.SyncRichTextBoxThreadIdStartEndTimes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.SyncRichTextBoxThreadIdStartEndTimes.Buddies = null;
+			this.SyncRichTextBoxThreadIdStartEndTimes.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.SyncRichTextBoxThreadIdStartEndTimes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
+			this.SyncRichTextBoxThreadIdStartEndTimes.Location = new System.Drawing.Point(20, 75);
+			this.SyncRichTextBoxThreadIdStartEndTimes.Name = "SyncRichTextBoxThreadIdStartEndTimes";
+			this.SyncRichTextBoxThreadIdStartEndTimes.ReadOnly = true;
+			this.SyncRichTextBoxThreadIdStartEndTimes.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+			this.SyncRichTextBoxThreadIdStartEndTimes.Size = new System.Drawing.Size(167, 711);
+			this.SyncRichTextBoxThreadIdStartEndTimes.TabIndex = 33;
+			this.SyncRichTextBoxThreadIdStartEndTimes.Text = "";
+			// 
+			// LabelThreadIdStartAndEnd
+			// 
+			this.LabelThreadIdStartAndEnd.Location = new System.Drawing.Point(20, 33);
+			this.LabelThreadIdStartAndEnd.Name = "LabelThreadIdStartAndEnd";
+			this.LabelThreadIdStartAndEnd.Size = new System.Drawing.Size(167, 39);
+			this.LabelThreadIdStartAndEnd.TabIndex = 34;
+			this.LabelThreadIdStartAndEnd.Text = "Thread Id,Start Time and End Time";
 			// 
 			// GetYearAndLyricsScreen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.LabelThreadIdStartAndEnd);
+			this.Controls.Add(this.SyncRichTextBoxThreadIdStartEndTimes);
 			this.Controls.Add(this.SyncRichTextBoxTitle);
 			this.Controls.Add(this.SyncRichTextBoxAlbum);
 			this.Controls.Add(this.SyncRichTextBoxArtist);
@@ -352,7 +379,7 @@ namespace Forms
 			this.Controls.Add(this.PictureBoxLabel);
 			this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.Name = "GetYearAndLyricsScreen";
-			this.Size = new System.Drawing.Size(1879, 963);
+			this.Size = new System.Drawing.Size(1879, 990);
 			this.Enter += new System.EventHandler(this.GetYearAndLyricsScreen_Enter);
 			this.Controls.SetChildIndex(this.PictureBoxLabel, 0);
 			this.Controls.SetChildIndex(this.LabelArtist, 0);
@@ -376,6 +403,8 @@ namespace Forms
 			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.Controls.SetChildIndex(this.SyncRichTextBoxAlbum, 0);
 			this.Controls.SetChildIndex(this.SyncRichTextBoxTitle, 0);
+			this.Controls.SetChildIndex(this.SyncRichTextBoxThreadIdStartEndTimes, 0);
+			this.Controls.SetChildIndex(this.LabelThreadIdStartAndEnd, 0);
 			((System.ComponentModel.ISupportInitialize)(this.PictureBoxLabel)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -405,5 +434,7 @@ namespace Forms
 		private SyncRichTextBox SyncRichTextBoxArtist;
 		private SyncRichTextBox SyncRichTextBoxAlbum;
 		private SyncRichTextBox SyncRichTextBoxTitle;
+		private SyncRichTextBox SyncRichTextBoxThreadIdStartEndTimes;
+		private System.Windows.Forms.Label LabelThreadIdStartAndEnd;
 	}
 }

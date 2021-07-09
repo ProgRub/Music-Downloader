@@ -18,7 +18,13 @@ namespace Business.Services.MusicServices
 		public void AddSong(SongFileDTO song)
 		{
 
-			_iTunesLibrary.AddFile(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
+			var operationStatus=_iTunesLibrary.AddFile(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
+			while (operationStatus.InProgress) { }
+			var addedTrack = operationStatus.Tracks[1];
+			if (song.Year < 1985)
+			{
+				addedTrack.VolumeAdjustment = 50;
+			}
 		}
 
 		public void DeleteSong(SongFileDTO song)

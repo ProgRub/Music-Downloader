@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Business.Enums;
@@ -22,6 +23,7 @@ namespace Business.DTOs
 		public int Year { get; set; }
 		public string Lyrics { get; set; }
 		public DateTime LastModified { get; private init; }
+		public TimeSpan Duration { get; private init; }
 
 		private static IDictionary<string, string> _genreReplacements = new Dictionary<string, string>
 			{{"Alternativa", "Alternative"}};
@@ -50,7 +52,6 @@ namespace Business.DTOs
 				songFile.Tag.Performers = songFile.Tag.Performers.Select(e => e.Replace("And", "&")).ToArray();
 				albumArtist = albumArtist.Replace("And", "&");
 			}
-
 			var fileName = Path.GetFileName(filePath);
 			return new SongFileDTO
 			{
@@ -71,8 +72,14 @@ namespace Business.DTOs
 				TotalDiscCount = (int) songFile.Tag.DiscCount,
 				Year = (int) songFile.Tag.Year,
 				Lyrics = songFile.Tag.Lyrics,
-				LastModified = File.GetLastWriteTime(filePath)
+				LastModified = File.GetLastWriteTime(filePath),
+				Duration=songFile.Properties.Duration
 			};
+		}
+
+		public override string ToString()
+		{
+			return $"{AlbumArtist} - {Album} - {Title}";
 		}
 
 		internal static string UnCensorTitle(string title)

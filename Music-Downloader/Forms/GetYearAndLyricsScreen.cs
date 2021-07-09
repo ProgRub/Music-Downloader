@@ -40,19 +40,24 @@ namespace Forms
 			InitializeComponent();
 			var buddies = new Control[]
 			{
-				SyncRichTextBoxAlbum, SyncRichTextBoxTitle
+				SyncRichTextBoxAlbum, SyncRichTextBoxTitle,SyncRichTextBoxThreadIdStartEndTimes
 			};
 			SyncRichTextBoxArtist.Buddies = buddies;
 			buddies = new Control[]
 			{
-				SyncRichTextBoxArtist, SyncRichTextBoxTitle
+				SyncRichTextBoxArtist, SyncRichTextBoxTitle,SyncRichTextBoxThreadIdStartEndTimes
 			};
 			SyncRichTextBoxAlbum.Buddies = buddies;
 			buddies = new Control[]
 			{
-				SyncRichTextBoxAlbum, SyncRichTextBoxArtist
+				SyncRichTextBoxAlbum, SyncRichTextBoxArtist,SyncRichTextBoxThreadIdStartEndTimes
 			};
 			SyncRichTextBoxTitle.Buddies = buddies;
+			buddies = new Control[]
+			{
+				SyncRichTextBoxArtist,SyncRichTextBoxAlbum,SyncRichTextBoxTitle
+			};
+			SyncRichTextBoxThreadIdStartEndTimes.Buddies = buddies;
 			_lastWrittenLineIndex = 0;
 			_timeElapsed = new Stopwatch();
 			_clock = new Timer
@@ -147,6 +152,16 @@ namespace Forms
 					TextBoxThreadsStatus.SelectedText =
 						$"All Files: {_numberOfFilesDone}/{_totalNumberOfFiles} Files Processed";
 				}));
+			SyncRichTextBoxThreadIdStartEndTimes.Invoke(new MethodInvoker(delegate
+			{
+				var line = _lastUsedLineByThread[eventArgs.ThreadId];
+				var elapsedTime = _timeElapsed.Elapsed;
+				SyncRichTextBoxThreadIdStartEndTimes.Select(
+					SyncRichTextBoxThreadIdStartEndTimes.GetFirstCharIndexFromLine(line),
+					SyncRichTextBoxThreadIdStartEndTimes.Lines[line].Length);
+				SyncRichTextBoxThreadIdStartEndTimes.SelectedText +=
+					$"|{elapsedTime.Hours:00}:{elapsedTime.Minutes:00}:{elapsedTime.Seconds:00}";
+			}));
 		}
 
 		private void AddSongInformationToTextBoxes(SongFileProgressEventArgs eventArgs)
@@ -180,6 +195,13 @@ namespace Forms
 				SyncRichTextBoxTitle.SelectionColor = SyncRichTextBoxTitle.ForeColor;
 				if (CheckBoxScrollToEnd.Checked)
 					SyncRichTextBoxTitle.ScrollToCaret();
+			}));
+			SyncRichTextBoxThreadIdStartEndTimes.Invoke(new MethodInvoker(delegate
+			{
+				var elapsedTime = _timeElapsed.Elapsed;
+				SyncRichTextBoxThreadIdStartEndTimes.AppendText((line > 0 ? Environment.NewLine : "") + $"{eventArgs.ThreadId}|{elapsedTime.Hours:00}:{elapsedTime.Minutes:00}:{elapsedTime.Seconds:00}");
+				if (CheckBoxScrollToEnd.Checked)
+					SyncRichTextBoxThreadIdStartEndTimes.ScrollToCaret();
 			}));
 		}
 

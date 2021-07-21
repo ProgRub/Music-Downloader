@@ -66,13 +66,13 @@ namespace Business.SongDetailsScrapers
 				CurrentSong = song.Copy();
 				SkipLyrics = false;
 				SkipYear = false;
-				song.Album =
-					SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() {"Deluxe"}, CurrentSong.Album);
-				song.Title = SongFileDTO.RemoveWordsInParenthesisFromWord(
+				var albumWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() {"Deluxe"}, CurrentSong.Album);
+				CurrentSong.Album =
+					albumWithUnnecessaryWordsRemoved;
+				var titleWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(
 					new List<string>() {"feat", "Feat", "bonus", "Bonus", "Conclusion", "Vocal Mix", "Extended"},
 					CurrentSong.Title);
-				CurrentSong.Album = song.Album;
-				CurrentSong.Title = song.Title;
+				CurrentSong.Title = titleWithUnnecessaryWordsRemoved;
 				RaiseEvent(SongFileProgress.GettingYear);
 				bool haveToGetSongYear, haveToGetSongLyrics;
 				lock (_accessExceptionsMutex)
@@ -101,9 +101,9 @@ namespace Business.SongDetailsScrapers
 				if (haveToGetSongYear)
 					SetSongYear();
 				song.Year = CurrentSong.Year;
-				CurrentSong.Album = song.Album;
+				CurrentSong.Album = albumWithUnnecessaryWordsRemoved;
 				CurrentSong.AlbumArtist = song.AlbumArtist;
-				CurrentSong.Title = song.Title;
+				CurrentSong.Title = titleWithUnnecessaryWordsRemoved;
 				RaiseEvent(SongFileProgress.GettingLyrics);
 				if (haveToGetSongLyrics && !SkipLyrics)
 					SetSongLyrics();
@@ -140,7 +140,24 @@ namespace Business.SongDetailsScrapers
 					OriginalArtist = CurrentSong.AlbumArtist,
 					OriginalAlbum = CurrentSong.Album,
 					Type = ExceptionType.ChangeDetailsForLyrics
-				}) ?? ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+				});
+			}
+
+			if (changeDetailsException != null)
+			{
+				CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
+				CurrentSong.Title = changeDetailsException.NewTitle;
+			}
+
+			if (DoesWebpageExist(GetUrlFromSong(false)))
+			{
+				CurrentSong.Lyrics = GetLyrics();
+				return;
+			}
+
+			lock (_accessExceptionsMutex)
+			{
+				changeDetailsException = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
 				{
 					OriginalTitle = CurrentSong.Title,
 					OriginalArtist = CurrentSong.AlbumArtist,
@@ -155,7 +172,7 @@ namespace Business.SongDetailsScrapers
 				if (!string.IsNullOrWhiteSpace(changeDetailsException.OriginalTitle))
 					CurrentSong.Title = changeDetailsException.NewTitle;
 			}
-			
+
 			while (!DoesWebpageExist(GetUrlFromSong(false)))
 			{
 				ThreadIdWithError = ThreadId;
@@ -174,7 +191,7 @@ namespace Business.SongDetailsScrapers
 
 				errorHappened = true;
 			}
-			
+
 			if (errorHappened && originalSong != CurrentSong)
 			{
 				ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
@@ -206,7 +223,7 @@ namespace Business.SongDetailsScrapers
 					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
 					CurrentSong.Title = changeDetailsException.NewTitle;
 				}
-				
+
 
 				while (!DoesWebpageExist(GetUrlFromSong(false)) || !CanGetYear())
 				{
@@ -226,7 +243,7 @@ namespace Business.SongDetailsScrapers
 
 					errorHappened = true;
 				}
-				
+
 				if (errorHappened && originalSong != CurrentSong)
 				{
 					ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
@@ -288,7 +305,7 @@ namespace Business.SongDetailsScrapers
 					CurrentSong.Album = changeDetailsException.NewAlbum;
 					CurrentSong.AlbumArtist = changeDetailsException.NewArtist;
 				}
-				
+
 				while (!DoesWebpageExist(GetUrlFromSong(true)) || !CanGetYear())
 				{
 					ThreadIdWithError = ThreadId;
@@ -324,7 +341,7 @@ namespace Business.SongDetailsScrapers
 
 					errorHappened = true;
 				}
-				
+
 				if (errorHappened && originalSong != CurrentSong)
 				{
 					ExceptionsService.Instance.AddCorrectionForAlbumYearException(originalSong, CurrentSong);
@@ -342,10 +359,9 @@ namespace Business.SongDetailsScrapers
 					{
 						semaphore.Release();
 					}
+
 					_albumsBeingChecked.Remove(originalSong.Album);
 				}
-
-
 			}
 
 			CachedHtmlDocument = null;
@@ -407,7 +423,23 @@ namespace Business.SongDetailsScrapers
 		protected HtmlDocument GetHtmlDocFromUrl(string url)
 		{
 			var htmlWeb = new HtmlWeb();
-			var htmlDoc = htmlWeb.Load(url);
+			HtmlDocument htmlDoc;
+			while (true)
+			{
+				try
+				{
+					htmlDoc = htmlWeb.Load(url);
+					break;
+				}
+				catch (WebException e)
+				{
+					Debug.WriteLine(e.Message);
+				}
+				catch (IOException e)
+				{
+					Debug.WriteLine(e.Message);
+				}
+			}
 			return htmlWeb.StatusCode == HttpStatusCode.OK ? htmlDoc : null;
 		}
 

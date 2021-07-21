@@ -33,12 +33,10 @@ namespace Forms
 			FolderBrowserDialog.Description = "Pick the folder where the music gets downloaded to";
 			var dialogResult = FolderBrowserDialog.ShowDialog();
 
-			if (dialogResult == DialogResult.OK && !string.IsNullOrWhiteSpace(FolderBrowserDialog.SelectedPath))
-			{
-				_musicFromDirectory = FolderBrowserDialog.SelectedPath;
-				TextBoxMusicFromDirectory.Text = _musicFromDirectory;
-				BusinessFacade.Instance.SetMusicFromDirectory(_musicFromDirectory);
-			}
+			if (dialogResult != DialogResult.OK || string.IsNullOrWhiteSpace(FolderBrowserDialog.SelectedPath)) return;
+			_musicFromDirectory = FolderBrowserDialog.SelectedPath;
+			TextBoxMusicFromDirectory.Text = _musicFromDirectory;
+			BusinessFacade.Instance.SetMusicFromDirectory(_musicFromDirectory);
 		}
 
 		private void ButtonChooseMusicToDirectory_Click(object sender, EventArgs e)
@@ -46,12 +44,10 @@ namespace Forms
 			FolderBrowserDialog.Description = "Pick the folder where you store your music";
 			var dialogResult = FolderBrowserDialog.ShowDialog();
 
-			if (dialogResult == DialogResult.OK && !string.IsNullOrWhiteSpace(FolderBrowserDialog.SelectedPath))
-			{
-				_musicToDirectory = FolderBrowserDialog.SelectedPath;
-				TextBoxMusicToDirectory.Text = _musicToDirectory;
-				BusinessFacade.Instance.SetMusicToDirectory(_musicToDirectory);
-			}
+			if (dialogResult != DialogResult.OK || string.IsNullOrWhiteSpace(FolderBrowserDialog.SelectedPath)) return;
+			_musicToDirectory = FolderBrowserDialog.SelectedPath;
+			TextBoxMusicToDirectory.Text = _musicToDirectory;
+			BusinessFacade.Instance.SetMusicToDirectory(_musicToDirectory);
 		}
 
 		private void ButtonManageExceptions_Click(object sender, EventArgs e)

@@ -26,7 +26,7 @@ namespace Business.DTOs
 		public TimeSpan Duration { get; private init; }
 
 		private static IDictionary<string, string> _genreReplacements = new Dictionary<string, string>
-			{{"Alternativa", "Alternative"}};
+			{{"Alternativa", "Alternative"},{"Rap", "Hip Hop"}};
 
 		public bool IsSingle => TotalTrackCount < 5 && DiscNumber == 1 && TotalDiscCount == 1;
 
@@ -168,7 +168,8 @@ namespace Business.DTOs
 				TrackNumber = TrackNumber,
 				TotalTrackCount = TotalTrackCount,
 				DiscNumber = DiscNumber,
-				TotalDiscCount = TotalDiscCount
+				TotalDiscCount = TotalDiscCount,
+				Year = Year
 			};
 		}
 

@@ -34,6 +34,15 @@ namespace Business
 				(sender, args) => NotifySongFileProgress?.Invoke(sender, args);
 			GetLyricsAndYearService.Instance.NotifyInitialThreadsConfiguration +=
 				(sender, args) => NotifyInitialThreadsConfiguration?.Invoke(sender, args);
+			KillAllPythonProcesses();
+		}
+
+		private void KillAllPythonProcesses()
+		{
+			foreach (var process in Process.GetProcessesByName("python"))
+			{
+				process.Kill();
+			}
 		}
 
 		public void GetDownloadedMusicFiles() => DownloadMusicService.Instance.GetDownloadedMusicFiles();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Business.DTOs;
 using DB;
@@ -35,6 +36,9 @@ namespace Business.Services
 			_addedSongs.Add(song);
 		}
 
+		internal bool IsInDatabase(SongFileDTO song) =>
+			_songRepository.Find(e => e.Filename == song.Filename).Any();
+
 		private void ModifySong(SongFileDTO song)
 		{
 			var songInDB = _songRepository.Find(e => e.Filename == song.Filename).First();
@@ -43,14 +47,16 @@ namespace Business.Services
 			songInDB.DiscNumber = song.DiscNumber;
 			songInDB.Duration = song.Duration;
 			songInDB.AlbumArtist = song.AlbumArtist;
+			songInDB.Year = song.Year;
 			songInDB.Title = song.Title;
+			songInDB.LastModified =
+				File.GetLastWriteTime(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));
 		}
 
-		internal void ChangeSingleInformation(SongFileDTO albumTrack)
+		internal void RemoveSingle(SongFileDTO albumTrack)
 		{
 			var songDB = _songRepository.Find(e => e.Filename == albumTrack.Filename).First();
 			_songRepository.RemoveSingle(songDB);
-			AddSong(albumTrack);
 		}
 
 		internal void SetYearAndLyricsOfSong(SongFileDTO song, int year, string lyrics)
@@ -73,14 +79,15 @@ namespace Business.Services
 		{
 			foreach (var addedSong in _addedSongs)
 			{
-				_songRepository.Add(new Song
+				var song = new Song
 				{
 					Filename = addedSong.Filename, ContributingArtists = addedSong.ContributingArtists.ToList(),
 					PlayCount = 0,
 					Year = addedSong.Year,
 					TrackNumber = addedSong.TrackNumber, DiscNumber = addedSong.DiscNumber, Title = addedSong.Title,
 					AlbumArtist = addedSong.AlbumArtist, Duration = addedSong.Duration,Lyrics = addedSong.Lyrics
-				},addedSong.Album,addedSong.Genre,addedSong.TotalTrackCount,addedSong.TotalDiscCount);
+				};
+				_songRepository.Add(song,addedSong.Album,addedSong.Genre,addedSong.TotalTrackCount,addedSong.TotalDiscCount,File.GetLastWriteTime(Path.Combine(DirectoriesService.Instance.MusicToDirectory,song.Filename)));
 			}
 
 			_songRepository.SaveChanges();

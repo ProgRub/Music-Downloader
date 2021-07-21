@@ -201,7 +201,7 @@ namespace Forms
 			SyncRichTextBoxThreadIdStartEndTimes.Invoke(new MethodInvoker(delegate
 			{
 				var elapsedTime = _timeElapsed.Elapsed;
-				SyncRichTextBoxThreadIdStartEndTimes.AppendText((line > 0 ? Environment.NewLine : "") + $"{eventArgs.ThreadId}|{elapsedTime.Hours:00}:{elapsedTime.Minutes:00}:{elapsedTime.Seconds:00}");
+				SyncRichTextBoxThreadIdStartEndTimes.AppendText((line > 0 ? Environment.NewLine : "") + $"{eventArgs.ThreadId+1}|{elapsedTime.Hours:00}:{elapsedTime.Minutes:00}:{elapsedTime.Seconds:00}");
 				if (CheckBoxScrollToEnd.Checked)
 					SyncRichTextBoxThreadIdStartEndTimes.ScrollToCaret();
 			}));

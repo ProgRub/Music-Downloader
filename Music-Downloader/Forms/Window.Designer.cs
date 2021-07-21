@@ -37,12 +37,13 @@ namespace Forms
 			// 
 			this.homeScreen1.AutoSize = true;
 			this.homeScreen1.BackColor = System.Drawing.Color.Transparent;
+			this.homeScreen1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.homeScreen1.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
 			this.homeScreen1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.homeScreen1.Location = new System.Drawing.Point(-1, -3);
+			this.homeScreen1.Location = new System.Drawing.Point(0, 0);
 			this.homeScreen1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.homeScreen1.Name = "homeScreen1";
-			this.homeScreen1.Size = new System.Drawing.Size(916, 245);
+			this.homeScreen1.Size = new System.Drawing.Size(1131, 450);
 			this.homeScreen1.TabIndex = 0;
 			// 
 			// Window

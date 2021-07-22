@@ -36,9 +36,6 @@ namespace Business.Services
 			_addedSongs.Add(song);
 		}
 
-		internal bool IsInDatabase(SongFileDTO song) =>
-			_songRepository.Find(e => e.Filename == song.Filename).Any();
-
 		private void ModifySong(SongFileDTO song)
 		{
 			var songInDB = _songRepository.Find(e => e.Filename == song.Filename).First();
@@ -48,6 +45,7 @@ namespace Business.Services
 			songInDB.Duration = song.Duration;
 			songInDB.AlbumArtist = song.AlbumArtist;
 			songInDB.Year = song.Year;
+			songInDB.Album.Year = song.Year;
 			songInDB.Title = song.Title;
 			songInDB.LastModified =
 				File.GetLastWriteTime(Path.Combine(DirectoriesService.Instance.MusicToDirectory, song.Filename));

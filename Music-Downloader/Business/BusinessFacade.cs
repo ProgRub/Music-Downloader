@@ -34,15 +34,6 @@ namespace Business
 				(sender, args) => NotifySongFileProgress?.Invoke(sender, args);
 			GetLyricsAndYearService.Instance.NotifyInitialThreadsConfiguration +=
 				(sender, args) => NotifyInitialThreadsConfiguration?.Invoke(sender, args);
-			KillAllPythonProcesses();
-		}
-
-		private void KillAllPythonProcesses()
-		{
-			foreach (var process in Process.GetProcessesByName("python"))
-			{
-				process.Kill();
-			}
 		}
 
 		public void GetDownloadedMusicFiles() => DownloadMusicService.Instance.GetDownloadedMusicFiles();
@@ -51,21 +42,13 @@ namespace Business
 
 		public void MoveFiles() => DownloadMusicService.Instance.MoveFiles();
 
-		public async Task KillDeemix()
+		public void KillDeemix()
 		{
-			await Task.Run(() =>
-			{
-				try
-				{
-					Process.GetProcessesByName("python")[0].Kill();
-				}
-				catch (IndexOutOfRangeException)
-				{
-				}
-			});
+			DownloadMusicService.Instance.KillDeemix();
 		}
 
-		public void SetGetYearAndLyricsMode(GetYearAndLyricsMode mode)  {
+		public void SetGetYearAndLyricsMode(GetYearAndLyricsMode mode)
+		{
 			GetLyricsAndYearService.Instance.Mode = mode;
 
 			if (GetLyricsAndYearService.Instance.Mode != GetYearAndLyricsMode.AllFiles) return;
@@ -135,7 +118,7 @@ namespace Business
 
 		public IEnumerable<string> GetGrimeArtists() => GrimeArtistService.Instance.GetAllGrimeArtists();
 
-		public ISet<SongFileDTO> GetAllStoredSongs()=>DirectoriesService.Instance.GetAllStoredSongs();
+		public ISet<SongFileDTO> GetAllStoredSongs() => DirectoriesService.Instance.GetAllStoredSongs();
 
 		public void SetSelectedFiles(ISet<SongFileDTO> selectedSongs) =>
 			GetLyricsAndYearService.Instance.SongsToGetDetails = selectedSongs;

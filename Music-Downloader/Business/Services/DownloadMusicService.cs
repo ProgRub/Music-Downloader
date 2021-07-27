@@ -35,11 +35,8 @@ namespace Business.Services
 
 		private DownloadMusicService()
 		{
-			_deemixDirectory = Path.GetFullPath(Directory.GetCurrentDirectory().Contains("GitHub")
-				? Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\..\..\"),
-					"deemix-pyweb-main")
-				: Path.Combine(Directory.GetCurrentDirectory(), "deemix-pyweb-main"));
-			_deemixFilename = "deemix-pyweb.py";
+			_deemixDirectory = @"C:\Users\ruben\Documents\deemix-gui";
+			_deemixFilename = "deemix-gui.exe";
 			_musicFromDirectory = DirectoriesService.Instance.MusicFromDirectory;
 		}
 
@@ -65,7 +62,7 @@ namespace Business.Services
 					!DeletedFiles.Contains(Path.GetFileName(filePath))))
 				{
 					var fileName = Path.GetFileName(filePath);
-					fileName=UnCensorFilename(fileName);
+					fileName = UnCensorFilename(fileName);
 					FilesToMove.Add(fileName);
 					NotifyNewDownloadedMusicFile?.Invoke(this,
 						new NewFileEventArgs {Filename = fileName});
@@ -75,22 +72,16 @@ namespace Business.Services
 
 		internal static string UnCensorFilename(string fileName)
 		{
-			return fileName.Replace("f_ck", "fuck").Replace("f___", "fuck").Replace("f__k", "fuck").Replace("sh_t", "shit")
+			return fileName.Replace("f_ck", "fuck").Replace("f___", "fuck").Replace("f__k", "fuck")
+				.Replace("sh_t", "shit")
 				.Replace("s__t", "shit").Replace("sh__", "shit").Replace("ni__as", "niggas").Replace(
 					"F_ck", "Fuck").Replace("F__k", "Fuck").Replace("F___", "Fuck").Replace("Sh_t", "Shit")
 				.Replace("S__t", "Shit").Replace("Sh__", "Shit").Replace("Ni__as", "Niggas");
 		}
 
-		private static string GetMostRecentPythonExecutable()
-		{
-			return Path.Combine(
-				Directory.EnumerateDirectories("C:\\").Where(e => e.Contains("Python")).OrderByDescending(e => e)
-					.First(), "python.exe");
-		}
-
 		private static bool IsDeemixRunning()
 		{
-			return Process.GetProcessesByName("python").Length != 0;
+			return Process.GetProcessesByName("deemix-gui").Length != 0;
 		}
 
 		internal async Task StartDeemix()
@@ -98,14 +89,7 @@ namespace Business.Services
 			await Task.Run(() =>
 			{
 				if (IsDeemixRunning()) return;
-				var deemix = new Process
-				{
-					StartInfo = new ProcessStartInfo(GetMostRecentPythonExecutable(),
-						Path.Combine(_deemixDirectory, _deemixFilename))
-					{
-						RedirectStandardOutput = true, UseShellExecute = false
-					}
-				};
+				var deemix = new Process {StartInfo = {FileName = Path.Combine(_deemixDirectory, _deemixFilename)}};
 				deemix.Start();
 			});
 		}
@@ -184,7 +168,8 @@ namespace Business.Services
 			{
 				if (condition == FileMovedCondition.ReplacedSingle)
 				{
-					BusinessFacade.Instance.MusicService.DeleteSong(SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath));
+					BusinessFacade.Instance.MusicService.DeleteSong(
+						SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath));
 					SongService.Instance.RemoveSingle(song);
 					FileSystem.DeleteFile(destinationFilePath, UIOption.OnlyErrorDialogs,
 						RecycleOption.SendToRecycleBin);
@@ -201,6 +186,25 @@ namespace Business.Services
 			GetLyricsAndYearService.Instance.SongsToGetDetails.Add(song);
 			NotifyMusicFileMoved?.Invoke(this,
 				new FileMovedArgs() {Filename = Path.GetFileName(destinationFilePath), Condition = condition});
+		}
+
+		public void KillDeemix()
+		{
+			try
+			{
+				foreach (var process in Process.GetProcesses())
+				{
+					Debug.WriteLine(process.ProcessName);
+				}
+
+				foreach (var process in Process.GetProcessesByName("deemix-gui"))
+				{
+					process.Kill();
+				}
+			}
+			catch (IndexOutOfRangeException)
+			{
+			}
 		}
 	}
 }

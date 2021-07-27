@@ -151,6 +151,7 @@ namespace Business.DTOs
 			songFile.Tag.Genres = new[] {Genre};
 			songFile.Tag.AlbumArtists = new[] {AlbumArtist};
 			songFile.Tag.Performers = ContributingArtists.ToArray();
+			songFile.Tag.Album = Album;
 			songFile.Save();
 		}
 

@@ -32,9 +32,9 @@ namespace Business.Services
 
 		public void StartThreads()
 		{
-
 			var totalNumberOfSongs = SongsToGetDetails.Count;
 			NumberOfThreads = Math.Min(totalNumberOfSongs, NumberOfThreads);
+			if (NumberOfThreads == 0) return;
 			ServicePointManager.DefaultConnectionLimit = NumberOfThreads;
 			var rest = totalNumberOfSongs % NumberOfThreads;
 			var result = totalNumberOfSongs / (double) NumberOfThreads;

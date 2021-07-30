@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Business.DTOs;
 using iTunesLib;
 
@@ -61,6 +62,14 @@ namespace Business.Services.MusicServices
 			if(_iTunes!=null)return;
 			_iTunes = new iTunesApp();
 			_iTunesLibrary = _iTunes.LibraryPlaylist;
+		}
+
+		public void EndLink()
+		{
+			if (_iTunes == null) return;
+			System.Runtime.InteropServices.Marshal.ReleaseComObject(_iTunes);
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
 		}
 	}
 }

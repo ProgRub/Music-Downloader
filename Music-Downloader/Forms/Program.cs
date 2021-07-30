@@ -22,6 +22,7 @@ namespace Forms
 			Application.Run(new Window());
 			BusinessFacade.Instance.KillDeemix();
 			BusinessFacade.Instance.SaveChanges();
+			BusinessFacade.Instance.EndMusicServiceLink();
 		}
 	}
 }

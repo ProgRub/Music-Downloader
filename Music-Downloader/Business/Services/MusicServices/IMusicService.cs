@@ -8,5 +8,6 @@ namespace Business.Services.MusicServices
 		void DeleteSong(SongFileDTO song);
 		int GetPlayCountOfSong(SongFileDTO song);
 		void OpenService();
+		void EndLink();
 	}
 }

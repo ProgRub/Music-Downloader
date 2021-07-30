@@ -122,5 +122,9 @@ namespace Business
 
 		public void SetSelectedFiles(ISet<SongFileDTO> selectedSongs) =>
 			GetLyricsAndYearService.Instance.SongsToGetDetails = selectedSongs;
+		public void EndMusicServiceLink()
+		{
+			MusicService.EndLink();
+		}
 	}
 }

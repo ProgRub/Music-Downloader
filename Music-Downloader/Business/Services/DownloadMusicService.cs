@@ -132,7 +132,9 @@ namespace Business.Services
 					}
 					else if (oldSong.AlbumArtist == newSong.AlbumArtist && oldSong.Album == newSong.Album)
 					{
-						MoveFile(originFilePath, destinationFilePath, FileMovedCondition.AlreadyExists, newSong);
+						MoveFile(originFilePath, destinationFilePath,
+							oldSong.IsSingle ? FileMovedCondition.ReplacedSingle : FileMovedCondition.AlreadyExists,
+							newSong);
 					}
 					else
 					{

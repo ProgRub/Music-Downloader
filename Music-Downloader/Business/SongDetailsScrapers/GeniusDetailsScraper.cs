@@ -23,7 +23,7 @@ namespace Business.SongDetailsScrapers
 		private int GetYearOfSingleVersion1()
 		{
 			var htmlNode = CachedHtmlDocument.DocumentNode.Descendants("div").Where(e =>
-					e.GetAttributeValue("class", "").Contains("HeaderMetadata__Section-sc-1p42fnf-2"))
+					e.GetAttributeValue("class", "").Contains("HeaderMetadata__Section-sc-1p42fnf"))
 				.First(e => GetDecodedInnerText(e).Contains("Release"));
 			var textSplit = GetDecodedInnerText(htmlNode).Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
 			return int.Parse(textSplit.Last());

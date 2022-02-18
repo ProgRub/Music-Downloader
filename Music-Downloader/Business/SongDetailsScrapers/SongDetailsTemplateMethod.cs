@@ -84,12 +84,17 @@ namespace Business.SongDetailsScrapers
 							OriginalArtist = CurrentSong.AlbumArtist,
 							Type = ExceptionType.SkipAlbumYear
 						}) != null || CurrentSong.IsSingle &&
-						ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
-						{
-							OriginalTitle = CurrentSong.Title,
-							OriginalArtist = CurrentSong.AlbumArtist,
-							Type = ExceptionType.SkipLyrics
-						}) != null);
+                        (ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+                        {
+                            OriginalTitle = CurrentSong.Title,
+                            OriginalArtist = CurrentSong.AlbumArtist,
+                            Type = ExceptionType.SkipLyrics
+                        }) != null || ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+                        {
+                            OriginalAlbum = CurrentSong.Album,
+                            OriginalArtist = CurrentSong.AlbumArtist,
+                            Type = ExceptionType.SkipAlbumYear
+                        }) != null));
 					haveToGetSongLyrics = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
 					{
 						OriginalTitle = CurrentSong.Title,

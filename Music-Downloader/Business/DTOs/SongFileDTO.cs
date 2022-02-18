@@ -56,7 +56,7 @@ namespace Business.DTOs
 			return new SongFileDTO
 			{
 				Filename = fileName,
-				Album = RemoveWordsInParenthesisFromWord(new List<string>() {"Remaster", "Anniversary", "Expanded"},
+				Album = RemoveWordsInParenthesisFromWord(new List<string>() {"Remaster", "Anniversary", "Expanded", "Digital Master" },
 					songFile.Tag.Album),
 				AlbumArtist = albumArtist,
 				ContributingArtists = songFile.Tag.Performers,
@@ -65,7 +65,7 @@ namespace Business.DTOs
 				Title = UnCensorTitle(RemoveWordsInParenthesisFromWord(new List<string>()
 				{
 					"Remaster", "Album Version", "Stereo", "Hidden Track", "Explicit",
-					"explicit"
+					"explicit","Digital Master"
 				}, songFile.Tag.Title)),
 				Genre = genre,
 				TotalTrackCount = (int) songFile.Tag.TrackCount,
@@ -152,6 +152,11 @@ namespace Business.DTOs
 			songFile.Tag.AlbumArtists = new[] {AlbumArtist};
 			songFile.Tag.Performers = ContributingArtists.ToArray();
 			songFile.Tag.Album = Album;
+            songFile.Tag.Title = RemoveWordsInParenthesisFromWord(new List<string>()
+            {
+                "Remaster", "Album Version", "Stereo", "Explicit",
+                "explicit", "Digital Master"
+            }, songFile.Tag.Title);
 			songFile.Save();
 		}
 

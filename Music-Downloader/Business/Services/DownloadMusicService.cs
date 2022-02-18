@@ -106,7 +106,8 @@ namespace Business.Services
 			foreach (var originFilename in FilesToMove)
 			{
 				var originFilePath = Path.Combine(_musicFromDirectory, originFilename);
-				var destinationFilePath = Path.Combine(musicToDirectory, originFilename);
+                var fileNameWithRemovedWords = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Remaster", "Anniversary", "Expanded", "Digital Master" }, originFilename);
+                var destinationFilePath = Path.Combine(musicToDirectory, fileNameWithRemovedWords);
 				if (!File.Exists(originFilePath))
 				{
 					DeletedFiles.Add(originFilename);
@@ -117,10 +118,11 @@ namespace Business.Services
 				{
 					var newSong = SongFileDTO.GetSongFileDTOFromFilePath(originFilePath);
 					var oldSong = SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath);
+                    newSong.Filename = fileNameWithRemovedWords;
 					if (oldSong.AlbumArtist == newSong.AlbumArtist && oldSong.Album != newSong.Album)
 					{
 						if (oldSong.IsSingle)
-						{
+                        {
 							MoveFile(originFilePath, destinationFilePath, FileMovedCondition.ReplacedSingle, newSong);
 						}
 						else
@@ -168,17 +170,18 @@ namespace Business.Services
 		{
 			if (condition != FileMovedCondition.AlreadyExists)
 			{
-				if (condition == FileMovedCondition.ReplacedSingle)
+				if (condition == FileMovedCondition.ReplacedSingle || condition == FileMovedCondition.HadToBeRenamed && File.Exists(destinationFilePath))
 				{
 					BusinessFacade.Instance.MusicService.DeleteSong(
 						SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath));
-					SongService.Instance.RemoveSingle(song);
+					if (condition == FileMovedCondition.ReplacedSingle)
+					    SongService.Instance.RemoveSingle(song);
 					FileSystem.DeleteFile(destinationFilePath, UIOption.OnlyErrorDialogs,
 						RecycleOption.SendToRecycleBin);
 				}
 
-				File.Move(originFilePath,
-					destinationFilePath);
+                File.Move(originFilePath,
+                    destinationFilePath);
 			}
 			else
 			{

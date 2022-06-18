@@ -82,9 +82,11 @@ namespace Forms
 			MoveToScreen(PreviousScreen, PreviousScreen.PreviousScreen);
 		}
 
-		protected void SetWindowMinimumSizeBasedOnTableLayout(TableLayoutPanel tableLayoutPanel)
+		protected void SetWindowMinimumSizeBasedOnTableLayout(TableLayoutPanel tableLayoutPanel,bool maximize)
 		{
-			((Window)Parent).MinimumSize = new Size(tableLayoutPanel.MinimumSize.Width + 10, tableLayoutPanel.MinimumSize.Height + 10 + 50);
+			((Window)Parent).MinimumSize = new Size(tableLayoutPanel.MinimumSize.Width + 15, tableLayoutPanel.MinimumSize.Height + 15 + 50);
+			if(maximize) MaximizeWindow();
+			else ((Window)Parent).Size = ((Window)Parent).MinimumSize;
 		}
 	}
 }

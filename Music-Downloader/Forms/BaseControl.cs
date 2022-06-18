@@ -81,5 +81,10 @@ namespace Forms
 		{
 			MoveToScreen(PreviousScreen, PreviousScreen.PreviousScreen);
 		}
+
+		protected void SetWindowMinimumSizeBasedOnTableLayout(TableLayoutPanel tableLayoutPanel)
+		{
+			((Window)Parent).MinimumSize = new Size(tableLayoutPanel.MinimumSize.Width + 10, tableLayoutPanel.MinimumSize.Height + 10 + 50);
+		}
 	}
 }

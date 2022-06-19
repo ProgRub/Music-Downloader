@@ -77,6 +77,7 @@ namespace Forms
 				_comboBoxItemsToIntegerEnum.Add(item.ToString(), index++);
 			}
 			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelMain, false);
+			ButtonBack.BringToFront();
 		}
 
 

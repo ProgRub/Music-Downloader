@@ -71,10 +71,10 @@ namespace Forms
 			// 
 			this.PictureBoxLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.PictureBoxLabel.Image = global::Forms.Properties.Resources.image_removebg_preview__1_;
-			this.PictureBoxLabel.Location = new System.Drawing.Point(1541, 246);
+			this.PictureBoxLabel.Location = new System.Drawing.Point(1558, 223);
 			this.PictureBoxLabel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.PictureBoxLabel.Name = "PictureBoxLabel";
-			this.PictureBoxLabel.Size = new System.Drawing.Size(269, 200);
+			this.PictureBoxLabel.Size = new System.Drawing.Size(272, 200);
 			this.PictureBoxLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.PictureBoxLabel.TabIndex = 6;
 			this.PictureBoxLabel.TabStop = false;
@@ -83,7 +83,7 @@ namespace Forms
 			// 
 			this.LabelArtist.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.LabelArtist.AutoSize = true;
-			this.LabelArtist.Location = new System.Drawing.Point(291, 63);
+			this.LabelArtist.Location = new System.Drawing.Point(295, 63);
 			this.LabelArtist.Name = "LabelArtist";
 			this.LabelArtist.Size = new System.Drawing.Size(50, 17);
 			this.LabelArtist.TabIndex = 10;
@@ -93,7 +93,7 @@ namespace Forms
 			// 
 			this.LabelAlbum.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.LabelAlbum.AutoSize = true;
-			this.LabelAlbum.Location = new System.Drawing.Point(695, 63);
+			this.LabelAlbum.Location = new System.Drawing.Point(703, 63);
 			this.LabelAlbum.Name = "LabelAlbum";
 			this.LabelAlbum.Size = new System.Drawing.Size(57, 17);
 			this.LabelAlbum.TabIndex = 11;
@@ -103,7 +103,7 @@ namespace Forms
 			// 
 			this.LabelTitle.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.LabelTitle.AutoSize = true;
-			this.LabelTitle.Location = new System.Drawing.Point(1246, 63);
+			this.LabelTitle.Location = new System.Drawing.Point(1260, 63);
 			this.LabelTitle.Name = "LabelTitle";
 			this.LabelTitle.Size = new System.Drawing.Size(41, 17);
 			this.LabelTitle.TabIndex = 12;
@@ -113,7 +113,7 @@ namespace Forms
 			// 
 			this.LabelTimeElapsed.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.LabelTimeElapsed.AutoSize = true;
-			this.LabelTimeElapsed.Location = new System.Drawing.Point(627, 13);
+			this.LabelTimeElapsed.Location = new System.Drawing.Point(635, 13);
 			this.LabelTimeElapsed.Name = "LabelTimeElapsed";
 			this.LabelTimeElapsed.Size = new System.Drawing.Size(193, 17);
 			this.LabelTimeElapsed.TabIndex = 13;
@@ -124,7 +124,7 @@ namespace Forms
 			this.LabelThreadsStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.LabelThreadsStatus.AutoSize = true;
 			this.tableLayoutPanelMain.SetColumnSpan(this.LabelThreadsStatus, 2);
-			this.LabelThreadsStatus.Location = new System.Drawing.Point(163, 596);
+			this.LabelThreadsStatus.Location = new System.Drawing.Point(166, 550);
 			this.LabelThreadsStatus.Name = "LabelThreadsStatus";
 			this.LabelThreadsStatus.Size = new System.Drawing.Size(125, 17);
 			this.LabelThreadsStatus.TabIndex = 14;
@@ -138,11 +138,11 @@ namespace Forms
 			this.TextBoxThreadsStatus.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.TextBoxThreadsStatus.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxThreadsStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxThreadsStatus.Location = new System.Drawing.Point(3, 615);
+			this.TextBoxThreadsStatus.Location = new System.Drawing.Point(3, 569);
 			this.TextBoxThreadsStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxThreadsStatus.Multiline = true;
 			this.TextBoxThreadsStatus.Name = "TextBoxThreadsStatus";
-			this.TextBoxThreadsStatus.Size = new System.Drawing.Size(446, 200);
+			this.TextBoxThreadsStatus.Size = new System.Drawing.Size(451, 179);
 			this.TextBoxThreadsStatus.TabIndex = 15;
 			// 
 			// TextBoxCorrectArtist
@@ -153,10 +153,10 @@ namespace Forms
 			this.TextBoxCorrectArtist.Enabled = false;
 			this.TextBoxCorrectArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectArtist.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxCorrectArtist.Location = new System.Drawing.Point(111, 36);
+			this.TextBoxCorrectArtist.Location = new System.Drawing.Point(112, 31);
 			this.TextBoxCorrectArtist.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectArtist.Name = "TextBoxCorrectArtist";
-			this.TextBoxCorrectArtist.Size = new System.Drawing.Size(966, 24);
+			this.TextBoxCorrectArtist.Size = new System.Drawing.Size(977, 24);
 			this.TextBoxCorrectArtist.TabIndex = 16;
 			// 
 			// TextBoxCorrectAlbum
@@ -167,10 +167,10 @@ namespace Forms
 			this.TextBoxCorrectAlbum.Enabled = false;
 			this.TextBoxCorrectAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectAlbum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxCorrectAlbum.Location = new System.Drawing.Point(111, 68);
+			this.TextBoxCorrectAlbum.Location = new System.Drawing.Point(112, 60);
 			this.TextBoxCorrectAlbum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectAlbum.Name = "TextBoxCorrectAlbum";
-			this.TextBoxCorrectAlbum.Size = new System.Drawing.Size(966, 24);
+			this.TextBoxCorrectAlbum.Size = new System.Drawing.Size(977, 24);
 			this.TextBoxCorrectAlbum.TabIndex = 17;
 			// 
 			// TextBoxCorrectTitle
@@ -181,17 +181,17 @@ namespace Forms
 			this.TextBoxCorrectTitle.Enabled = false;
 			this.TextBoxCorrectTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxCorrectTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxCorrectTitle.Location = new System.Drawing.Point(111, 100);
+			this.TextBoxCorrectTitle.Location = new System.Drawing.Point(112, 89);
 			this.TextBoxCorrectTitle.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxCorrectTitle.Name = "TextBoxCorrectTitle";
-			this.TextBoxCorrectTitle.Size = new System.Drawing.Size(966, 24);
+			this.TextBoxCorrectTitle.Size = new System.Drawing.Size(977, 24);
 			this.TextBoxCorrectTitle.TabIndex = 18;
 			// 
 			// LabelUrl
 			// 
 			this.LabelUrl.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.LabelUrl.AutoSize = true;
-			this.LabelUrl.Location = new System.Drawing.Point(111, 7);
+			this.LabelUrl.Location = new System.Drawing.Point(112, 6);
 			this.LabelUrl.Name = "LabelUrl";
 			this.LabelUrl.Size = new System.Drawing.Size(39, 17);
 			this.LabelUrl.TabIndex = 20;
@@ -201,7 +201,7 @@ namespace Forms
 			// 
 			this.LabelCorrectArtist.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.LabelCorrectArtist.AutoSize = true;
-			this.LabelCorrectArtist.Location = new System.Drawing.Point(55, 39);
+			this.LabelCorrectArtist.Location = new System.Drawing.Point(56, 35);
 			this.LabelCorrectArtist.Name = "LabelCorrectArtist";
 			this.LabelCorrectArtist.Size = new System.Drawing.Size(50, 17);
 			this.LabelCorrectArtist.TabIndex = 21;
@@ -211,7 +211,7 @@ namespace Forms
 			// 
 			this.LabelCorrectAlbum.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.LabelCorrectAlbum.AutoSize = true;
-			this.LabelCorrectAlbum.Location = new System.Drawing.Point(48, 71);
+			this.LabelCorrectAlbum.Location = new System.Drawing.Point(49, 64);
 			this.LabelCorrectAlbum.Name = "LabelCorrectAlbum";
 			this.LabelCorrectAlbum.Size = new System.Drawing.Size(57, 17);
 			this.LabelCorrectAlbum.TabIndex = 22;
@@ -221,7 +221,7 @@ namespace Forms
 			// 
 			this.LabelCorrectTitle.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.LabelCorrectTitle.AutoSize = true;
-			this.LabelCorrectTitle.Location = new System.Drawing.Point(64, 103);
+			this.LabelCorrectTitle.Location = new System.Drawing.Point(65, 93);
 			this.LabelCorrectTitle.Name = "LabelCorrectTitle";
 			this.LabelCorrectTitle.Size = new System.Drawing.Size(41, 17);
 			this.LabelCorrectTitle.TabIndex = 23;
@@ -239,10 +239,10 @@ namespace Forms
 			this.ButtonTryAgain.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonTryAgain.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonTryAgain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonTryAgain.Location = new System.Drawing.Point(547, 130);
+			this.ButtonTryAgain.Location = new System.Drawing.Point(554, 118);
 			this.ButtonTryAgain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonTryAgain.Name = "ButtonTryAgain";
-			this.ButtonTryAgain.Size = new System.Drawing.Size(93, 27);
+			this.ButtonTryAgain.Size = new System.Drawing.Size(93, 25);
 			this.ButtonTryAgain.TabIndex = 25;
 			this.ButtonTryAgain.Text = "Try Again";
 			this.ButtonTryAgain.UseVisualStyleBackColor = false;
@@ -259,10 +259,10 @@ namespace Forms
 			this.ButtonSkipYear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSkipYear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSkipYear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonSkipYear.Location = new System.Drawing.Point(548, 162);
+			this.ButtonSkipYear.Location = new System.Drawing.Point(555, 147);
 			this.ButtonSkipYear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSkipYear.Name = "ButtonSkipYear";
-			this.ButtonSkipYear.Size = new System.Drawing.Size(91, 27);
+			this.ButtonSkipYear.Size = new System.Drawing.Size(91, 25);
 			this.ButtonSkipYear.TabIndex = 26;
 			this.ButtonSkipYear.Text = "Skip Year";
 			this.ButtonSkipYear.UseVisualStyleBackColor = true;
@@ -279,7 +279,7 @@ namespace Forms
 			this.ButtonSkipLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSkipLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSkipLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonSkipLyrics.Location = new System.Drawing.Point(543, 194);
+			this.ButtonSkipLyrics.Location = new System.Drawing.Point(550, 176);
 			this.ButtonSkipLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSkipLyrics.Name = "ButtonSkipLyrics";
 			this.ButtonSkipLyrics.Size = new System.Drawing.Size(101, 27);
@@ -297,7 +297,7 @@ namespace Forms
 			this.CheckBoxScrollToEnd.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
 			this.CheckBoxScrollToEnd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.CheckBoxScrollToEnd.ForeColor = System.Drawing.Color.Green;
-			this.CheckBoxScrollToEnd.Location = new System.Drawing.Point(1541, 83);
+			this.CheckBoxScrollToEnd.Location = new System.Drawing.Point(1558, 83);
 			this.CheckBoxScrollToEnd.Name = "CheckBoxScrollToEnd";
 			this.CheckBoxScrollToEnd.Size = new System.Drawing.Size(255, 21);
 			this.CheckBoxScrollToEnd.TabIndex = 29;
@@ -313,12 +313,12 @@ namespace Forms
 			this.SyncRichTextBoxArtist.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SyncRichTextBoxArtist.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.SyncRichTextBoxArtist.ForeColor = System.Drawing.Color.Yellow;
-			this.SyncRichTextBoxArtist.Location = new System.Drawing.Point(184, 83);
+			this.SyncRichTextBoxArtist.Location = new System.Drawing.Point(186, 83);
 			this.SyncRichTextBoxArtist.Name = "SyncRichTextBoxArtist";
 			this.SyncRichTextBoxArtist.ReadOnly = true;
 			this.tableLayoutPanelMain.SetRowSpan(this.SyncRichTextBoxArtist, 2);
 			this.SyncRichTextBoxArtist.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxArtist.Size = new System.Drawing.Size(265, 497);
+			this.SyncRichTextBoxArtist.Size = new System.Drawing.Size(268, 451);
 			this.SyncRichTextBoxArtist.TabIndex = 30;
 			this.SyncRichTextBoxArtist.Text = "";
 			// 
@@ -330,12 +330,12 @@ namespace Forms
 			this.SyncRichTextBoxAlbum.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SyncRichTextBoxAlbum.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.SyncRichTextBoxAlbum.ForeColor = System.Drawing.Color.Yellow;
-			this.SyncRichTextBoxAlbum.Location = new System.Drawing.Point(455, 83);
+			this.SyncRichTextBoxAlbum.Location = new System.Drawing.Point(460, 83);
 			this.SyncRichTextBoxAlbum.Name = "SyncRichTextBoxAlbum";
 			this.SyncRichTextBoxAlbum.ReadOnly = true;
 			this.tableLayoutPanelMain.SetRowSpan(this.SyncRichTextBoxAlbum, 2);
 			this.SyncRichTextBoxAlbum.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxAlbum.Size = new System.Drawing.Size(537, 497);
+			this.SyncRichTextBoxAlbum.Size = new System.Drawing.Size(543, 451);
 			this.SyncRichTextBoxAlbum.TabIndex = 31;
 			this.SyncRichTextBoxAlbum.Text = "";
 			// 
@@ -347,12 +347,12 @@ namespace Forms
 			this.SyncRichTextBoxTitle.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SyncRichTextBoxTitle.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.SyncRichTextBoxTitle.ForeColor = System.Drawing.Color.Yellow;
-			this.SyncRichTextBoxTitle.Location = new System.Drawing.Point(998, 83);
+			this.SyncRichTextBoxTitle.Location = new System.Drawing.Point(1009, 83);
 			this.SyncRichTextBoxTitle.Name = "SyncRichTextBoxTitle";
 			this.SyncRichTextBoxTitle.ReadOnly = true;
 			this.tableLayoutPanelMain.SetRowSpan(this.SyncRichTextBoxTitle, 2);
 			this.SyncRichTextBoxTitle.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxTitle.Size = new System.Drawing.Size(537, 497);
+			this.SyncRichTextBoxTitle.Size = new System.Drawing.Size(543, 451);
 			this.SyncRichTextBoxTitle.TabIndex = 32;
 			this.SyncRichTextBoxTitle.Text = "";
 			// 
@@ -369,14 +369,14 @@ namespace Forms
 			this.SyncRichTextBoxThreadIdStartEndTimes.ReadOnly = true;
 			this.tableLayoutPanelMain.SetRowSpan(this.SyncRichTextBoxThreadIdStartEndTimes, 2);
 			this.SyncRichTextBoxThreadIdStartEndTimes.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-			this.SyncRichTextBoxThreadIdStartEndTimes.Size = new System.Drawing.Size(175, 497);
+			this.SyncRichTextBoxThreadIdStartEndTimes.Size = new System.Drawing.Size(177, 451);
 			this.SyncRichTextBoxThreadIdStartEndTimes.TabIndex = 33;
 			this.SyncRichTextBoxThreadIdStartEndTimes.Text = "";
 			// 
 			// LabelThreadIdStartAndEnd
 			// 
 			this.LabelThreadIdStartAndEnd.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.LabelThreadIdStartAndEnd.Location = new System.Drawing.Point(7, 41);
+			this.LabelThreadIdStartAndEnd.Location = new System.Drawing.Point(8, 41);
 			this.LabelThreadIdStartAndEnd.Name = "LabelThreadIdStartAndEnd";
 			this.LabelThreadIdStartAndEnd.Size = new System.Drawing.Size(166, 39);
 			this.LabelThreadIdStartAndEnd.TabIndex = 34;
@@ -399,7 +399,7 @@ namespace Forms
 			this.tableLayoutPanelError.Controls.Add(this.ButtonSkipLyrics, 1, 6);
 			this.tableLayoutPanelError.Controls.Add(this.ButtonSkipYear, 1, 5);
 			this.tableLayoutPanelError.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanelError.Location = new System.Drawing.Point(455, 586);
+			this.tableLayoutPanelError.Location = new System.Drawing.Point(460, 540);
 			this.tableLayoutPanelError.Name = "tableLayoutPanelError";
 			this.tableLayoutPanelError.RowCount = 7;
 			this.tableLayoutPanelMain.SetRowSpan(this.tableLayoutPanelError, 2);
@@ -410,7 +410,7 @@ namespace Forms
 			this.tableLayoutPanelError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
 			this.tableLayoutPanelError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
 			this.tableLayoutPanelError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28572F));
-			this.tableLayoutPanelError.Size = new System.Drawing.Size(1080, 228);
+			this.tableLayoutPanelError.Size = new System.Drawing.Size(1092, 207);
 			this.tableLayoutPanelError.TabIndex = 35;
 			// 
 			// tableLayoutPanelMain
@@ -439,7 +439,7 @@ namespace Forms
 			this.tableLayoutPanelMain.Controls.Add(this.CheckBoxScrollToEnd, 4, 2);
 			this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-			this.tableLayoutPanelMain.MinimumSize = new System.Drawing.Size(1729, 816);
+			this.tableLayoutPanelMain.MinimumSize = new System.Drawing.Size(1729, 750);
 			this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
 			this.tableLayoutPanelMain.RowCount = 6;
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
@@ -448,7 +448,7 @@ namespace Forms
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
-			this.tableLayoutPanelMain.Size = new System.Drawing.Size(1813, 817);
+			this.tableLayoutPanelMain.Size = new System.Drawing.Size(1833, 750);
 			this.tableLayoutPanelMain.TabIndex = 36;
 			// 
 			// GetYearAndLyricsScreen
@@ -459,7 +459,7 @@ namespace Forms
 			this.Controls.Add(this.tableLayoutPanelMain);
 			this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.Name = "GetYearAndLyricsScreen";
-			this.Size = new System.Drawing.Size(1813, 817);
+			this.Size = new System.Drawing.Size(1833, 750);
 			this.Enter += new System.EventHandler(this.GetYearAndLyricsScreen_Enter);
 			this.Controls.SetChildIndex(this.tableLayoutPanelMain, 0);
 			this.Controls.SetChildIndex(this.ButtonBack, 0);

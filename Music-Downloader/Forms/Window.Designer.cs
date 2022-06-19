@@ -36,6 +36,7 @@ namespace Forms
 			// homeScreen1
 			// 
 			this.homeScreen1.AutoSize = true;
+			this.homeScreen1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.homeScreen1.BackColor = System.Drawing.Color.Transparent;
 			this.homeScreen1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.homeScreen1.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -50,8 +51,6 @@ namespace Forms
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.AutoSize = true;
-			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(41)))));
 			this.ClientSize = new System.Drawing.Size(1131, 450);
 			this.Controls.Add(this.homeScreen1);

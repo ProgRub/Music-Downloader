@@ -62,7 +62,7 @@ namespace Forms
 			this.ListBoxBeforeFiles.Location = new System.Drawing.Point(3, 32);
 			this.ListBoxBeforeFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ListBoxBeforeFiles.Name = "ListBoxBeforeFiles";
-			this.ListBoxBeforeFiles.Size = new System.Drawing.Size(435, 385);
+			this.ListBoxBeforeFiles.Size = new System.Drawing.Size(435, 370);
 			this.ListBoxBeforeFiles.TabIndex = 6;
 			this.ListBoxBeforeFiles.SelectedIndexChanged += new System.EventHandler(this.ListBoxBeforeFiles_SelectedIndexChanged);
 			this.ListBoxBeforeFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBoxBeforeFiles_KeyDown);
@@ -79,14 +79,14 @@ namespace Forms
 			this.TextBoxAfterFiles.Multiline = true;
 			this.TextBoxAfterFiles.Name = "TextBoxAfterFiles";
 			this.TextBoxAfterFiles.ReadOnly = true;
-			this.TextBoxAfterFiles.Size = new System.Drawing.Size(435, 385);
+			this.TextBoxAfterFiles.Size = new System.Drawing.Size(435, 370);
 			this.TextBoxAfterFiles.TabIndex = 7;
 			// 
 			// LabelFilename
 			// 
 			this.LabelFilename.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.LabelFilename.AutoSize = true;
-			this.LabelFilename.Location = new System.Drawing.Point(8, 9);
+			this.LabelFilename.Location = new System.Drawing.Point(8, 13);
 			this.LabelFilename.Name = "LabelFilename";
 			this.LabelFilename.Size = new System.Drawing.Size(76, 17);
 			this.LabelFilename.TabIndex = 8;
@@ -97,7 +97,7 @@ namespace Forms
 			this.TextBoxRenameFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.TextBoxRenameFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
 			this.TextBoxRenameFile.Enabled = false;
-			this.TextBoxRenameFile.Location = new System.Drawing.Point(90, 6);
+			this.TextBoxRenameFile.Location = new System.Drawing.Point(90, 10);
 			this.TextBoxRenameFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.TextBoxRenameFile.Name = "TextBoxRenameFile";
 			this.TextBoxRenameFile.Size = new System.Drawing.Size(694, 24);
@@ -113,7 +113,7 @@ namespace Forms
 			this.ButtonRenameFile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonRenameFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonRenameFile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonRenameFile.Location = new System.Drawing.Point(790, 4);
+			this.ButtonRenameFile.Location = new System.Drawing.Point(790, 8);
 			this.ButtonRenameFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonRenameFile.Name = "ButtonRenameFile";
 			this.ButtonRenameFile.Size = new System.Drawing.Size(80, 27);
@@ -132,7 +132,7 @@ namespace Forms
 			this.ButtonMoveFilesGetLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonMoveFilesGetLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonMoveFilesGetLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(388, 38);
+			this.ButtonMoveFilesGetLyrics.Location = new System.Drawing.Point(388, 46);
 			this.ButtonMoveFilesGetLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonMoveFilesGetLyrics.Name = "ButtonMoveFilesGetLyrics";
 			this.ButtonMoveFilesGetLyrics.Size = new System.Drawing.Size(98, 27);
@@ -151,7 +151,7 @@ namespace Forms
 			this.ButtonUndo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonUndo.Image = global::Forms.Properties.Resources.Undo;
-			this.ButtonUndo.Location = new System.Drawing.Point(401, 421);
+			this.ButtonUndo.Location = new System.Drawing.Point(401, 406);
 			this.ButtonUndo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonUndo.Name = "ButtonUndo";
 			this.ButtonUndo.Size = new System.Drawing.Size(37, 22);
@@ -168,7 +168,7 @@ namespace Forms
 			this.ButtonRedo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonRedo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonRedo.Image = global::Forms.Properties.Resources.Redo;
-			this.ButtonRedo.Location = new System.Drawing.Point(444, 421);
+			this.ButtonRedo.Location = new System.Drawing.Point(444, 406);
 			this.ButtonRedo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonRedo.Name = "ButtonRedo";
 			this.ButtonRedo.Size = new System.Drawing.Size(37, 22);
@@ -199,18 +199,17 @@ namespace Forms
 			this.tableLayoutPanelRenameFiles.Controls.Add(this.LabelFilename, 0, 0);
 			this.tableLayoutPanelRenameFiles.Controls.Add(this.ButtonMoveFilesGetLyrics, 1, 1);
 			this.tableLayoutPanelRenameFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanelRenameFiles.Location = new System.Drawing.Point(3, 452);
+			this.tableLayoutPanelRenameFiles.Location = new System.Drawing.Point(3, 437);
 			this.tableLayoutPanelRenameFiles.MinimumSize = new System.Drawing.Size(876, 69);
 			this.tableLayoutPanelRenameFiles.Name = "tableLayoutPanelRenameFiles";
 			this.tableLayoutPanelRenameFiles.RowCount = 2;
 			this.tableLayoutPanelRenameFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanelRenameFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanelRenameFiles.Size = new System.Drawing.Size(876, 73);
+			this.tableLayoutPanelRenameFiles.Size = new System.Drawing.Size(876, 88);
 			this.tableLayoutPanelRenameFiles.TabIndex = 0;
 			// 
 			// tableLayoutPanelMain
 			// 
-			this.tableLayoutPanelMain.AutoSize = true;
 			this.tableLayoutPanelMain.ColumnCount = 2;
 			this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -222,13 +221,13 @@ namespace Forms
 			this.tableLayoutPanelMain.Controls.Add(this.ButtonUndo, 0, 2);
 			this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-			this.tableLayoutPanelMain.MinimumSize = new System.Drawing.Size(882, 510);
+			this.tableLayoutPanelMain.MinimumSize = new System.Drawing.Size(882, 528);
 			this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
 			this.tableLayoutPanelMain.RowCount = 4;
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.33334F));
+			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
 			this.tableLayoutPanelMain.Size = new System.Drawing.Size(882, 528);
 			this.tableLayoutPanelMain.TabIndex = 15;
 			// 
@@ -236,7 +235,7 @@ namespace Forms
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.AutoSize = false;
 			this.Controls.Add(this.tableLayoutPanelMain);
 			this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.Name = "DownloadMusicScreen";

@@ -62,7 +62,7 @@ namespace Forms
 			this.ListBoxBeforeFiles.Location = new System.Drawing.Point(3, 32);
 			this.ListBoxBeforeFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ListBoxBeforeFiles.Name = "ListBoxBeforeFiles";
-			this.ListBoxBeforeFiles.Size = new System.Drawing.Size(435, 380);
+			this.ListBoxBeforeFiles.Size = new System.Drawing.Size(435, 385);
 			this.ListBoxBeforeFiles.TabIndex = 6;
 			this.ListBoxBeforeFiles.SelectedIndexChanged += new System.EventHandler(this.ListBoxBeforeFiles_SelectedIndexChanged);
 			this.ListBoxBeforeFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListBoxBeforeFiles_KeyDown);
@@ -79,7 +79,7 @@ namespace Forms
 			this.TextBoxAfterFiles.Multiline = true;
 			this.TextBoxAfterFiles.Name = "TextBoxAfterFiles";
 			this.TextBoxAfterFiles.ReadOnly = true;
-			this.TextBoxAfterFiles.Size = new System.Drawing.Size(435, 380);
+			this.TextBoxAfterFiles.Size = new System.Drawing.Size(435, 385);
 			this.TextBoxAfterFiles.TabIndex = 7;
 			// 
 			// LabelFilename
@@ -151,7 +151,7 @@ namespace Forms
 			this.ButtonUndo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonUndo.Image = global::Forms.Properties.Resources.Undo;
-			this.ButtonUndo.Location = new System.Drawing.Point(401, 416);
+			this.ButtonUndo.Location = new System.Drawing.Point(401, 421);
 			this.ButtonUndo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonUndo.Name = "ButtonUndo";
 			this.ButtonUndo.Size = new System.Drawing.Size(37, 22);
@@ -168,7 +168,7 @@ namespace Forms
 			this.ButtonRedo.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonRedo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonRedo.Image = global::Forms.Properties.Resources.Redo;
-			this.ButtonRedo.Location = new System.Drawing.Point(444, 416);
+			this.ButtonRedo.Location = new System.Drawing.Point(444, 421);
 			this.ButtonRedo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonRedo.Name = "ButtonRedo";
 			this.ButtonRedo.Size = new System.Drawing.Size(37, 22);
@@ -199,13 +199,13 @@ namespace Forms
 			this.tableLayoutPanelRenameFiles.Controls.Add(this.LabelFilename, 0, 0);
 			this.tableLayoutPanelRenameFiles.Controls.Add(this.ButtonMoveFilesGetLyrics, 1, 1);
 			this.tableLayoutPanelRenameFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanelRenameFiles.Location = new System.Drawing.Point(3, 447);
+			this.tableLayoutPanelRenameFiles.Location = new System.Drawing.Point(3, 452);
 			this.tableLayoutPanelRenameFiles.MinimumSize = new System.Drawing.Size(876, 69);
 			this.tableLayoutPanelRenameFiles.Name = "tableLayoutPanelRenameFiles";
 			this.tableLayoutPanelRenameFiles.RowCount = 2;
 			this.tableLayoutPanelRenameFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanelRenameFiles.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanelRenameFiles.Size = new System.Drawing.Size(876, 72);
+			this.tableLayoutPanelRenameFiles.Size = new System.Drawing.Size(876, 73);
 			this.tableLayoutPanelRenameFiles.TabIndex = 0;
 			// 
 			// tableLayoutPanelMain
@@ -229,7 +229,7 @@ namespace Forms
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.33334F));
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 			this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-			this.tableLayoutPanelMain.Size = new System.Drawing.Size(882, 522);
+			this.tableLayoutPanelMain.Size = new System.Drawing.Size(882, 528);
 			this.tableLayoutPanelMain.TabIndex = 15;
 			// 
 			// DownloadMusicScreen
@@ -240,7 +240,7 @@ namespace Forms
 			this.Controls.Add(this.tableLayoutPanelMain);
 			this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.Name = "DownloadMusicScreen";
-			this.Size = new System.Drawing.Size(882, 522);
+			this.Size = new System.Drawing.Size(882, 528);
 			this.Enter += new System.EventHandler(this.DownloadMusicScreen_Enter);
 			this.Controls.SetChildIndex(this.tableLayoutPanelMain, 0);
 			this.Controls.SetChildIndex(this.ButtonBack, 0);

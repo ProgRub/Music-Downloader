@@ -36,7 +36,7 @@ namespace Forms
 				var text = "";
 				foreach (var key in _comboBoxItemsToIntegerEnum.Keys)
 				{
-					if (_comboBoxItemsToIntegerEnum[key] != (int) _selectedExceptionType) continue;
+					if (_comboBoxItemsToIntegerEnum[key] != (int)_selectedExceptionType) continue;
 					text = key;
 					break;
 				}
@@ -76,12 +76,13 @@ namespace Forms
 			{
 				_comboBoxItemsToIntegerEnum.Add(item.ToString(), index++);
 			}
+			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelMain, false);
 		}
 
 
-		private void ComboBoxExceptionTypes_TextChanged(object sender, EventArgs e)
+		private void ComboBoxExceptionTypes_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			SelectedExceptionType = (ExceptionType) _comboBoxItemsToIntegerEnum[ComboBoxExceptionTypes.Text];
+			SelectedExceptionType = (ExceptionType)_comboBoxItemsToIntegerEnum[ComboBoxExceptionTypes.Text];
 			ListBoxExceptions.Items.Clear();
 			var exceptionsOfSelectedType = _exceptions.Where(e => e.Type == SelectedExceptionType);
 			ListBoxExceptions.Enabled = true;
@@ -208,7 +209,7 @@ namespace Forms
 			_currentlyShownControls = toShowControls;
 			ButtonAddChange.Enabled = true;
 			ButtonAddChange.Visible = true;
-			RelocateButtonsToBelowLowestTextBox(toShowControls.Last().Location.Y);
+			RelocateButtonsToBelowLowestTextBox(tableLayoutPanelMain.GetRow(toShowControls.Last()));
 		}
 
 		private void FillTextBoxesWithValuesOfSelectedException()
@@ -243,10 +244,10 @@ namespace Forms
 			}
 		}
 
-		private void RelocateButtonsToBelowLowestTextBox(int yOfLowestTextBox)
+		private void RelocateButtonsToBelowLowestTextBox(int rowOfLowestTextBox)
 		{
-			ButtonAddChange.Location = new Point(ButtonAddChange.Location.X, yOfLowestTextBox + 30);
-			ButtonDeleteSelected.Location = new Point(ButtonDeleteSelected.Location.X, ButtonAddChange.Location.Y + 33);
+			tableLayoutPanelMain.SetRow(ButtonAddChange, rowOfLowestTextBox + 1);
+			tableLayoutPanelMain.SetRow(ButtonDeleteSelected, rowOfLowestTextBox + 2);
 		}
 
 		private void ButtonDeleteSelected_Click(object sender, EventArgs e)
@@ -314,10 +315,13 @@ namespace Forms
 			{
 				var newException = new ExceptionDTO
 				{
-					Id =_exceptions.Count>0? _exceptions.Max(e=>e.Id) + 1:1,
-					OriginalArtist = TextBoxOriginalArtist.Text.Trim(), OriginalAlbum = TextBoxOriginalAlbum.Text.Trim(),
+					Id = _exceptions.Count > 0 ? _exceptions.Max(e => e.Id) + 1 : 1,
+					OriginalArtist = TextBoxOriginalArtist.Text.Trim(),
+					OriginalAlbum = TextBoxOriginalAlbum.Text.Trim(),
 					OriginalTitle = TextBoxOriginalTitle.Text.Trim(),
-					NewArtist = TextBoxNewArtist.Text.Trim(), NewAlbum = TextBoxNewAlbum.Text.Trim(), NewTitle = TextBoxNewTitle.Text.Trim(),
+					NewArtist = TextBoxNewArtist.Text.Trim(),
+					NewAlbum = TextBoxNewAlbum.Text.Trim(),
+					NewTitle = TextBoxNewTitle.Text.Trim(),
 					Type = SelectedExceptionType
 				};
 				macro.Add(new CommandSetSelectedExceptionType(SelectedExceptionType, this));
@@ -328,6 +332,6 @@ namespace Forms
 
 			CommandsManager.Instance.Execute(macro);
 		}
-		
+
 	}
 }

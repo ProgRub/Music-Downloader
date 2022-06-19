@@ -239,7 +239,7 @@ namespace Business.DTOs
 
 		protected bool Equals(SongFileDTO other)
 		{
-			return AlbumArtist == other.AlbumArtist && Album == other.Album && Title == other.Title;
+			return Filename==other.Filename;
 		}
 
 		public override bool Equals(object obj)

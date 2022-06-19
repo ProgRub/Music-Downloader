@@ -42,6 +42,8 @@ namespace Forms
 			this.ButtonManageGrimeArtists = new System.Windows.Forms.Button();
 			this.ButtonAllFilesYearAndLyrics = new System.Windows.Forms.Button();
 			this.ButtonSelectFiles = new System.Windows.Forms.Button();
+			this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+			this.tableLayoutPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// ButtonBack
@@ -55,6 +57,7 @@ namespace Forms
 			// 
 			// ButtonDownloadMusic
 			// 
+			this.ButtonDownloadMusic.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.ButtonDownloadMusic.AutoSize = true;
 			this.ButtonDownloadMusic.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonDownloadMusic.FlatAppearance.BorderSize = 0;
@@ -62,7 +65,7 @@ namespace Forms
 			this.ButtonDownloadMusic.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonDownloadMusic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonDownloadMusic.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonDownloadMusic.Location = new System.Drawing.Point(374, 92);
+			this.ButtonDownloadMusic.Location = new System.Drawing.Point(505, 64);
 			this.ButtonDownloadMusic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonDownloadMusic.Name = "ButtonDownloadMusic";
 			this.ButtonDownloadMusic.Size = new System.Drawing.Size(144, 27);
@@ -73,8 +76,9 @@ namespace Forms
 			// 
 			// LabelMusicFrom
 			// 
+			this.LabelMusicFrom.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.LabelMusicFrom.AutoSize = true;
-			this.LabelMusicFrom.Location = new System.Drawing.Point(12, 19);
+			this.LabelMusicFrom.Location = new System.Drawing.Point(4, 7);
 			this.LabelMusicFrom.Name = "LabelMusicFrom";
 			this.LabelMusicFrom.Size = new System.Drawing.Size(326, 17);
 			this.LabelMusicFrom.TabIndex = 7;
@@ -82,8 +86,9 @@ namespace Forms
 			// 
 			// LabelMusicTo
 			// 
+			this.LabelMusicTo.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.LabelMusicTo.AutoSize = true;
-			this.LabelMusicTo.Location = new System.Drawing.Point(31, 50);
+			this.LabelMusicTo.Location = new System.Drawing.Point(23, 38);
 			this.LabelMusicTo.Name = "LabelMusicTo";
 			this.LabelMusicTo.Size = new System.Drawing.Size(307, 17);
 			this.LabelMusicTo.TabIndex = 8;
@@ -91,30 +96,33 @@ namespace Forms
 			// 
 			// TextBoxMusicFromDirectory
 			// 
+			this.TextBoxMusicFromDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.TextBoxMusicFromDirectory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
 			this.TextBoxMusicFromDirectory.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxMusicFromDirectory.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxMusicFromDirectory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxMusicFromDirectory.Location = new System.Drawing.Point(344, 17);
+			this.TextBoxMusicFromDirectory.Location = new System.Drawing.Point(336, 3);
 			this.TextBoxMusicFromDirectory.Name = "TextBoxMusicFromDirectory";
 			this.TextBoxMusicFromDirectory.ReadOnly = true;
-			this.TextBoxMusicFromDirectory.Size = new System.Drawing.Size(504, 24);
+			this.TextBoxMusicFromDirectory.Size = new System.Drawing.Size(482, 24);
 			this.TextBoxMusicFromDirectory.TabIndex = 9;
 			// 
 			// TextBoxMusicToDirectory
 			// 
+			this.TextBoxMusicToDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.TextBoxMusicToDirectory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(91)))));
 			this.TextBoxMusicToDirectory.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.TextBoxMusicToDirectory.Font = new System.Drawing.Font("Verdana", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextBoxMusicToDirectory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(179)))), ((int)(((byte)(174)))));
-			this.TextBoxMusicToDirectory.Location = new System.Drawing.Point(344, 48);
+			this.TextBoxMusicToDirectory.Location = new System.Drawing.Point(336, 34);
 			this.TextBoxMusicToDirectory.Name = "TextBoxMusicToDirectory";
 			this.TextBoxMusicToDirectory.ReadOnly = true;
-			this.TextBoxMusicToDirectory.Size = new System.Drawing.Size(504, 24);
+			this.TextBoxMusicToDirectory.Size = new System.Drawing.Size(482, 24);
 			this.TextBoxMusicToDirectory.TabIndex = 10;
 			// 
 			// ButtonChooseMusicFromDirectory
 			// 
+			this.ButtonChooseMusicFromDirectory.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.ButtonChooseMusicFromDirectory.AutoSize = true;
 			this.ButtonChooseMusicFromDirectory.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonChooseMusicFromDirectory.FlatAppearance.BorderSize = 0;
@@ -122,7 +130,7 @@ namespace Forms
 			this.ButtonChooseMusicFromDirectory.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonChooseMusicFromDirectory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonChooseMusicFromDirectory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonChooseMusicFromDirectory.Location = new System.Drawing.Point(854, 14);
+			this.ButtonChooseMusicFromDirectory.Location = new System.Drawing.Point(824, 2);
 			this.ButtonChooseMusicFromDirectory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonChooseMusicFromDirectory.Name = "ButtonChooseMusicFromDirectory";
 			this.ButtonChooseMusicFromDirectory.Size = new System.Drawing.Size(59, 27);
@@ -133,6 +141,7 @@ namespace Forms
 			// 
 			// ButtonChooseMusicToDirectory
 			// 
+			this.ButtonChooseMusicToDirectory.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.ButtonChooseMusicToDirectory.AutoSize = true;
 			this.ButtonChooseMusicToDirectory.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonChooseMusicToDirectory.FlatAppearance.BorderSize = 0;
@@ -140,7 +149,7 @@ namespace Forms
 			this.ButtonChooseMusicToDirectory.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonChooseMusicToDirectory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonChooseMusicToDirectory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonChooseMusicToDirectory.Location = new System.Drawing.Point(854, 45);
+			this.ButtonChooseMusicToDirectory.Location = new System.Drawing.Point(824, 33);
 			this.ButtonChooseMusicToDirectory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonChooseMusicToDirectory.Name = "ButtonChooseMusicToDirectory";
 			this.ButtonChooseMusicToDirectory.Size = new System.Drawing.Size(59, 27);
@@ -155,6 +164,7 @@ namespace Forms
 			// 
 			// ButtonManageExceptions
 			// 
+			this.ButtonManageExceptions.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.ButtonManageExceptions.AutoSize = true;
 			this.ButtonManageExceptions.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonManageExceptions.FlatAppearance.BorderSize = 0;
@@ -162,7 +172,7 @@ namespace Forms
 			this.ButtonManageExceptions.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonManageExceptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonManageExceptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonManageExceptions.Location = new System.Drawing.Point(374, 185);
+			this.ButtonManageExceptions.Location = new System.Drawing.Point(493, 157);
 			this.ButtonManageExceptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonManageExceptions.Name = "ButtonManageExceptions";
 			this.ButtonManageExceptions.Size = new System.Drawing.Size(167, 27);
@@ -173,6 +183,7 @@ namespace Forms
 			// 
 			// ButtonManageUrlReplacements
 			// 
+			this.ButtonManageUrlReplacements.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.ButtonManageUrlReplacements.AutoSize = true;
 			this.ButtonManageUrlReplacements.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonManageUrlReplacements.FlatAppearance.BorderSize = 0;
@@ -180,7 +191,7 @@ namespace Forms
 			this.ButtonManageUrlReplacements.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonManageUrlReplacements.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonManageUrlReplacements.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonManageUrlReplacements.Location = new System.Drawing.Point(374, 216);
+			this.ButtonManageUrlReplacements.Location = new System.Drawing.Point(464, 188);
 			this.ButtonManageUrlReplacements.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonManageUrlReplacements.Name = "ButtonManageUrlReplacements";
 			this.ButtonManageUrlReplacements.Size = new System.Drawing.Size(226, 27);
@@ -191,6 +202,7 @@ namespace Forms
 			// 
 			// ButtonManageGrimeArtists
 			// 
+			this.ButtonManageGrimeArtists.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.ButtonManageGrimeArtists.AutoSize = true;
 			this.ButtonManageGrimeArtists.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonManageGrimeArtists.FlatAppearance.BorderSize = 0;
@@ -198,7 +210,7 @@ namespace Forms
 			this.ButtonManageGrimeArtists.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonManageGrimeArtists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonManageGrimeArtists.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonManageGrimeArtists.Location = new System.Drawing.Point(374, 247);
+			this.ButtonManageGrimeArtists.Location = new System.Drawing.Point(485, 219);
 			this.ButtonManageGrimeArtists.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonManageGrimeArtists.Name = "ButtonManageGrimeArtists";
 			this.ButtonManageGrimeArtists.Size = new System.Drawing.Size(183, 27);
@@ -209,6 +221,7 @@ namespace Forms
 			// 
 			// ButtonAllFilesYearAndLyrics
 			// 
+			this.ButtonAllFilesYearAndLyrics.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.ButtonAllFilesYearAndLyrics.AutoSize = true;
 			this.ButtonAllFilesYearAndLyrics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonAllFilesYearAndLyrics.FlatAppearance.BorderSize = 0;
@@ -216,7 +229,7 @@ namespace Forms
 			this.ButtonAllFilesYearAndLyrics.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonAllFilesYearAndLyrics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonAllFilesYearAndLyrics.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonAllFilesYearAndLyrics.Location = new System.Drawing.Point(374, 123);
+			this.ButtonAllFilesYearAndLyrics.Location = new System.Drawing.Point(422, 95);
 			this.ButtonAllFilesYearAndLyrics.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonAllFilesYearAndLyrics.Name = "ButtonAllFilesYearAndLyrics";
 			this.ButtonAllFilesYearAndLyrics.Size = new System.Drawing.Size(309, 27);
@@ -227,6 +240,7 @@ namespace Forms
 			// 
 			// ButtonSelectFiles
 			// 
+			this.ButtonSelectFiles.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.ButtonSelectFiles.AutoSize = true;
 			this.ButtonSelectFiles.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.ButtonSelectFiles.FlatAppearance.BorderSize = 0;
@@ -234,7 +248,7 @@ namespace Forms
 			this.ButtonSelectFiles.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
 			this.ButtonSelectFiles.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ButtonSelectFiles.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-			this.ButtonSelectFiles.Location = new System.Drawing.Point(374, 154);
+			this.ButtonSelectFiles.Location = new System.Drawing.Point(428, 126);
 			this.ButtonSelectFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.ButtonSelectFiles.Name = "ButtonSelectFiles";
 			this.ButtonSelectFiles.Size = new System.Drawing.Size(298, 27);
@@ -243,39 +257,55 @@ namespace Forms
 			this.ButtonSelectFiles.UseVisualStyleBackColor = true;
 			this.ButtonSelectFiles.Click += new System.EventHandler(this.ButtonSelectFiles_Click);
 			// 
+			// tableLayoutPanel
+			// 
+			this.tableLayoutPanel.AutoSize = true;
+			this.tableLayoutPanel.ColumnCount = 3;
+			this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.5F));
+			this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
+			this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 7.5F));
+			this.tableLayoutPanel.Controls.Add(this.LabelMusicFrom, 0, 0);
+			this.tableLayoutPanel.Controls.Add(this.ButtonManageGrimeArtists, 1, 7);
+			this.tableLayoutPanel.Controls.Add(this.ButtonSelectFiles, 1, 4);
+			this.tableLayoutPanel.Controls.Add(this.ButtonManageUrlReplacements, 1, 6);
+			this.tableLayoutPanel.Controls.Add(this.LabelMusicTo, 0, 1);
+			this.tableLayoutPanel.Controls.Add(this.ButtonManageExceptions, 1, 5);
+			this.tableLayoutPanel.Controls.Add(this.ButtonAllFilesYearAndLyrics, 1, 3);
+			this.tableLayoutPanel.Controls.Add(this.TextBoxMusicFromDirectory, 1, 0);
+			this.tableLayoutPanel.Controls.Add(this.TextBoxMusicToDirectory, 1, 1);
+			this.tableLayoutPanel.Controls.Add(this.ButtonChooseMusicFromDirectory, 2, 0);
+			this.tableLayoutPanel.Controls.Add(this.ButtonChooseMusicToDirectory, 2, 1);
+			this.tableLayoutPanel.Controls.Add(this.ButtonDownloadMusic, 1, 2);
+			this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel.MinimumSize = new System.Drawing.Size(888, 249);
+			this.tableLayoutPanel.Name = "tableLayoutPanel";
+			this.tableLayoutPanel.RowCount = 8;
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+			this.tableLayoutPanel.Size = new System.Drawing.Size(888, 249);
+			this.tableLayoutPanel.TabIndex = 18;
+			// 
 			// HomeScreen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.ButtonSelectFiles);
-			this.Controls.Add(this.ButtonAllFilesYearAndLyrics);
-			this.Controls.Add(this.ButtonManageGrimeArtists);
-			this.Controls.Add(this.ButtonManageUrlReplacements);
-			this.Controls.Add(this.ButtonManageExceptions);
-			this.Controls.Add(this.ButtonChooseMusicToDirectory);
-			this.Controls.Add(this.ButtonChooseMusicFromDirectory);
-			this.Controls.Add(this.TextBoxMusicToDirectory);
-			this.Controls.Add(this.TextBoxMusicFromDirectory);
-			this.Controls.Add(this.LabelMusicTo);
-			this.Controls.Add(this.LabelMusicFrom);
-			this.Controls.Add(this.ButtonDownloadMusic);
+			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.Controls.Add(this.tableLayoutPanel);
 			this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
 			this.Name = "HomeScreen";
-			this.Size = new System.Drawing.Size(916, 447);
+			this.Size = new System.Drawing.Size(888, 249);
 			this.Enter += new System.EventHandler(this.HomeScreen_Enter);
 			this.Controls.SetChildIndex(this.ButtonBack, 0);
-			this.Controls.SetChildIndex(this.ButtonDownloadMusic, 0);
-			this.Controls.SetChildIndex(this.LabelMusicFrom, 0);
-			this.Controls.SetChildIndex(this.LabelMusicTo, 0);
-			this.Controls.SetChildIndex(this.TextBoxMusicFromDirectory, 0);
-			this.Controls.SetChildIndex(this.TextBoxMusicToDirectory, 0);
-			this.Controls.SetChildIndex(this.ButtonChooseMusicFromDirectory, 0);
-			this.Controls.SetChildIndex(this.ButtonChooseMusicToDirectory, 0);
-			this.Controls.SetChildIndex(this.ButtonManageExceptions, 0);
-			this.Controls.SetChildIndex(this.ButtonManageUrlReplacements, 0);
-			this.Controls.SetChildIndex(this.ButtonManageGrimeArtists, 0);
-			this.Controls.SetChildIndex(this.ButtonAllFilesYearAndLyrics, 0);
-			this.Controls.SetChildIndex(this.ButtonSelectFiles, 0);
+			this.Controls.SetChildIndex(this.tableLayoutPanel, 0);
+			this.tableLayoutPanel.ResumeLayout(false);
+			this.tableLayoutPanel.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -296,5 +326,6 @@ namespace Forms
 		private System.Windows.Forms.Button ButtonManageGrimeArtists;
 		private System.Windows.Forms.Button ButtonAllFilesYearAndLyrics;
 		private System.Windows.Forms.Button ButtonSelectFiles;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
 	}
 }

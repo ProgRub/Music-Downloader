@@ -36,6 +36,8 @@ namespace Forms
 			{
 				ListBoxUrlReplacements.Items.Add($"\"{key}\" --> \"{value}\"");
 			}
+			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelMain,false);
+			ButtonBack.BringToFront();
 		}
 
 		private void ListBoxUrlReplacements_SelectedIndexChanged(object sender, EventArgs e)

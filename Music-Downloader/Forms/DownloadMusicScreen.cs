@@ -68,6 +68,7 @@ namespace Forms
 			BusinessFacade.Instance.StartDeemix();
 			BusinessFacade.Instance.GetDownloadedMusicFiles();
 			SetFormAcceptButton(ButtonMoveFilesGetLyrics);
+			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelMain,true);
 		}
 
 		private void ListBoxBeforeFiles_KeyDown(object sender, KeyEventArgs e)

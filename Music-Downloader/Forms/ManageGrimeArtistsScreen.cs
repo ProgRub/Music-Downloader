@@ -36,6 +36,8 @@ namespace Forms
 			{
 				ListBoxGrimeArtists.Items.Add(grimeArtist);
 			}
+			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelMain,false);
+			ButtonBack.BringToFront();
 		}
 
 		private void ButtonUndo_Click(object sender, EventArgs e)

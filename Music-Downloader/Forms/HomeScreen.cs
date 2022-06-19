@@ -84,6 +84,8 @@ namespace Forms
 			_musicToDirectory = BusinessFacade.Instance.GetMusicToDirectory();
 			TextBoxMusicFromDirectory.Text = _musicFromDirectory;
 			TextBoxMusicToDirectory.Text = _musicToDirectory;
+			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanel,false);
+
 		}
 	}
 }

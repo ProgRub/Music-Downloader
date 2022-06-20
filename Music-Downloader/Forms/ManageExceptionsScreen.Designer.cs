@@ -387,8 +387,8 @@ namespace Forms
 			this.Name = "ManageExceptionsScreen";
 			this.Size = new System.Drawing.Size(1340, 365);
 			this.Enter += new System.EventHandler(this.ManageExceptionsScreen_Enter);
-			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.Controls.SetChildIndex(this.tableLayoutPanelMain, 0);
+			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.tableLayoutPanelMain.ResumeLayout(false);
 			this.tableLayoutPanelMain.PerformLayout();
 			this.ResumeLayout(false);

@@ -199,8 +199,8 @@ namespace Forms
 			this.Name = "ManageGrimeArtistsScreen";
 			this.Size = new System.Drawing.Size(1016, 267);
 			this.Enter += new System.EventHandler(this.ManageGrimeArtistsScreen_Enter);
-			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.Controls.SetChildIndex(this.tableLayoutPanelMain, 0);
+			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.tableLayoutPanelMain.ResumeLayout(false);
 			this.tableLayoutPanelMain.PerformLayout();
 			this.ResumeLayout(false);

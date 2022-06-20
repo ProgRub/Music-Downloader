@@ -230,8 +230,8 @@ namespace Forms
 			this.Name = "ManageUrlReplacementsScreen";
 			this.Size = new System.Drawing.Size(1013, 334);
 			this.Enter += new System.EventHandler(this.ManageUrlReplacementsScreen_Enter);
-			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.Controls.SetChildIndex(this.tableLayoutPanelMain, 0);
+			this.Controls.SetChildIndex(this.ButtonBack, 0);
 			this.tableLayoutPanelMain.ResumeLayout(false);
 			this.tableLayoutPanelMain.PerformLayout();
 			this.ResumeLayout(false);

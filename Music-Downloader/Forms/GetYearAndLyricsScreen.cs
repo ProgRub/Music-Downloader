@@ -86,7 +86,7 @@ namespace Forms
 			SetFormAcceptButton(ButtonTryAgain);
 			BusinessFacade.Instance.OpenService();
 			BusinessFacade.Instance.StartGettingYearAndLyrics();
-			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelError,true);
+			SetWindowMinimumSizeBasedOnTableLayout(tableLayoutPanelMain,true);
 		}
 
 		private void Clock_Tick(object sender, EventArgs e)

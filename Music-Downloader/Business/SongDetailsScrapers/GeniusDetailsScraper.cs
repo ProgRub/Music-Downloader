@@ -66,7 +66,7 @@ namespace Business.SongDetailsScrapers
 				.Where(e =>
 					e.GetAttributeValue("class", "").Contains("Lyrics__Container-sc-1ynbvzw")))
 			{
-				htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine)
+				htmlNode.InnerHtml = htmlNode.InnerHtml.Replace("<br>", Environment.NewLine).Replace("</div></div>", Environment.NewLine)
 					.Replace("<inread-ad></inread-ad>", Environment.NewLine);
 				lyrics += GetDecodedInnerText(htmlNode);
 				lyrics += Environment.NewLine;
@@ -74,7 +74,6 @@ namespace Business.SongDetailsScrapers
 
 			lyrics = lyrics.Trim();
 			if (string.IsNullOrWhiteSpace(lyrics)) lyrics = "[Instrumental]";
-			
 			return lyrics;
 		}
 

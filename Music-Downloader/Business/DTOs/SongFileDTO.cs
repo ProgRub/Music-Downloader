@@ -237,6 +237,11 @@ namespace Business.DTOs
 			return word.Trim();
 		}
 
+		public bool SongsHaveDifferentParameters(SongFileDTO other)
+		{
+			return !(AlbumArtist == other.AlbumArtist && Album == other.Album && Title == other.Title);
+		}
+
 		protected bool Equals(SongFileDTO other)
 		{
 			return Filename==other.Filename;

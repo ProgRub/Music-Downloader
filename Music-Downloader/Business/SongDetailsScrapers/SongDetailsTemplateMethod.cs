@@ -180,6 +180,7 @@ namespace Business.SongDetailsScrapers
 
 			while (!DoesWebpageExist(GetUrlFromSong(false)))
 			{
+				Debug.WriteLine("ERROR1");
 				ThreadIdWithError = ThreadId;
 				SemaphoreErrorRaised.Wait();
 				Process.Start(new ProcessStartInfo("cmd",
@@ -194,11 +195,13 @@ namespace Business.SongDetailsScrapers
 					return;
 				}
 
+				Debug.WriteLine("ERROR2");
 				errorHappened = true;
 			}
 
-			if (errorHappened && originalSong != CurrentSong)
+			if (errorHappened && originalSong.SongsHaveDifferentParameters(CurrentSong))
 			{
+				Debug.WriteLine("HERE");
 				ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 			}
 
@@ -249,7 +252,7 @@ namespace Business.SongDetailsScrapers
 					errorHappened = true;
 				}
 
-				if (errorHappened && originalSong != CurrentSong)
+				if (errorHappened && originalSong.SongsHaveDifferentParameters(CurrentSong))
 				{
 					ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 				}
@@ -347,7 +350,7 @@ namespace Business.SongDetailsScrapers
 					errorHappened = true;
 				}
 
-				if (errorHappened && originalSong != CurrentSong)
+				if (errorHappened && originalSong.SongsHaveDifferentParameters(CurrentSong))
 				{
 					ExceptionsService.Instance.AddCorrectionForAlbumYearException(originalSong, CurrentSong);
 				}

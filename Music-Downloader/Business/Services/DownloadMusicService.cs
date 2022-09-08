@@ -62,7 +62,7 @@ namespace Business.Services
 					!DeletedFiles.Contains(Path.GetFileName(filePath))))
 				{
 					var fileName = Path.GetFileName(filePath);
-					fileName = UnCensorFilename(fileName);
+					//fileName = UnCensorFilename(fileName);
 					FilesToMove.Add(fileName);
 					NotifyNewDownloadedMusicFile?.Invoke(this,
 						new NewFileEventArgs {Filename = fileName});
@@ -106,8 +106,8 @@ namespace Business.Services
 			foreach (var originFilename in FilesToMove)
 			{
 				var originFilePath = Path.Combine(_musicFromDirectory, originFilename);
-                var fileNameWithRemovedWords = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Remaster", "Anniversary", "Expanded", "Digital Master" }, originFilename);
-                var destinationFilePath = Path.Combine(musicToDirectory, fileNameWithRemovedWords);
+                var fileNameWithRemovedWords = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Remaster", "Anniversary", "Expanded", "Digital Master","Explicit" }, originFilename);
+                var destinationFilePath = Path.Combine(musicToDirectory, UnCensorFilename(fileNameWithRemovedWords));
 				if (!File.Exists(originFilePath))
 				{
 					DeletedFiles.Add(originFilename);
@@ -147,8 +147,7 @@ namespace Business.Services
 				}
 				else
 				{
-					MoveFile(originFilePath, destinationFilePath, FileMovedCondition.NoProblem,
-						SongFileDTO.GetSongFileDTOFromFilePath(originFilePath));
+					MoveFile(originFilePath, destinationFilePath, FileMovedCondition.NoProblem);
 				}
 			}
 
@@ -163,6 +162,35 @@ namespace Business.Services
 				FileSystem.DeleteFile(Path.Combine(musicFromDirectory, deletedFile), UIOption.OnlyErrorDialogs,
 					RecycleOption.SendToRecycleBin);
 			}
+		}
+
+		private void MoveFile(string originFilePath, string destinationFilePath, FileMovedCondition condition)
+		{
+			SongFileDTO song; 
+			if (condition != FileMovedCondition.AlreadyExists)
+			{
+				if (condition == FileMovedCondition.ReplacedSingle || condition == FileMovedCondition.HadToBeRenamed && File.Exists(destinationFilePath))
+				{
+					song = SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath);
+					BusinessFacade.Instance.MusicService.DeleteSong(
+						song);
+					if (condition == FileMovedCondition.ReplacedSingle)
+						SongService.Instance.RemoveSingle(song);
+					FileSystem.DeleteFile(destinationFilePath, UIOption.OnlyErrorDialogs,
+						RecycleOption.SendToRecycleBin);
+				}
+
+				File.Move(originFilePath,
+					destinationFilePath);
+			}
+			else
+			{
+				DeletedFiles.Add(Path.GetFileName(originFilePath));
+			}
+			song = SongFileDTO.GetSongFileDTOFromFilePath(destinationFilePath);
+			GetLyricsAndYearService.Instance.SongsToGetDetails.Add(song);
+			NotifyMusicFileMoved?.Invoke(this,
+				new FileMovedArgs() { Filename = Path.GetFileName(destinationFilePath), Condition = condition });
 		}
 
 		private void MoveFile(string originFilePath, string destinationFilePath, FileMovedCondition condition,

@@ -180,7 +180,6 @@ namespace Business.SongDetailsScrapers
 
 			while (!DoesWebpageExist(GetUrlFromSong(false)))
 			{
-				Debug.WriteLine("ERROR1");
 				ThreadIdWithError = ThreadId;
 				SemaphoreErrorRaised.Wait();
 				Process.Start(new ProcessStartInfo("cmd",
@@ -194,14 +193,12 @@ namespace Business.SongDetailsScrapers
 					ExceptionsService.Instance.AddSkipLyricsException(originalSong);
 					return;
 				}
-
-				Debug.WriteLine("ERROR2");
+				
 				errorHappened = true;
 			}
 
 			if (errorHappened && originalSong.SongsHaveDifferentParameters(CurrentSong))
 			{
-				Debug.WriteLine("HERE");
 				ExceptionsService.Instance.AddCorrectionForLyricsException(originalSong, CurrentSong);
 			}
 

@@ -66,11 +66,11 @@ namespace Business.SongDetailsScrapers
 				CurrentSong = song.Copy();
 				SkipLyrics = false;
 				SkipYear = false;
-				var albumWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() {"Deluxe"}, CurrentSong.Album);
+				var albumWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Deluxe" }, CurrentSong.Album);
 				CurrentSong.Album =
 					albumWithUnnecessaryWordsRemoved;
 				var titleWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(
-					new List<string>() {"feat", "Feat", "bonus", "Bonus", "Conclusion", "Vocal Mix", "Extended"},
+					new List<string>() { "feat", "Feat", "bonus", "Bonus", "Conclusion", "Vocal Mix", "Extended" },
 					CurrentSong.Title);
 				CurrentSong.Title = titleWithUnnecessaryWordsRemoved;
 				RaiseEvent(SongFileProgress.GettingYear);
@@ -84,17 +84,17 @@ namespace Business.SongDetailsScrapers
 							OriginalArtist = CurrentSong.AlbumArtist,
 							Type = ExceptionType.SkipAlbumYear
 						}) != null || CurrentSong.IsSingle &&
-                        (ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
-                        {
-                            OriginalTitle = CurrentSong.Title,
-                            OriginalArtist = CurrentSong.AlbumArtist,
-                            Type = ExceptionType.SkipLyrics
-                        }) != null || ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
-                        {
-                            OriginalAlbum = CurrentSong.Album,
-                            OriginalArtist = CurrentSong.AlbumArtist,
-                            Type = ExceptionType.SkipAlbumYear
-                        }) != null));
+						(ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+						{
+							OriginalTitle = CurrentSong.Title,
+							OriginalArtist = CurrentSong.AlbumArtist,
+							Type = ExceptionType.SkipLyrics
+						}) != null || ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
+						{
+							OriginalAlbum = CurrentSong.Album,
+							OriginalArtist = CurrentSong.AlbumArtist,
+							Type = ExceptionType.SkipAlbumYear
+						}) != null));
 					haveToGetSongLyrics = ExceptionsService.Instance.GetExceptionFromDTO(new ExceptionDTO
 					{
 						OriginalTitle = CurrentSong.Title,
@@ -184,7 +184,7 @@ namespace Business.SongDetailsScrapers
 				SemaphoreErrorRaised.Wait();
 				Process.Start(new ProcessStartInfo("cmd",
 						$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
-					{CreateNoWindow = true});
+				{ CreateNoWindow = true });
 				RaiseEvent(SongFileProgress.GettingLyricsException);
 				SemaphoreErrorHandled.Wait();
 				SemaphoreErrorRaised.Release();
@@ -193,7 +193,7 @@ namespace Business.SongDetailsScrapers
 					ExceptionsService.Instance.AddSkipLyricsException(originalSong);
 					return;
 				}
-				
+
 				errorHappened = true;
 			}
 
@@ -230,23 +230,30 @@ namespace Business.SongDetailsScrapers
 				}
 
 
-				while (!DoesWebpageExist(GetUrlFromSong(false)) || !CanGetYear())
+				try
 				{
-					ThreadIdWithError = ThreadId;
-					SemaphoreErrorRaised.Wait();
-					Process.Start(new ProcessStartInfo("cmd",
-							$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
-						{CreateNoWindow = true});
-					RaiseEvent(SongFileProgress.GettingYearException);
-					SemaphoreErrorHandled.Wait();
-					SemaphoreErrorRaised.Release();
-					if (SkipLyrics)
+					while (!DoesWebpageExist(GetUrlFromSong(false)) || !CanGetYear())
 					{
-						ExceptionsService.Instance.AddSkipLyricsException(originalSong);
-						return;
-					}
+						ThreadIdWithError = ThreadId;
+						SemaphoreErrorRaised.Wait();
+						Process.Start(new ProcessStartInfo("cmd",
+								$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
+						{ CreateNoWindow = true });
+						RaiseEvent(SongFileProgress.GettingYearException);
+						SemaphoreErrorHandled.Wait();
+						SemaphoreErrorRaised.Release();
+						if (SkipLyrics)
+						{
+							ExceptionsService.Instance.AddSkipLyricsException(originalSong);
+							return;
+						}
 
-					errorHappened = true;
+						errorHappened = true;
+					}
+				}
+				catch (InvalidOperationException)
+				{
+					Debug.WriteLine("HERE"); return;
 				}
 
 				if (errorHappened && originalSong.SongsHaveDifferentParameters(CurrentSong))
@@ -317,7 +324,7 @@ namespace Business.SongDetailsScrapers
 					SemaphoreErrorRaised.Wait();
 					Process.Start(new ProcessStartInfo("cmd",
 							$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Album.Replace(" &", "")).Replace(" ", "+")}+site:Genius.com")
-						{CreateNoWindow = true});
+					{ CreateNoWindow = true });
 					RaiseEvent(SongFileProgress.GettingYearException);
 					SemaphoreErrorHandled.Wait();
 					SemaphoreErrorRaised.Release();

@@ -409,7 +409,7 @@ namespace Business.SongDetailsScrapers
 			var detail = detailParameter.ToLower();
 			if (forAlbumName)
 			{
-				detail = detail.Replace(".", " ").Replace("'", " ");
+				detail = detail.Replace(".", " ").Replace("'", " ").Replace("&","");
 			}
 
 			foreach (var (key, value) in _urlReplacements)

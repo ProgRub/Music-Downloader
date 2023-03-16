@@ -424,7 +424,7 @@ namespace Business.SongDetailsScrapers
 		protected static string RemoveUmlauts(string input)
 		{
 			// Define the umlaut characters and their replacements
-			string[] umlautChars = { 'ä', 'ö', 'ü', 'ë', 'ï', 'ÿ' };
+			string[] umlautChars = { "ä", "ö", "ü", "ë", "ï", "ÿ" };
 			string[] umlautReplacements = { "a", "o", "u", "e", "i", "y" };
 
 			// Remove the umlauts from the input string

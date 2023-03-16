@@ -413,7 +413,7 @@ namespace Business.SongDetailsScrapers
 			foreach (var c in normalized.Where(c =>
 				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.UppercaseLetter ||
 				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.LowercaseLetter ||
-			                  CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.SpaceSeparator))
+				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.SpaceSeparator))
 			{
 				sb.Append(c);
 			}
@@ -421,10 +421,26 @@ namespace Business.SongDetailsScrapers
 			return sb.ToString();
 		}
 
+		protected static string RemoveUmlauts(string input)
+		{
+			// Define the umlaut characters and their replacements
+			char[] umlautChars = { 'ä', 'ö', 'ü', 'ë', 'ï', 'ÿ' };
+			string[] umlautReplacements = { "a", "o", "u", "e", "i", "y" };
+
+			// Remove the umlauts from the input string
+			for (var i = 0; i < umlautChars.Length; i++)
+			{
+				input = input.Replace(umlautChars[i].ToString(), umlautReplacements[i]);
+			}
+
+			return input;
+		}
+
+
 		protected static string MakeUrlReplacementsOnString(string detailParameter, bool forSongTitle,
 			bool forAlbumName)
 		{
-			var detail = RemoveDiacritics(detailParameter).ToLower();
+			var detail = RemoveUmlauts(RemoveDiacritics(detailParameter.ToLower()));
 			if (forAlbumName)
 			{
 				detail = detail.Replace(".", " ").Replace("'", " ").Replace("&", "");

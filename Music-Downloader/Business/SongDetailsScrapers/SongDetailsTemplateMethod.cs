@@ -424,13 +424,13 @@ namespace Business.SongDetailsScrapers
 		protected static string RemoveUmlauts(string input)
 		{
 			// Define the umlaut characters and their replacements
-			char[] umlautChars = { 'ä', 'ö', 'ü', 'ë', 'ï', 'ÿ' };
+			string[] umlautChars = { 'ä', 'ö', 'ü', 'ë', 'ï', 'ÿ' };
 			string[] umlautReplacements = { "a", "o", "u", "e", "i", "y" };
 
 			// Remove the umlauts from the input string
 			for (var i = 0; i < umlautChars.Length; i++)
 			{
-				input = input.Replace(umlautChars[i].ToString(), umlautReplacements[i]);
+				input = input.Replace(umlautChars[i], umlautReplacements[i]);
 			}
 
 			return input;

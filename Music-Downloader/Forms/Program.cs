@@ -18,10 +18,6 @@ namespace Forms
 		[STAThread]
 		static void Main()
 		{
-			Debug.WriteLine(RemoveDiacritics("Cláudia"));
-			Debug.WriteLine(RemoveDiacritics("quê"));
-			Debug.WriteLine(RemoveDiacritics("Coração"));
-			Debug.WriteLine(RemoveDiacritics("zone~"));
 			BusinessFacade.Instance.LoadDatabase();
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
@@ -30,22 +26,6 @@ namespace Forms
 			BusinessFacade.Instance.KillDeemix();
 			BusinessFacade.Instance.SaveChanges();
 			BusinessFacade.Instance.EndMusicServiceLink();
-		}
-
-		public static string RemoveDiacritics(string text)
-		{
-			string normalized = text.Normalize(NormalizationForm.FormD);
-			StringBuilder sb = new StringBuilder();
-
-			foreach (char c in normalized)
-			{
-				if (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.UppercaseLetter || CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.LowercaseLetter)
-				{
-					sb.Append(c);
-				}
-			}
-
-			return sb.ToString();
 		}
 	}
 }

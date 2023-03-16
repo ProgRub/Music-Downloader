@@ -47,10 +47,17 @@ namespace Business.DTOs
 					: songFile.Tag.FirstGenre;
 			}
 
-			if (albumArtist.Contains("King Gizzard"))
+			try
 			{
-				songFile.Tag.Performers = songFile.Tag.Performers.Select(e => e.Replace("And", "&")).ToArray();
-				albumArtist = albumArtist.Replace("And", "&");
+				if (albumArtist.Contains("King Gizzard"))
+				{
+					songFile.Tag.Performers = songFile.Tag.Performers.Select(e => e.Replace("And", "&")).ToArray();
+					albumArtist = albumArtist.Replace("And", "&");
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				Debug.WriteLine("No Album Artist");
 			}
 			var fileName = Path.GetFileName(filePath);
 			return new SongFileDTO

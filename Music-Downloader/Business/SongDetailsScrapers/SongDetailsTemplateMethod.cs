@@ -412,7 +412,8 @@ namespace Business.SongDetailsScrapers
 
 			foreach (var c in normalized.Where(c =>
 				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.UppercaseLetter ||
-				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.LowercaseLetter))
+				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.LowercaseLetter ||
+			                  CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.SpaceSeparator))
 			{
 				sb.Append(c);
 			}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -66,7 +67,8 @@ namespace Business.SongDetailsScrapers
 				CurrentSong = song.Copy();
 				SkipLyrics = false;
 				SkipYear = false;
-				var albumWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Deluxe" }, CurrentSong.Album);
+				var albumWithUnnecessaryWordsRemoved =
+					SongFileDTO.RemoveWordsInParenthesisFromWord(new List<string>() { "Deluxe" }, CurrentSong.Album);
 				CurrentSong.Album =
 					albumWithUnnecessaryWordsRemoved;
 				var titleWithUnnecessaryWordsRemoved = SongFileDTO.RemoveWordsInParenthesisFromWord(
@@ -184,7 +186,7 @@ namespace Business.SongDetailsScrapers
 				SemaphoreErrorRaised.Wait();
 				Process.Start(new ProcessStartInfo("cmd",
 						$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
-				{ CreateNoWindow = true });
+					{ CreateNoWindow = true });
 				RaiseEvent(SongFileProgress.GettingLyricsException);
 				SemaphoreErrorHandled.Wait();
 				SemaphoreErrorRaised.Release();
@@ -238,7 +240,7 @@ namespace Business.SongDetailsScrapers
 						SemaphoreErrorRaised.Wait();
 						Process.Start(new ProcessStartInfo("cmd",
 								$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Title.Replace(" &", "")).Replace(" ", "+")}+lyrics+site:Genius.com")
-						{ CreateNoWindow = true });
+							{ CreateNoWindow = true });
 						RaiseEvent(SongFileProgress.GettingYearException);
 						SemaphoreErrorHandled.Wait();
 						SemaphoreErrorRaised.Release();
@@ -253,7 +255,8 @@ namespace Business.SongDetailsScrapers
 				}
 				catch (InvalidOperationException)
 				{
-					Debug.WriteLine("HERE"); return;
+					Debug.WriteLine("HERE");
+					return;
 				}
 
 				if (errorHappened && originalSong.SongsHaveDifferentParameters(CurrentSong))
@@ -324,7 +327,7 @@ namespace Business.SongDetailsScrapers
 					SemaphoreErrorRaised.Wait();
 					Process.Start(new ProcessStartInfo("cmd",
 							$"/c start microsoft-edge:https://www.google.com.tr/search?q={(CurrentSong.AlbumArtist.Replace(" &", "") + "+" + CurrentSong.Album.Replace(" &", "")).Replace(" ", "+")}+site:Genius.com")
-					{ CreateNoWindow = true });
+						{ CreateNoWindow = true });
 					RaiseEvent(SongFileProgress.GettingYearException);
 					SemaphoreErrorHandled.Wait();
 					SemaphoreErrorRaised.Release();
@@ -402,14 +405,28 @@ namespace Business.SongDetailsScrapers
 			return true;
 		}
 
+		protected static string RemoveDiacritics(string text)
+		{
+			var normalized = text.Normalize(NormalizationForm.FormD);
+			var sb = new StringBuilder();
+
+			foreach (var c in normalized.Where(c =>
+				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.UppercaseLetter ||
+				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.LowercaseLetter))
+			{
+				sb.Append(c);
+			}
+
+			return sb.ToString();
+		}
 
 		protected static string MakeUrlReplacementsOnString(string detailParameter, bool forSongTitle,
 			bool forAlbumName)
 		{
-			var detail = detailParameter.ToLower();
+			var detail = RemoveDiacritics(detailParameter).ToLower();
 			if (forAlbumName)
 			{
-				detail = detail.Replace(".", " ").Replace("'", " ").Replace("&","");
+				detail = detail.Replace(".", " ").Replace("'", " ").Replace("&", "");
 			}
 
 			foreach (var (key, value) in _urlReplacements)
@@ -452,6 +469,7 @@ namespace Business.SongDetailsScrapers
 					Debug.WriteLine(e.Message);
 				}
 			}
+
 			return htmlWeb.StatusCode == HttpStatusCode.OK ? htmlDoc : null;
 		}
 

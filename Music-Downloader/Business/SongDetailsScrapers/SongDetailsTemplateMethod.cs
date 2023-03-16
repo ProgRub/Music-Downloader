@@ -405,15 +405,14 @@ namespace Business.SongDetailsScrapers
 			return true;
 		}
 
-		protected static string RemoveDiacritics(string text)
+		public static string RemoveDiacritics(string text)
 		{
 			var normalized = text.Normalize(NormalizationForm.FormD);
 			var sb = new StringBuilder();
 
 			foreach (var c in normalized.Where(c =>
-				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.UppercaseLetter ||
-				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.LowercaseLetter ||
-				         CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.SpaceSeparator))
+				         CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark &&
+				         (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.ModifierSymbol && c != '~')))
 			{
 				sb.Append(c);
 			}
@@ -421,7 +420,7 @@ namespace Business.SongDetailsScrapers
 			return sb.ToString();
 		}
 
-		protected static string RemoveUmlauts(string input)
+		public static string RemoveUmlauts(string input)
 		{
 			// Define the umlaut characters and their replacements
 			string[] umlautChars = { "ä", "ö", "ü", "ë", "ï", "ÿ" };
@@ -440,7 +439,7 @@ namespace Business.SongDetailsScrapers
 		protected static string MakeUrlReplacementsOnString(string detailParameter, bool forSongTitle,
 			bool forAlbumName)
 		{
-			var detail = RemoveUmlauts(RemoveDiacritics(detailParameter.ToLower()));
+			var detail = RemoveDiacritics(RemoveUmlauts(detailParameter.ToLower()));
 			if (forAlbumName)
 			{
 				detail = detail.Replace(".", " ").Replace("'", " ").Replace("&", "");
